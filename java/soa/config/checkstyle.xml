@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+<module name="Checker">
+  <property name="severity" value="warning"/>
+  <!-- 字符集限制 -->
+  <property name="charset" value="UTF-8"/>
+  <!-- 每个java文件一个语法树 -->
+  <module name="TreeWalker">
+    <!-- 常量名的检查 -->
+    <module name="ConstantName" />
+    <!-- 没用的import检查，比如：1.没有被用到2.重复的3.import java.lang的4.import 与该类在同一个package的 -->
+    <module name="UnusedImports" />
+    <!-- 每行不超过150个字-->
+    <module name="LineLength">
+      <property name="max" value="150" />
+    </module>
+    <!-- 方法不超过50行 -->
+    <module name="MethodLength">
+      <property name="tokens" value="METHOD_DEF" />
+      <property name="max" value="50" />
+    </module>
+    <!-- 方法的参数个数不超过5个。 并且不对构造方法进行检查-->
+    <module name="ParameterNumber">
+      <property name="max" value="5" />
+      <property name="tokens" value="METHOD_DEF" />
+    </module>
+    <!-- 不许内部赋值 -->
+    <module name="InnerAssignment"/>
+    <!--
+    每个关键字都有正确的出现顺序。比如 public static final XXX 是对一个常量的声明。如果使用 static
+    public final 就是错误的
+    -->
+    <module name="ModifierOrder" />
+    <!-- 检查接口和annotation中是否有多余修饰符，如接口方法不必使用public -->
+    <module name="RedundantModifier" />
+    <!-- 不能出现空白区域 -->
+    <module name="EmptyBlock" />
+    <!-- 所有区域都要使用大括号 -->
+    <module name="NeedBraces" />
+    <!-- 操作符换行策略检查 -->
+    <module name="OperatorWrap"/>
+    <!-- 圆括号空白 -->
+    <module name="ParenPad"/>
+    <!-- 检查在某个特定关键字之后应保留空格 -->
+    <module name="NoWhitespaceAfter"/>
+    <!-- 检查在某个特定关键字之前应保留空格 -->
+    <module name="NoWhitespaceBefore"/>
+    <!-- 检查是否从非法的包中导入了类 -->
+    <module name="IllegalImport"/>
+    <!-- 检查是否导入了多余的包 -->
+    <module name="RedundantImport"/>
+    <!-- 没用的import检查，比如：1.没有被用到2.重复的3.import java.lang的4.import 与该类在同一个package的 -->
+    <module name="UnusedImports" />
+    <!-- 多余的括号 -->
+    <module name="AvoidNestedBlocks">
+      <property name="allowInSwitchCase" value="true" />
+    </module>
+    <!-- 不许使用未被简化的条件表达式 -->
+    <module name="SimplifyBooleanExpression"/>
+    <!-- 不许使用未被简化的布尔返回值 -->
+    <module name="SimplifyBooleanReturn"/>
+    <!-- 不许对方法的参数赋值 -->
+    <module name="ParameterAssignment"/>
+    <!-- 不许出现空语句 -->
+    <module name="EmptyStatement" />
+    <!-- 不许有同样内容的String -->
+    <module name="MultipleStringLiterals"/>
+    <!-- 同一行不能有多个声明 -->
+    <module name="MultipleVariableDeclarations"/>
+    <!-- 不允许魔法数 -->
+    <module name="MagicNumber">
+      <property name="tokens" value="NUM_DOUBLE, NUM_INT, NUM_LONG, NUM_FLOAT" />
+    </module>
+    <!-- String的比较不能用!= 和 == -->
+    <module name="StringLiteralEquality" />
+    <!-- if最多嵌套3层 -->
+    <module name="NestedIfDepth">
+      <property name="max" value="3" />
+    </module>
+    <!-- try最多被嵌套2层 -->
+    <module name="NestedTryDepth">
+      <property name="max" value="1" />
+    </module>
+    <!-- clone方法必须调用了super.clone() -->
+    <module name="SuperClone" />
+    <!-- finalize 必须调用了super.finalize() -->
+    <module name="SuperFinalize" />
+    <!-- 不能catch java.lang.Exception -->
+    <module name="IllegalCatch">
+      <property name="illegalClassNames" value="java.lang.Exception" />
+    </module>
+
+    <!-- 各种量度 -->
+    <!-- 布尔表达式的复杂度，不超过3 -->
+    <module name="BooleanExpressionComplexity"/>
+    <!-- 类数据的抽象耦合，不超过7 -->
+    <module name="ClassDataAbstractionCoupling"/>
+    <!-- 类的分散复杂度，不超过20 -->
+    <module name="ClassFanOutComplexity"/>
+    <!-- NPath复杂度，不超过200 -->
+    <module name="NPathComplexity"/>
+
+    <!-- 确保一个类有package声明 -->
+    <module name="PackageDeclaration" />
+    <!-- 一个方法中最多有3个return -->
+    <module name="ReturnCount">
+      <property name="max" value="3" />
+      <property name="format" value="^$" />
+    </module>
+    <!-- 同一行不能有多个声明 -->
+    <module name="MultipleVariableDeclarations" />
+    <!-- 不必要的圆括号 -->
+    <module name="UnnecessaryParentheses" />
+    <!-- 检查并确保所有的常量中的L都是大写的。因为小写的字母l跟数字1太象了 -->
+    <module name="UpperEll" />
+    <!-- 检查数组类型的定义是String[] args，而不是String args[] -->
+    <module name="ArrayTypeStyle" />
+    <!-- 检查java代码的缩进 默认配置：基本缩进 4个空格，新行的大括号：0。新行的case 4个空格 -->
+    <!--<module name="Indentation" />-->
+    <!-- 非static型变量的检查 -->
+    <module name="MemberName" />
+    <!-- 方法名的检查 -->
+    <module name="MethodName" />
+    <!-- 方法的参数名 -->
+    <module name="ParameterName " />
+    <!-- 仅仅是static型的变量（不包括static final型）的检查 -->
+    <module name="StaticVariableName" />
+    <!-- 类型(Class或Interface)名的检查 -->
+    <module name="TypeName">
+      <message key="name.invalidPattern" value="名称 ''{0}'' 要符合 ''{1}''格式."/>
+    </module>
+    <!-- 局部的final变量，包括catch中的参数的检查 -->
+    <module name="LocalFinalVariableName" />
+    <!-- 局部的非final型的变量，包括catch中的参数的检查 -->
+    <module name="LocalVariableName" />
+    <!-- 包名的检查（只允许小写字母） -->
+    <module name="PackageName">
+      <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$" />
+      <message key="name.invalidPattern" value="包名 ''{0}'' 要符合 ''{1}''格式."/>
+    </module>
+    <!-- 检查只有private构造函数的类是否声明为final -->
+    <module name="FinalClass"/>
+    <!-- 检查接口是否仅定义类型 -->
+    <module name="InterfaceIsType"/>
+    <!-- 检查类成员的可见度 -->
+    <module name="VisibilityModifier"/>
+    <!-- 检查是否使用工厂方法实例化 -->
+    <module name="IllegalInstantiation"/>
+    <!-- 检查局部变量或参数是否隐藏了类中的变量 -->
+    <module name="HiddenField">
+      <property name="tokens" value="VARIABLE_DEF"/>
+    </module>
+    <!-- 检查所有的interface和class -->
+    <!--<module name="JavadocType" />-->
+    <!-- 检查所有方法的javadoc，可以不声明RuntimeException -->
+    <!--<module name="JavadocMethod">-->
+      <!--<property name="allowUndeclaredRTE" value="true"/>-->
+      <!--<property name="allowMissingPropertyJavadoc" value="true"/>-->
+    <!--</module>-->
+    <!-- 检查变量的javadoc -->
+    <!--<module name="JavadocVariable">-->
+      <!--<property name="scope" value="public"/>-->
+    <!--</module>-->
+
+
+  </module>
+  <module name="FileLength">
+    <property name="max" value="1000"/>
+  </module>
+
+  <module name="RegexpSingleline">
+    <property name="format" value="\s+$"/>
+    <property name="minimum" value="0"/>
+    <property name="maximum" value="0"/>
+    <property name="message" value="Line has trailing spaces."/>
+  </module>
+
+</module>

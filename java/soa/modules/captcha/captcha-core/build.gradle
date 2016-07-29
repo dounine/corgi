@@ -1,0 +1,11 @@
+
+dependencies {
+    compile project(':corgi-common')
+    compile (
+            'org.springframework:spring-webmvc:$spring_version',
+            'com.fasterxml.jackson.core:jackson-core:$jackson_version',
+            'com.fasterxml.jackson.core:jackson-databind:$jackson_version',
+            'javax.servlet:javax.servlet-api:$javax_servlet_version',
+            'commons-fileupload:commons-fileupload:$commons_version'
+        )
+}

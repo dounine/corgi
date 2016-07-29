@@ -1,0 +1,5 @@
+dependencies {
+	compile project(':modules:sso:sso-dao')
+	compile project(':modules:sso:sso-session')
+	compile project(':modules:sso:sso-entity')
+}

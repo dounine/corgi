@@ -1,0 +1,31 @@
+group 'corgi'
+version '1.0'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+subprojects {
+	apply plugin: 'java'
+    apply plugin: 'idea'
+	version '1.0'
+
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		compile "org.springframework.data:spring-data-mongodb:${spring_data_mongodb_version}"
+		compile "org.hibernate:hibernate-validator:${hibernate_validator_version}"
+		compile "org.aspectj:aspectjrt:${aspectjrt_version}"
+		compile "org.aspectj:aspectjweaver:${aspectjrt_version}"
+		compile "org.springframework:spring-aop:${spring_version}"
+		compile "javax.validation:validation-api:${javax_validation_version}"
+		compile "com.alibaba:fastjson:${fastjson_version}"
+        compile "org.apache.commons:commons-lang3:${commons_version}"
+	}
+}

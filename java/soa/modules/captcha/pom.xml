@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>corgi</groupId>
+        <artifactId>corgi</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <name>验证码系统(captcha)</name>
+    <artifactId>captcha</artifactId>
+    <packaging>pom</packaging>
+    <description>验证码系统</description>
+
+    <modules>
+        <module>captcha-core</module>
+        <module>captcha-entity</module>
+        <module>captcha-depend</module>
+        <module>captcha-dao</module>
+        <module>captcha-service</module>
+        <module>captcha-web</module>
+        <module>captcha-session</module>
+    </modules>
+
+</project>

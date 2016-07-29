@@ -1,0 +1,5 @@
+
+dependencies {
+	compile project(':corgi-common')
+	compile project(':modules:captcha:captcha-entity')
+}

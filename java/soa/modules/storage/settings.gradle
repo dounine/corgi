@@ -1,0 +1,8 @@
+rootProject.name = 'storage'
+
+include ':modules:storage:common'
+include ':modules:storage:core'
+include ':modules:storage:dao'
+include ':modules:storage:entity'
+include ':modules:storage:service'
+include ':modules:storage:web'

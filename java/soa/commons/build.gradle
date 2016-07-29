@@ -1,0 +1,11 @@
+
+dependencies {
+    compile "org.springframework:spring-web:${spring_version}"
+    compile "javax.servlet:javax.servlet-api:${javax_servlet_version}"
+    compile "org.springframework:spring-webmvc:${spring_version}"
+    compile "org.aspectj:aspectjweaver:${aspectjrt_version}"
+    compile "org.apache.commons:commons-lang3:${commons_version}"
+	compile "org.slf4j:slf4j-api:${slf4j_version}"
+	compile "org.slf4j:slf4j-log4j12:${slf4j_version}"
+	compile "com.alibaba:fastjson:${fastjson_version}"
+}

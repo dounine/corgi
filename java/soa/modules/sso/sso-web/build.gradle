@@ -1,0 +1,6 @@
+apply plugin: 'war'
+
+dependencies {
+	compile project(':modules:sso:sso-core')
+	compile project(':modules:sso:sso-service')
+}

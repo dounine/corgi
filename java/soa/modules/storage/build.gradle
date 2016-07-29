@@ -1,0 +1,13 @@
+subprojects {
+
+	dependencies {
+		compile "org.springframework.data:spring-data-mongodb:${spring_data_mongodb_version}"
+		compile "org.hibernate:hibernate-validator:${hibernate_validator_version}"
+		compile "org.aspectj:aspectjrt:${aspectjrt_version}"
+		compile "org.aspectj:aspectjweaver:${aspectjrt_version}"
+		compile "org.springframework:spring-aop:${spring_version}"
+		compile "javax.validation:validation-api:${javax_validation_version}"
+		compile "com.alibaba:fastjson:${fastjson_version}"
+	}
+	
+}
