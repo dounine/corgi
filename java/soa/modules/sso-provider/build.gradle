@@ -1,0 +1,18 @@
+apply plugin: 'java'
+
+jar {
+	baseName = 'sso-provider'
+	version = '1.0'
+}
+
+dependencies {
+    compile project(":commons")
+    compile project(":modules:rpc")
+    compile "org.springframework.data:spring-data-mongodb:${spring_data_mongodb_version}"
+    compile "org.hibernate:hibernate-validator:${hibernate_validator_version}"
+    compile "org.apache.commons:commons-lang3:${commons_version}"
+}
+
+repositories {
+	mavenCentral()
+}

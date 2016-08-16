@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,7 +51,6 @@ public class ProviderProxyFactory extends AbstractHandler {
     @Override
     public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch) throws IOException, ServletException {
         String data = null;
-        System.out.println("调用");
         if (request.getMethod().equals(METHOD_GET)) {
             data = request.getParameter(RPC_NAME);
         } else if (request.getMethod().equals(METHOD_POST)) {
@@ -76,7 +76,16 @@ public class ProviderProxyFactory extends AbstractHandler {
                 } else if (StringUtils.isBlank(req.getMethod())) {
                     responseText.setMsg("invoke method not empty");
                 } else {
-                    responseText.setData(req.getClazz().getMethod(req.getMethod(), req.getParameterTypes()).invoke(bean, req.getArgs()).toString());
+                    int len = req.getParameterTypes().length;
+                    Object[] argsObj = new Object[len];
+                    for(int i =0;i<len;i++){
+                        Class<?> clazz = req.getParameterTypes()[i];
+                        argsObj[i] = parseInvoke(req.getArgs()[i],clazz);
+                    }
+                    Object object = req.getClazz().getMethod(req.getMethod(), req.getParameterTypes()).invoke(bean, argsObj);
+                    if(null!=object){
+                        responseText.setData(object);
+                    }
                 }
                 responseText.setErrno(ResponseText.SUCCESS_CODE);
             } catch (IllegalAccessException e) {
@@ -85,13 +94,36 @@ public class ProviderProxyFactory extends AbstractHandler {
                 e.printStackTrace();
             } catch (NoSuchMethodException e) {
                 responseText.setMsg("not such method");
-            } finally {
+            }finally {
                 invoke.push(responseText, response.getOutputStream());
             }
         }else{
             responseText.setMsg(RPC_NAME+" attr not empty");
             invoke.push(responseText, response.getOutputStream());
         }
+    }
+
+    public Object parseInvoke(Object data, Class<?> type) {
+        if (type == String.class) {
+            return data;
+        } else if (type == Integer.class || type == int.class) {
+            return Integer.parseInt(data.toString());
+        } else if (type == Double.class || type == double.class) {
+            return Double.parseDouble(data.toString());
+        } else if (type == Float.class || type == float.class) {
+            return Float.parseFloat(data.toString());
+        } else if (type == Boolean.class || type == boolean.class) {
+            return Boolean.parseBoolean(data.toString());
+        } else if (type == Long.class || type == long.class) {
+            return Long.parseLong(data.toString());
+        } else if (type == Short.class || type == short.class) {
+            return Short.parseShort(data.toString());
+        } else if (type == char.class) {
+            return data.toString().toCharArray()[0];
+        } else if (type == BigDecimal.class) {
+            return BigDecimal.valueOf(Long.parseLong(data.toString()));
+        }
+        return JSON.parseObject(data.toString(), type);
     }
 
     public void utf8Chartset(HttpServletResponse response) {

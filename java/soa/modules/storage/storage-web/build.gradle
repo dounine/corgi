@@ -1,4 +1,0 @@
-dependencies {
-	compile project(':modules:storage:storage-core')
-	compile project(':modules:storage:storage-service')
-}

@@ -11,6 +11,7 @@ repositories {
 }
 
 dependencies {
+    compile project(":modules:sso-provider")
     compile "com.alibaba:fastjson:${fastjson_version}"
     compile "com.dounine:fasthttp:${fasthttp_version}"
     compile "org.springframework:spring-test:${spring_version}"

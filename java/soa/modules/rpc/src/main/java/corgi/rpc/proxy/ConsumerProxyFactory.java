@@ -46,6 +46,7 @@ public class ConsumerProxyFactory implements InvocationHandler {
         request.setClazz(interfacesClass);
         request.setMethod(method.getName());
         request.setReturnType(method.getReturnType());
+        request.setParameterTypes(method.getParameterTypes());
         request.setArgs(args);
 
         IMedia media = new Media();

@@ -11,5 +11,7 @@ include ':modules:sso:session'
 include ':modules:sso:web'
 include ':modules:storage'
 include ':modules:fastboot'
+include ':modules:sso-boot'
+include ':modules:sso-provider'
 include ':modules:rpc'
 

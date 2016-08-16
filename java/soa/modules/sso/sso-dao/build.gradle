@@ -1,4 +1,0 @@
-dependencies {
-	compile project(':commons')
-	compile project(':modules:sso:sso-entity')
-}

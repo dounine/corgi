@@ -1,6 +1,0 @@
-
-dependencies {
-	compile "javax.servlet:javax.servlet-api:${javax_servlet_version}"
-	compile "org.springframework:spring-web:${spring_version}"
-	compile "javax.validation:validation-api:${javax_validation_version}"
-}

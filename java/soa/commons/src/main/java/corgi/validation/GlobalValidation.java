@@ -23,11 +23,11 @@ public class GlobalValidation {
     private static final int COMMON_ERROR_CODE = 3;
 
     @Pointcut("execution(* corgi..web..*.*(..))")
-    public void pointCut() {
+    protected void pointCut() {
     }
 
     @Around("pointCut()")
-    public Object around(ProceedingJoinPoint pjp) throws Throwable {
+    protected Object around(ProceedingJoinPoint pjp) throws Throwable {
         BindingResult result = null;
         String callbackFun = null;//jsonp callback method
         MethodSignature methodSignature = (MethodSignature) pjp

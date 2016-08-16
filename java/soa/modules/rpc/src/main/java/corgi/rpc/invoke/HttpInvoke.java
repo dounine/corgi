@@ -1,6 +1,7 @@
 package corgi.rpc.invoke;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.dounine.fasthttp.Coordinate;
 import com.dounine.fasthttp.FlashLight;
 import com.dounine.fasthttp.IFlashLight;
@@ -35,7 +36,8 @@ public class HttpInvoke implements Invoke{
             if(data instanceof String){
                 out.write(data.toString().getBytes());
             }else{
-                out.write(JSON.toJSONString(data).getBytes());
+                String json = JSON.toJSONString(data, SerializerFeature.WriteNullStringAsEmpty);
+                out.write(json.getBytes());
             }
             out.flush();
         } catch (IOException e) {
