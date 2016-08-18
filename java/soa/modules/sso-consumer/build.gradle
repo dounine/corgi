@@ -13,12 +13,14 @@ apply plugin: 'java'
 apply plugin: 'spring-boot'
 
 jar {
-	baseName = 'fastboot'
+	baseName = 'sso-consumer'
 	version = '1.0'
 }
 
 dependencies {
-	compile("org.springframework.boot:spring-boot-starter-web")
+    compile project(":modules:sso-provider")
+    compile("org.springframework.boot:spring-boot-starter-web")
+
 }
 
 repositories {

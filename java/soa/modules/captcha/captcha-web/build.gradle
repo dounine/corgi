@@ -1,6 +1,0 @@
-apply plugin: 'war'
-
-dependencies {
-	compile project(':modules:captcha:captcha-core')
-	compile project(':modules:captcha:captcha-service')
-}

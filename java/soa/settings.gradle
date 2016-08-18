@@ -2,16 +2,9 @@ rootProject.name = 'corgi'
 
 
 include ':commons'
-include ':modules:sso:common'
-include ':modules:sso:core'
-include ':modules:sso:dao'
-include ':modules:sso:entity'
-include ':modules:sso:service'
-include ':modules:sso:session'
-include ':modules:sso:web'
 include ':modules:storage'
 include ':modules:fastboot'
-include ':modules:sso-boot'
-include ':modules:sso-provider'
 include ':modules:rpc'
+include ':modules:sso-consumer'
+include ':modules:sso-provider'
 

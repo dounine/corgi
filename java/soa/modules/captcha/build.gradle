@@ -1,4 +1,0 @@
-
-dependencies {
-	compile "org.springframework.data:spring-data-mongodb:${spring_data_mongodb_version}"
-}

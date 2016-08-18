@@ -11,6 +11,8 @@ dependencies {
     compile "org.springframework.data:spring-data-mongodb:${spring_data_mongodb_version}"
     compile "org.hibernate:hibernate-validator:${hibernate_validator_version}"
     compile "org.apache.commons:commons-lang3:${commons_version}"
+    compile "ch.qos.logback:logback-classic:${logback_version}"
+
 }
 
 repositories {
