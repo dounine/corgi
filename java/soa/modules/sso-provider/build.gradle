@@ -1,20 +1,12 @@
-apply plugin: 'java'
+apply from: "../../config.gradle"
+apply plugin: 'application'
 
-jar {
-	baseName = 'sso-provider'
-	version = '1.0'
-}
+mainClassName='com.dounine.corgi.sso.Application'
 
 dependencies {
-    compile project(":commons")
     compile project(":modules:rpc")
-    compile "org.springframework.data:spring-data-mongodb:${spring_data_mongodb_version}"
-    compile "org.hibernate:hibernate-validator:${hibernate_validator_version}"
-    compile "org.apache.commons:commons-lang3:${commons_version}"
-    compile "ch.qos.logback:logback-classic:${logback_version}"
-
-}
-
-repositories {
-	mavenCentral()
+    compile "org.springframework.data:spring-data-mongodb:$spring_data_mongodb_version"
+    compile "org.hibernate:hibernate-validator:$hibernate_validator_version"
+    compile "org.apache.commons:commons-lang3:$commons_version"
+    compile "ch.qos.logback:logback-classic:$logback_version"
 }

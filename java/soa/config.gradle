@@ -1,0 +1,61 @@
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    group 'com.dounine'
+    version '1.0'
+
+    compileJava {
+        options.encoding = 'UTF-8'
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    }
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.12'
+    }
+
+    configure(install.repositories.mavenInstaller) {
+        pom.project {
+            groupId 'com.dounine'
+            artifactId project.name
+            packaging 'jar'
+        }
+    }
+
+    ext {
+        junit_version = "4.12"
+        commons_version = "3.4"
+        slf4j_version = "1.7.19"
+        fastjson_version = "1.2.14"
+        fasthttp_version = "1.0.0"
+        spring_version = "4.3.2.RELEASE"
+        javax_servlet_version = "3.1.0"
+        jackson_version = "2.5.3"
+        commons_fileupload_version = "1.3.1"
+        commons_io_version = "2.5"
+        clouddisk_version = "1.1.3"
+        asm_version = "5.1"
+        lucene_version = "6.0.0"
+        spring_security_version = "4.0.4.RELEASE"
+        spring_data_mongodb_version = "1.9.2.RELEASE"
+        hibernate_validator_version = "5.2.4.Final"
+        javax_validation_version = "1.1.0.Final"
+        aspectjrt_version = "1.8.9"
+        httpclient_version = "4.5.2"
+        logback_version = "1.1.7"
+        zkclient_version = "0.9"
+        zookeeper_version = "3.4.8"
+        jetty_version = "6.1.26"
+
+        spring_boot_gradle_plugin_version = "1.4.0.RELEASE"
+    }
+}
+

@@ -1,26 +1,16 @@
-buildscript {
-	repositories {
-		mavenLocal()
-		mavenCentral()
-	}
-
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
-	}
-}
-
-apply plugin: 'java'
+apply from: "../../config.gradle"
 apply plugin: 'spring-boot'
-
-jar {
-	baseName = 'fastboot'
-	version = '1.0'
-}
 
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-web")
 }
 
-repositories {
-	mavenCentral()
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_gradle_plugin_version")
+    }
 }

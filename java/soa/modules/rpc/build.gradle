@@ -1,21 +1,14 @@
-group 'corgi'
-version '1.0'
-
-apply plugin: 'java'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-    mavenLocal()
-}
+apply from: '../../config.gradle'
 
 dependencies {
+    compile project(":commons")
+    compile "commons-fileupload:commons-fileupload:$commons_fileupload_version"
+    compile "commons-io:commons-io:$commons_io_version"
+    compile "org.apache.commons:commons-lang3:$commons_version"
     compile "com.alibaba:fastjson:${fastjson_version}"
-    compile "com.dounine:fasthttp:${fasthttp_version}"
     compile "org.springframework:spring-test:${spring_version}"
     compile "org.springframework:spring-context:${spring_version}"
-    compile "com.101tec:zkclient:0.9"
-    compile "org.mortbay.jetty:jetty:6.1.26"
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile "com.101tec:zkclient:$zkclient_version"
+    compile "org.apache.zookeeper:zookeeper:$zookeeper_version"
+    compile "org.mortbay.jetty:jetty:$jetty_version"
 }

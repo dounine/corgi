@@ -1,9 +1,9 @@
 package corgi.provider;
 
+import com.dounine.corgi.rpc.invoke.config.Provider;
+import com.dounine.corgi.rpc.proxy.ProviderProxyFactory;
 import corgi.IWelcome;
 import corgi.WelcomeImpl;
-import corgi.rpc.invoke.config.Provider;
-import corgi.rpc.proxy.ProviderProxyFactory;
 import org.junit.Test;
 
 import java.util.HashMap;

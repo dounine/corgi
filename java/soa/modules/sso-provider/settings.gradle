@@ -1,1 +1,6 @@
 rootProject.name = 'sso-provider'
+
+include ':modules:rpc'
+include ':commons'
+project(':modules:rpc').projectDir = new File(settingsDir, '../rpc')
+project(':commons').projectDir = new File(settingsDir, '../../commons')
