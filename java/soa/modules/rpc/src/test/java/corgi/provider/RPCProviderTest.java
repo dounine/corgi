@@ -32,6 +32,4 @@ public class RPCProviderTest {
             e.printStackTrace();
         }
     }
-
-
 }
