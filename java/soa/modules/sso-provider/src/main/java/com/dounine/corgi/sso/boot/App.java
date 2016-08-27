@@ -8,7 +8,7 @@ import org.springframework.context.annotation.FilterType;
  * Created by huanghuanlai on 16/8/16.
  */
 @Configuration
-@ComponentScan(basePackages = "corgi.sso",
+@ComponentScan(basePackages = "com.dounine.corgi.sso",
         excludeFilters = {@ComponentScan.Filter(
                 type = FilterType.ANNOTATION,
                 value = {Configuration.class})})
