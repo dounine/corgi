@@ -22,7 +22,7 @@ public class Components {
         Consumer consumer = new Consumer();
         consumer.unUseZK();//不使用zookeeper作为服务路由
         consumer.setUrl("127.0.0.1:7777");
-        consumerProxyFactory.setClassName("corgi.sso.service.user.IUserSer");
+        consumerProxyFactory.setClassName("com.dounine.corgi.sso.service.user.IUserSer");
         consumerProxyFactory.setConsumer(consumer);
         return consumerProxyFactory;
     }

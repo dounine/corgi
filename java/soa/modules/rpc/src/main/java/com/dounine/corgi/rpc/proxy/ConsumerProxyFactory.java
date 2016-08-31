@@ -10,6 +10,7 @@ import com.dounine.corgi.rpc.invoke.Invoke;
 import com.dounine.corgi.rpc.invoke.config.Consumer;
 import com.dounine.corgi.rpc.serialize.Request;
 import com.dounine.corgi.rpc.utils.ParserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +67,11 @@ public class ConsumerProxyFactory implements InvocationHandler {
             responseText =invoke.fetch(media, consumer.getUrl(interfacesClass));
             ResponseText returnRep = JSON.parseObject(responseText, ResponseText.class);
             if (null != returnRep) {
-                return ParserUtils.parseObject(returnRep.getData(), reType);
+                if(0==returnRep.getErrno()){
+                    return ParserUtils.parseObject(returnRep.getData(), reType);
+                }else if(StringUtils.isNotBlank(returnRep.getMsg())){
+                    throw new RPCException(returnRep.getMsg());
+                }
             }
         }catch (ConnectException e){
             LOGGER.info("connection refush");

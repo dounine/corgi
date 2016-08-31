@@ -41,7 +41,7 @@ public class UserCtrl {
     }
 
     @RequestMapping(value = "login",method = RequestMethod.POST)
-    public ResponseText login(@Validated(Add.class) User user, BindingResult result, @Callback String callback){
+    public ResponseText login(@Validated(Add.class) User user, BindingResult result, @Callback String callback) throws Throwable {
         boolean callbackFun = StringUtils.isNotBlank(callback);
         ResponseText rt = null;
         String token = userSer.login(user);

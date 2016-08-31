@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserSerImpl extends ServiceImpl<User> implements IUserSer {
 
-    public boolean verify(String token){
+    public boolean verify(String token) throws SerException {
         if(TokenUtils.verify(token)){
             return UserSession.exist(token);
         }
@@ -21,7 +21,7 @@ public class UserSerImpl extends ServiceImpl<User> implements IUserSer {
     }
 
     @Override
-    public String login(User user) {
+    public String login(User user) throws SerException{
         if(null!=user){
             //if("admin".equals(user.getUsername())&&"admin".equals(user.getPassword())){
                 UserSession.removeByUsername(user.getUsername());

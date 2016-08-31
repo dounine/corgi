@@ -3,7 +3,7 @@ package com.dounine.corgi.exception;
 /**
  * Created by huanghuanlai on 16/6/13.
  */
-public class SerException extends RuntimeException {
+public class SerException extends Throwable {
 
     public SerException() {
         super();

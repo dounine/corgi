@@ -1,6 +1,7 @@
 package com.dounine.corgi.sso.service.user;
 
 
+import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.sso.entity.user.User;
 import com.dounine.corgi.sso.service.IService;
 
@@ -9,9 +10,9 @@ import com.dounine.corgi.sso.service.IService;
  */
 public interface IUserSer extends IService<User> {
 
-    boolean verify(String token);
+    boolean verify(String token) throws SerException;
 
-    String login(User user);
+    String login(User user) throws SerException;
 
     void cookieInit(User user);
 }

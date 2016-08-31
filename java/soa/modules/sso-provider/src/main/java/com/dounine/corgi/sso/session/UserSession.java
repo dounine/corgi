@@ -1,5 +1,6 @@
 package com.dounine.corgi.sso.session;
 
+import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.sso.entity.user.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -52,7 +53,7 @@ public final class UserSession {
         throw TOKEN_NOT_NULL;
     }
 
-    public static void removeByUsername(String username){
+    public static void removeByUsername(String username) throws SerException {
         if(StringUtils.isNotBlank(username)){
             for(Map.Entry<String,User> entry : SESSIONS.entrySet()){
                 if(username.equals(entry.getValue().getUsername())){
@@ -61,7 +62,7 @@ public final class UserSession {
                 }
             }
         }else{
-            throw new RuntimeException("username用户名不能为空");
+            throw new SerException("username用户名不能为空");
         }
     }
 

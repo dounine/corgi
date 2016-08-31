@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class MyAOPValidation extends GlobalValidation{
 
-    @Pointcut("execution(* corgi..boot..*.*(..))")
+    @Pointcut("execution(* com.dounine.corgi..boot..*.*(..))")
     public void pointCut() {
     }
 

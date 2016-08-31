@@ -88,15 +88,15 @@ public class ProviderProxyFactory extends AbstractHandler {
                     }
                 }
                 responseText.setErrno(ResponseText.SUCCESS_CODE);
-            } catch (IllegalAccessException e) {
+            }catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
+                responseText.setMsg(e.getTargetException().getMessage());
                 e.printStackTrace();
             } catch (NoSuchMethodException e) {
                 responseText.setMsg("not such method");
-            }finally {
-                invoke.push(responseText, response.getOutputStream());
             }
+            invoke.push(responseText, response.getOutputStream());
         }else{
             responseText.setMsg(RPC_NAME+" attr not empty");
             invoke.push(responseText, response.getOutputStream());

@@ -22,7 +22,7 @@ public class ExceptionHandler extends AbstractHandlerExceptionResolver {
 
     @Override
     protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        if(ex instanceof SerException | ex instanceof RPCException){
+        if(ex.getCause() instanceof SerException | ex instanceof RPCException){
             ResponseText responseText = new ResponseText();
             responseText.setErrno(COMMON_ERROR_CODE);
             responseText.setMsg(ex.getMessage());
