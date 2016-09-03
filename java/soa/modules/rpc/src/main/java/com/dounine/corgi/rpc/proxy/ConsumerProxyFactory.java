@@ -52,7 +52,12 @@ public class ConsumerProxyFactory implements InvocationHandler {
         request.setClazz(interfacesClass);
         request.setMethod(method.getName());
         request.setReturnType(method.getReturnType());
-        request.setParameterTypes(method.getParameterTypes());
+        Class<?>[] parameters = new Class<?>[args.length];
+        int parCount = 0;
+        for(Object par : args){
+            parameters[parCount++] = par.getClass();
+        }
+        request.setParameterTypes(parameters);
         request.setArgs(args);
 
         IMedia media = new Media();
@@ -67,7 +72,7 @@ public class ConsumerProxyFactory implements InvocationHandler {
             responseText =invoke.fetch(media, consumer.getUrl(interfacesClass));
             ResponseText returnRep = JSON.parseObject(responseText, ResponseText.class);
             if (null != returnRep) {
-                if(0==returnRep.getErrno()){
+                if(0==returnRep.getErrno()&&null!=returnRep.getData()){
                     return ParserUtils.parseObject(returnRep.getData(), reType);
                 }else if(StringUtils.isNotBlank(returnRep.getMsg())){
                     throw new RPCException(returnRep.getMsg());

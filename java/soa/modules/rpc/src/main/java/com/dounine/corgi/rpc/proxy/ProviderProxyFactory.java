@@ -94,6 +94,7 @@ public class ProviderProxyFactory extends AbstractHandler {
                 responseText.setMsg(e.getTargetException().getMessage());
                 e.printStackTrace();
             } catch (NoSuchMethodException e) {
+                e.printStackTrace();
                 responseText.setMsg("not such method");
             }
             invoke.push(responseText, response.getOutputStream());
