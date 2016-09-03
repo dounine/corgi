@@ -2,6 +2,7 @@ package com.dounine.corgi.sso;
 
 import com.dounine.corgi.rpc.invoke.config.Provider;
 import com.dounine.corgi.rpc.proxy.ProviderProxyFactory;
+import com.dounine.corgi.rpc.spring.ApplicationBeanUtils;
 import com.dounine.corgi.sso.boot.App;
 import com.dounine.corgi.sso.service.user.IUserSer;
 import com.dounine.corgi.sso.service.user.UserSerImpl;
@@ -22,6 +23,7 @@ public class Application {
         LOGGER.info("sso-provider starting...");
 
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(App.class);
+        ApplicationBeanUtils.setApplicationContext(context);
         Map<Class,Object> providerObjs = new HashMap<>();
         providerObjs.put(IUserSer.class,context.getBean(UserSerImpl.class));//要提供服务的对象
         Provider provider = new Provider();//提供者配置信息

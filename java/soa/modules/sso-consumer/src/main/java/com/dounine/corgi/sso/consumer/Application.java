@@ -5,8 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -20,7 +18,7 @@ import java.util.List;
         excludeFilters = {@ComponentScan.Filter(
                 type = FilterType.ANNOTATION,
                 value = {Configuration.class})})
-public class Application extends WebMvcConfigurerAdapter implements EmbeddedServletContainerCustomizer {
+public class Application extends WebMvcConfigurerAdapter{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
@@ -34,9 +32,5 @@ public class Application extends WebMvcConfigurerAdapter implements EmbeddedServ
         exceptionResolvers.add(new MyHanException());//unified exception handling
     }
 
-    @Override
-    public void customize(ConfigurableEmbeddedServletContainer container) {
-        container.setPort(8080);
-    }
 }
 

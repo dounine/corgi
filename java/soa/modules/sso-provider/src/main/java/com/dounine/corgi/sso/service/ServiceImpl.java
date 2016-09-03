@@ -15,7 +15,7 @@ public class ServiceImpl<T> implements IService<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceImpl.class);
 
     @Autowired
-    private IRepository<T> repository;
+    protected IRepository<T> repository;
 
     public List<T> getAllObjects() {
         return repository.getAllObjects();

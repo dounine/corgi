@@ -9,6 +9,7 @@ import com.dounine.corgi.rpc.invoke.HttpInvoke;
 import com.dounine.corgi.rpc.invoke.Invoke;
 import com.dounine.corgi.rpc.invoke.config.Provider;
 import com.dounine.corgi.rpc.serialize.Request;
+import com.dounine.corgi.rpc.spring.ApplicationBeanUtils;
 import com.dounine.corgi.rpc.utils.ParserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mortbay.jetty.handler.AbstractHandler;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,7 +75,7 @@ public class ProviderProxyFactory extends AbstractHandler {
                 this.utf8Chartset(response);
                 if (null == req.getClazz()) {
                     responseText.setMsg("clazz not empty");
-                } else if (StringUtils.isBlank(req.getMethod())) {
+                } else if (StringUtils.isBlank(req.getMethodName())) {
                     responseText.setMsg("invoke method not empty");
                 } else {
                     int len = req.getParameterTypes().length;
@@ -82,10 +84,20 @@ public class ProviderProxyFactory extends AbstractHandler {
                         Class<?> clazz = req.getParameterTypes()[i];
                         argsObj[i] = ParserUtils.parseObject(req.getArgs()[i],clazz);
                     }
-                    Object object = req.getClazz().getMethod(req.getMethod(), req.getParameterTypes()).invoke(bean, argsObj);
-                    if(null!=object){
-                        responseText.setData(object);
+                    Object oo = ApplicationBeanUtils.getAac().getBean(req.getClazz());
+                    for(Method method : oo.getClass().getMethods()){
+                        if(method.getName().equals(req.getMethodName())){
+                            Object object = method.invoke(oo, argsObj);
+                            if(null!=object){
+                                responseText.setData(object);
+                            }
+                            break;
+                        }
                     }
+//                    Object object = oo.getClass().getMethod(req.getMethodName(), req.getParameterTypes()).invoke(oo, argsObj);
+//                    if(null!=object){
+//                        responseText.setData(object);
+//                    }
                 }
                 responseText.setErrno(ResponseText.SUCCESS_CODE);
             }catch (IllegalAccessException e) {
@@ -93,9 +105,10 @@ public class ProviderProxyFactory extends AbstractHandler {
             } catch (InvocationTargetException e) {
                 responseText.setMsg(e.getTargetException().getMessage());
                 e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-                responseText.setMsg("not such method");
+//            } catch (NoSuchMethodException e) {
+//                e.printStackTrace();
+//                responseText.setMsg("not such method");
+//            }
             }
             invoke.push(responseText, response.getOutputStream());
         }else{

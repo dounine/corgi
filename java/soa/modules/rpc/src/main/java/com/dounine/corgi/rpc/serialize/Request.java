@@ -5,7 +5,7 @@ package com.dounine.corgi.rpc.serialize;
  */
 public class Request {
     private Class clazz;
-    private String method;
+    private String methodName;
     private Class<?> returnType;
     private Class<?>[] parameterTypes;
     private Object[] args;
@@ -26,10 +26,6 @@ public class Request {
         this.args = args;
     }
 
-    public String getMethod() {
-        return method;
-    }
-
     public Class<?>[] getParameterTypes() {
         return parameterTypes;
     }
@@ -46,7 +42,11 @@ public class Request {
         this.returnType = returnType;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
     }
 }
