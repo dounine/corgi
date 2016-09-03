@@ -29,17 +29,6 @@ public class ConsumerProxyFactory implements InvocationHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsumerProxyFactory.class);
     private Invoke invoke = HttpInvoke.instanct();
     private Consumer consumer;
-    private String className;
-
-    public Object create() {
-        try {
-            Class cc = Class.forName(className);
-            return Proxy.newProxyInstance(cc.getClassLoader(), new Class[]{cc}, this);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public <T> T create(Class<T> cc) {
         return (T) Proxy.newProxyInstance(cc.getClassLoader(), new Class[]{cc}, this);
@@ -86,14 +75,6 @@ public class ConsumerProxyFactory implements InvocationHandler {
             LOGGER.info("connection refush");
         }
         throw new RPCException("rpc remote call failed");
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
     }
 
     public Consumer getConsumer() {

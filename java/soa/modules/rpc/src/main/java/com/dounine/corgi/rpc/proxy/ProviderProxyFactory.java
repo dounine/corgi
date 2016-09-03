@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.dounine.corgi.rpc.serialize.Constant.*;
 
@@ -33,21 +31,23 @@ public class ProviderProxyFactory extends AbstractHandler {
 
     private static ProviderProxyFactory PROVIDERPROXYFACTORY;
     private final Invoke invoke = HttpInvoke.instanct();
-    private final Map<Class, Object> providers = new ConcurrentHashMap<>();
     private Provider provider;
     private static final int ERR_CODE = 1;
+    private static boolean isInstance = false;
 
-    public ProviderProxyFactory(Map<Class, Object> providers, Provider provider) {
+    public ProviderProxyFactory(Provider provider) {
         this.provider = provider;
         if (!Container.isStart) {
             new HttpContainer(this, provider).start();
         }
-        if (null != providers) {
-            for (Map.Entry<Class, Object> entry : providers.entrySet()) {
-                register(entry.getKey(), entry.getValue());
-            }
-        }
         PROVIDERPROXYFACTORY = this;
+    }
+
+    public static void init(Provider provider){
+        if(!isInstance){
+            new ProviderProxyFactory(provider);
+            isInstance = true;
+        }
     }
 
     @Override
@@ -70,7 +70,6 @@ public class ProviderProxyFactory extends AbstractHandler {
         if (StringUtils.isNotBlank(data)) {
             data = URLDecoder.decode(data, "utf-8");
             Request req = JSON.parseObject(data, Request.class);
-            Object bean = providers.get(req.getClazz());
             try {
                 this.utf8Chartset(response);
                 if (null == req.getClazz()) {
@@ -84,20 +83,23 @@ public class ProviderProxyFactory extends AbstractHandler {
                         Class<?> clazz = req.getParameterTypes()[i];
                         argsObj[i] = ParserUtils.parseObject(req.getArgs()[i],clazz);
                     }
-                    Object oo = ApplicationBeanUtils.getAac().getBean(req.getClazz());
-                    for(Method method : oo.getClass().getMethods()){
+                    Method executeMethod = null;
+                    for(Method method : req.getClazz().getMethods()){
                         if(method.getName().equals(req.getMethodName())){
-                            Object object = method.invoke(oo, argsObj);
-                            if(null!=object){
-                                responseText.setData(object);
-                            }
+                            executeMethod = method;
                             break;
                         }
                     }
-//                    Object object = oo.getClass().getMethod(req.getMethodName(), req.getParameterTypes()).invoke(oo, argsObj);
-//                    if(null!=object){
-//                        responseText.setData(object);
-//                    }
+                    if(null==executeMethod){
+                        throw new NoSuchMethodException("not such [ "+req.getClazz().getName()+"."+req.getMethodName()+" ] method");
+                    }else{
+                        Object bean = ApplicationBeanUtils.getAac().getBean(req.getClazz());
+                        Object object = executeMethod.invoke(bean, argsObj);
+                        if(null!=object){
+                            responseText.setData(object);
+                        }
+                    }
+
                 }
                 responseText.setErrno(ResponseText.SUCCESS_CODE);
             }catch (IllegalAccessException e) {
@@ -105,10 +107,8 @@ public class ProviderProxyFactory extends AbstractHandler {
             } catch (InvocationTargetException e) {
                 responseText.setMsg(e.getTargetException().getMessage());
                 e.printStackTrace();
-//            } catch (NoSuchMethodException e) {
-//                e.printStackTrace();
-//                responseText.setMsg("not such method");
-//            }
+            } catch (NoSuchMethodException e) {
+                responseText.setMsg(e.getMessage());
             }
             invoke.push(responseText, response.getOutputStream());
         }else{
@@ -121,13 +121,6 @@ public class ProviderProxyFactory extends AbstractHandler {
         response.setHeader("Accept", "*");
         response.setHeader("Server", "CORGI-RPC(1.0.0)");
         response.setContentType("text/html;charset=utf-8");
-    }
-
-    public void register(Class clazz, Object obj) {
-        providers.put(clazz, obj);
-        if(null!=provider){
-            provider.register(clazz);
-        }
     }
 
     public static ProviderProxyFactory instance() {
