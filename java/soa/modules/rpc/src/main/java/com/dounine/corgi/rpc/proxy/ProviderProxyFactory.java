@@ -77,12 +77,16 @@ public class ProviderProxyFactory extends AbstractHandler {
                 } else if (StringUtils.isBlank(req.getMethodName())) {
                     responseText.setMsg("invoke method not empty");
                 } else {
-                    int len = req.getParameterTypes().length;
-                    Object[] argsObj = new Object[len];
-                    for(int i =0;i<len;i++){
-                        Class<?> clazz = req.getParameterTypes()[i];
-                        argsObj[i] = ParserUtils.parseObject(req.getArgs()[i],clazz);
+                    Object[] argsObj = null;
+                    if(null!=req.getParameterTypes()){
+                        int len = req.getParameterTypes().length;
+                        argsObj = new Object[len];
+                        for(int i =0;i<len;i++){
+                            Class<?> clazz = req.getParameterTypes()[i];
+                            argsObj[i] = ParserUtils.parseObject(req.getArgs()[i],clazz);
+                        }
                     }
+
                     Method executeMethod = null;
                     for(Method method : req.getClazz().getMethods()){
                         if(method.getName().equals(req.getMethodName())){

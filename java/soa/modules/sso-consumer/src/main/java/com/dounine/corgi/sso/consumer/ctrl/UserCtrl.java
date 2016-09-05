@@ -1,6 +1,7 @@
 package com.dounine.corgi.sso.consumer.ctrl;
 
 import com.dounine.corgi.commons.ResponseText;
+import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.jsonp.Callback;
 import com.dounine.corgi.response.ResponseContext;
 import com.dounine.corgi.sso.entity.user.User;
@@ -28,11 +29,18 @@ public class UserCtrl {
 
     @RequestMapping(value = "all",method = RequestMethod.GET)
     public List<User> all(){
-        return userSer.getAllObjects();
+        List<User> users = null;
+        try {
+            users = userSer.getAllObjects();
+        }catch (SerException se){
+            System.out.println(se.getMessage());
+            //se.printStackTrace();
+        }
+        return users;
     }
 
     @RequestMapping(value = "add",method = RequestMethod.GET)
-    public void add(){
+    public void add() throws SerException {
         User user = new User();
         user.setAccessTime(LocalDateTime.now());
         user.setPassword("1234");

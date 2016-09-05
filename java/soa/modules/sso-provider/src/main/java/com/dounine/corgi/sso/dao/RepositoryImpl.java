@@ -1,5 +1,6 @@
 package com.dounine.corgi.sso.dao;
 
+import com.dounine.corgi.exception.RepException;
 import com.dounine.corgi.utils.GenericsUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,32 +27,32 @@ public class RepositoryImpl<T> implements IRepository<T> {
     }
 
     @Override
-    public List<T> getAllObjects() {
+    public List<T> getAllObjects() throws RepException {
         return mongoTemplate.findAll(clazz);
     }
 
     @Override
-    public void saveObject(T object) {
+    public void saveObject(T object) throws RepException {
         mongoTemplate.save(object);
     }
 
     @Override
-    public T getObject(String id) {
+    public T getObject(String id) throws RepException {
         return mongoTemplate.findById(id, clazz);
     }
 
     @Override
-    public void deleteObject(String id) {
+    public void deleteObject(String id) throws RepException {
         mongoTemplate.remove(new Query(Criteria.where("id").is(id)));
     }
 
     @Override
-    public void updateObject(T object) {
+    public void updateObject(T object) throws RepException {
 
     }
 
     @Override
-    public Long countObject() {
+    public Long countObject() throws RepException {
         return 0L;
     }
 

@@ -1,5 +1,7 @@
 package com.dounine.corgi.sso.dao;
 
+import com.dounine.corgi.exception.RepException;
+
 import java.util.List;
 
 /**
@@ -7,15 +9,15 @@ import java.util.List;
  */
 public interface IRepository<T> {
 
-    List<T> getAllObjects();
+    List<T> getAllObjects() throws RepException;
 
-    void saveObject(T object);
+    void saveObject(T object) throws RepException;
 
-    T getObject(String id);
+    T getObject(String id) throws RepException;
 
-    void deleteObject(String id);
+    void deleteObject(String id) throws RepException;
 
-    void updateObject(T object);
+    void updateObject(T object) throws RepException;
 
-    Long countObject();
+    Long countObject() throws RepException;
 }

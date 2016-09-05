@@ -14,5 +14,5 @@ public interface IUserSer extends IService<User> {
 
     String login(User user) throws SerException;
 
-    void cookieInit(User user);
+    void cookieInit(User user) throws SerException;
 }

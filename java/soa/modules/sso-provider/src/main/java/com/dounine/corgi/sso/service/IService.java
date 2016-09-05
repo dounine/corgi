@@ -1,5 +1,7 @@
 package com.dounine.corgi.sso.service;
 
+import com.dounine.corgi.exception.SerException;
+
 import java.util.List;
 
 /**
@@ -7,15 +9,15 @@ import java.util.List;
  */
 public interface IService<T> {
 
-    List<T> getAllObjects();
+    List<T> getAllObjects() throws SerException;
 
-    void saveObject(T object);
+    void saveObject(T object) throws SerException;
 
-    T getObject(String id);
+    T getObject(String id) throws SerException;
 
-    void deleteObject(String id);
+    void deleteObject(String id) throws SerException;
 
-    void updateObject(T object);
+    void updateObject(T object) throws SerException;
 
-    Long countObject();
+    Long countObject() throws SerException;
 }

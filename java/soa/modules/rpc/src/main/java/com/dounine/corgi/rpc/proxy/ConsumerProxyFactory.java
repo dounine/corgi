@@ -41,20 +41,19 @@ public class ConsumerProxyFactory implements InvocationHandler {
         request.setClazz(interfacesClass);
         request.setMethodName(method.getName());
         request.setReturnType(method.getReturnType());
-        Class<?>[] parameters = new Class<?>[args.length];
-        int parCount = 0;
-        for(Object par : args){
-            parameters[parCount++] = par.getClass();
+        Class<?>[] parameters = null;
+        if(null!=args){
+            parameters = new Class<?>[args.length];
+            int parCount = 0;
+            for(Object par : args){
+                parameters[parCount++] = par.getClass();
+            }
         }
         request.setParameterTypes(parameters);
         request.setArgs(args);
-
         IMedia media = new Media();
         media.setName(RPC_NAME);
         media.setValue(JSON.toJSONString(request));
-        if (null == consumer) {
-            throw new RuntimeException("consumer not empty");
-        }
         Class<?> reType = method.getReturnType();
         String responseText = null;
         try {

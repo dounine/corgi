@@ -34,7 +34,7 @@ public class UserSerImpl extends ServiceImpl<User> implements IUserSer {
     }
 
     @Override
-    public void cookieInit(User user) {
+    public void cookieInit(User user) throws SerException {
 
     }
 
