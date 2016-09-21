@@ -3,6 +3,6 @@ rootProject.name = 'provider'
 include ':modules:rpc'
 include ':modules:mongo'
 include ':commons'
-project(':modules:rpc').projectDir = new File(settingsDir, '../rpc')
-project(':modules:mongo').projectDir = new File(settingsDir, '../mongo')
-project(':commons').projectDir = new File(settingsDir, '../../commons')
+project(':modules:rpc').projectDir = new File(settingsDir, '../../rpc')
+project(':modules:mongo').projectDir = new File(settingsDir, '../../mongo')
+project(':commons').projectDir = new File(settingsDir, '../../../commons')
