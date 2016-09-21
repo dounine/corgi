@@ -1,9 +1,0 @@
-rootProject.name = 'corgi'
-
-include ':commons'
-include ':modules:fastboot'
-include ':modules:rpc'
-include ':modules:mongo'
-include ':modules:storage'
-include ':modules:sso-consumer'
-include ':modules:sso-provider'

@@ -1,9 +1,0 @@
-rootProject.name = 'sso'
-
-include ':modules:sso:common'
-include ':modules:sso:core'
-include ':modules:sso:dao'
-include ':modules:sso:entity'
-include ':modules:sso:service'
-include ':modules:sso:session'
-include ':modules:sso:web'
