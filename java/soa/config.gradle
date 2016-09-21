@@ -54,7 +54,6 @@ allprojects {
         zkclient_version = "0.9"
         zookeeper_version = "3.4.8"
         jetty_version = "6.1.26"
-
         spring_boot_gradle_plugin_version = "1.4.0.RELEASE"
     }
 }
