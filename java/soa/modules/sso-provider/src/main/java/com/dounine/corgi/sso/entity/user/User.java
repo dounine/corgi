@@ -1,5 +1,6 @@
 package com.dounine.corgi.sso.entity.user;
 
+import com.dounine.corgi.mongo.entity.BaseEntity;
 import com.dounine.corgi.sso.validation.jsr303.PasswordValid;
 import com.dounine.corgi.validation.Add;
 import com.dounine.corgi.validation.Del;
@@ -16,15 +17,11 @@ import java.time.LocalDateTime;
  * Created by huanghuanlai on 16/4/28.
  */
 @Document
-public class User {
+public class User extends BaseEntity{
 
     public static final int UNAME_MIN_SIZE = 6;
     public static final int UNAME_MAX_SIZE = 20;
 
-    @Id
-    //validation
-    @NotBlank(message = "user id not blank",groups = {Del.class, Edit.class, Get.class})
-    private String id;
 
     //groups 用于CRUD组合使用,当字段有分组时,@Validated(?)占位符内必需有值(Add,Del,Edit,Get)
     @NotBlank(message = "username not blank",groups = {Add.class})
@@ -42,14 +39,6 @@ public class User {
 
     public void setAccessTime(LocalDateTime accessTime) {
         this.accessTime = accessTime;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUsername() {

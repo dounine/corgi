@@ -48,6 +48,7 @@ public class ConsumerProxyFactory implements InvocationHandler {
             for(Object par : args){
                 parameters[parCount++] = par.getClass();
             }
+
         }
         request.setParameterTypes(parameters);
         request.setArgs(args);

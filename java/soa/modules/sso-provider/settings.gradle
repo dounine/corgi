@@ -1,8 +1,8 @@
 rootProject.name = 'sso-provider'
 
 include ':modules:rpc'
-include ':commons'
 include ':modules:mongo'
+include ':commons'
 project(':modules:rpc').projectDir = new File(settingsDir, '../rpc')
 project(':modules:mongo').projectDir = new File(settingsDir, '../mongo')
 project(':commons').projectDir = new File(settingsDir, '../../commons')

@@ -1,5 +1,6 @@
 package com.dounine.corgi.sso.consumer.ctrl;
 
+import com.alibaba.fastjson.JSON;
 import com.dounine.corgi.commons.ResponseText;
 import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.jsonp.Callback;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,10 +33,8 @@ public class UserCtrl {
     public List<User> all(){
         List<User> users = null;
         try {
-            users = userSer.getAllObjects();
-            for (User user : users){
-                System.out.println();
-            }
+
+            users = userSer.findAll();
         }catch (SerException se){
             System.out.println(se.getMessage());
             //se.printStackTrace();
@@ -42,20 +42,21 @@ public class UserCtrl {
         return users;
     }
 
-
-    @RequestMapping(value = "findById",method = RequestMethod.GET)
-    public User findById()throws Throwable{
-          User  user = userSer.findById("57e0f2135c142304d18e7d1b");
-        return user;
-    }
-
     @RequestMapping(value = "add",method = RequestMethod.GET)
     public void add() throws SerException {
         User user = new User();
         user.setAccessTime(LocalDateTime.now());
-        user.setPassword("1234");
-        user.setUsername("hhl");
-        userSer.saveObject(user);
+        user.setPassword("666");
+        user.setUsername("lgq");
+        userSer.save(user);
+    }
+
+    @RequestMapping(value = "update",method = RequestMethod.GET)
+    public void update() throws SerException {
+        User user = new User();
+        Object u = userSer.findById("57e0ee775c142304d18e7d1a");
+        user.setUsername("hello world!");
+        userSer.update(user);
     }
 
     @RequestMapping(value = "login",method = RequestMethod.POST)

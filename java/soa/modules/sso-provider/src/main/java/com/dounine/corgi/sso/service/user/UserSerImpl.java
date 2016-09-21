@@ -1,8 +1,9 @@
 package com.dounine.corgi.sso.service.user;
 
 import com.dounine.corgi.exception.SerException;
+import com.dounine.corgi.mongo.service.ServiceImpl;
+import com.dounine.corgi.sso.dto.UserDto;
 import com.dounine.corgi.sso.entity.user.User;
-import com.dounine.corgi.sso.service.ServiceImpl;
 import com.dounine.corgi.sso.session.TokenUtils;
 import com.dounine.corgi.sso.session.UserSession;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
  * Created by huanghuanlai on 16/5/24.
  */
 @Service
-public class UserSerImpl extends ServiceImpl<User> implements IUserSer {
+public class UserSerImpl extends ServiceImpl<User,UserDto> implements IUserSer {
 
     public boolean verify(String token) throws SerException {
         if(TokenUtils.verify(token)){
@@ -37,6 +38,5 @@ public class UserSerImpl extends ServiceImpl<User> implements IUserSer {
     public void cookieInit(User user) throws SerException {
 
     }
-
 
 }
