@@ -1,4 +1,4 @@
-package com.dounine.corgi.sso.boot.datasource;
+package com.dounine.corgi.sso.consumer.config.datasource;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
@@ -26,9 +26,11 @@ public class MongoDbSource {
         MongoClientOptions.Builder mongoOperations = MongoClientOptions.builder();
         mongoOperations.socketTimeout(1000*2);
         mongoOperations.connectTimeout(1000*2);
+
         ServerAddress serverAddress = new ServerAddress("127.0.0.1",27016);
         MongoClientOptions mo = mongoOperations.build();
         MongoClient mongoClient = new MongoClient(serverAddress,mo);
+
         return new SimpleMongoDbFactory(mongoClient, "sso");
     }
 

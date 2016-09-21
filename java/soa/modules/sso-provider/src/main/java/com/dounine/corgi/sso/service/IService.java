@@ -1,6 +1,7 @@
 package com.dounine.corgi.sso.service;
 
 import com.dounine.corgi.exception.SerException;
+import com.dounine.corgi.sso.entity.user.User;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface IService<T> {
     void updateObject(T object) throws SerException;
 
     Long countObject() throws SerException;
+
+    T findById(String id) throws SerException;
 }

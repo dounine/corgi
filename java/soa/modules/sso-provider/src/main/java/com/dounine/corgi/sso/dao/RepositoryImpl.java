@@ -71,4 +71,9 @@ public class RepositoryImpl<T> implements IRepository<T> {
     public void setClazz(Class<T> clazz) {
         this.clazz = clazz;
     }
+
+    @Override
+    public T findById(String id) throws RepException {
+        return mongoTemplate.findById(id,clazz);
+    }
 }

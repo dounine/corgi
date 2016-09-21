@@ -1,6 +1,7 @@
 package com.dounine.corgi.sso.dao;
 
 import com.dounine.corgi.exception.RepException;
+import com.dounine.corgi.exception.SerException;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface IRepository<T> {
     void updateObject(T object) throws RepException;
 
     Long countObject() throws RepException;
+
+    T findById(String id) throws RepException;
 }

@@ -75,4 +75,14 @@ public class ServiceImpl<T> implements IService<T> {
     public void setRepository(IRepository<T> repository) throws SerException {
         this.repository = repository;
     }
+
+    @Override
+    public T findById(String id) throws SerException {
+        try {
+            return repository.findById(id);
+        } catch (RepException e) {
+            throw new SerException(e.getMessage());
+        }
+
+    }
 }

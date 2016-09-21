@@ -5,6 +5,7 @@ mainClassName='com.dounine.corgi.sso.Application'
 
 dependencies {
     compile project(":modules:rpc")
+    compile project(":modules:mongo")
     compile "org.springframework.data:spring-data-mongodb:$spring_data_mongodb_version"
     compile "org.hibernate:hibernate-validator:$hibernate_validator_version"
     compile "org.apache.commons:commons-lang3:$commons_version"

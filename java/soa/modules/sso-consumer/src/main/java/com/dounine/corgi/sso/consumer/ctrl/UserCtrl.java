@@ -32,11 +32,21 @@ public class UserCtrl {
         List<User> users = null;
         try {
             users = userSer.getAllObjects();
+            for (User user : users){
+                System.out.println();
+            }
         }catch (SerException se){
             System.out.println(se.getMessage());
             //se.printStackTrace();
         }
         return users;
+    }
+
+
+    @RequestMapping(value = "findById",method = RequestMethod.GET)
+    public User findById()throws Throwable{
+          User  user = userSer.findById("57e0f2135c142304d18e7d1b");
+        return user;
     }
 
     @RequestMapping(value = "add",method = RequestMethod.GET)
