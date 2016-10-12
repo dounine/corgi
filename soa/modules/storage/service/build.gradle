@@ -1,5 +1,0 @@
-dependencies {
-	compile project(':modules:storage:dao')
-	compile project(':modules:storage:session')
-	compile project(':modules:storage:entity')
-}

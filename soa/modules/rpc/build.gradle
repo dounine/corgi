@@ -1,16 +1,15 @@
 apply from: '../../config.gradle'
 
 dependencies {
-    compile project(":commons")
-    compile "commons-fileupload:commons-fileupload:$commons_fileupload_version"
-    compile "commons-io:commons-io:$commons_io_version"
-    compile "commons-io:commons-io:$commons_io_version"
-    compile "org.apache.commons:commons-lang3:$commons_version"
-    compile "com.alibaba:fastjson:$fastjson_version"
-    compile "org.springframework:spring-test:$spring_version"
-    compile "org.springframework:spring-context:$spring_version"
-    compile "com.101tec:zkclient:$zkclient_version"
-    compile "org.apache.zookeeper:zookeeper:$zookeeper_version"
-    compile "org.mortbay.jetty:jetty:$jetty_version"
-    compile "org.springframework:spring-beans:$spring_version"
+    compile project(':commons')
+    compile group:'commons-fileupload',name:'commons-fileupload',version:"$commons_fileupload_version"
+    compile group:'commons-io',name:'commons-io',version:"$commons_io_version"
+    compile group:'org.apache.commons',name:'commons-lang3',version:"$commons_version"
+    compile group:'com.alibaba',name:'fastjson',version:"$fastjson_version"
+    compile group:'org.springframework',name:'spring-test',version:"$spring_version"
+    compile group:'org.springframework',name:'spring-context',version:"$spring_version"
+    compile group:'com.101tec',name:'zkclient',version:"$zkclient_version"
+    compile group:'org.apache.zookeeper',name:'zookeeper',version:"$zookeeper_version"
+    compile group:'org.mortbay.jetty',name:'jetty',version:"$jetty_version"
+    compile group:'org.springframework',name:'spring-beans',version:"$spring_version"
 }

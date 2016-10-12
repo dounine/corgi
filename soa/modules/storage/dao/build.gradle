@@ -1,4 +1,0 @@
-dependencies {
-	compile project(':corgi-common')
-	compile project(':modules:storage:entity')
-}

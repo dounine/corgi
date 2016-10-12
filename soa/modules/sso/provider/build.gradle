@@ -1,13 +1,12 @@
-apply from: "../../../config.gradle"
+apply from: '../../../config.gradle'
 apply plugin: 'application'
 
 mainClassName='com.dounine.corgi.sso.Application'
 
 dependencies {
-    compile project(":modules:rpc")
-    compile project(":modules:mongo")
-    compile "org.springframework.data:spring-data-mongodb:$spring_data_mongodb_version"
-    compile "org.hibernate:hibernate-validator:$hibernate_validator_version"
-    compile "org.apache.commons:commons-lang3:$commons_version"
-    compile "ch.qos.logback:logback-classic:$logback_version"
+    compile project(':modules:rpc')
+    compile project(':modules:sso:api')
+    compile group:'org.hibernate',name:'hibernate-validator',version:"$hibernate_validator_version"
+    compile group:'ch.qos.logback',name:'logback-classic',version:"$logback_version"
+    compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '1.9.4.RELEASE'
 }

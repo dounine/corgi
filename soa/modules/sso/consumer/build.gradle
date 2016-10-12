@@ -1,7 +1,8 @@
 apply plugin: 'spring-boot'
 
 dependencies {
-    compile project(":modules:sso:provider")
+    compile project(':modules:rpc')
+    compile project(':modules:sso:api')
     compile("org.springframework.boot:spring-boot-starter-web")
 }
 

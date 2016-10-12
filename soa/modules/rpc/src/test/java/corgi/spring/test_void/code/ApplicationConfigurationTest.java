@@ -1,17 +1,17 @@
-package com.dounine.corgi.sso.boot;
+package corgi.spring.test_void.code;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 
 /**
- * Created by huanghuanlai on 16/8/16.
+ * Created by huanghuanlai on 16/9/27.
  */
 @Configuration
-@ComponentScan(basePackages = "com.dounine.corgi.sso",
+@ComponentScan(basePackages = {"corgi.spring.test_void","corgi.common"},
         excludeFilters = {@ComponentScan.Filter(
                 type = FilterType.ANNOTATION,
                 value = {Configuration.class})})
-public class App {
+public class ApplicationConfigurationTest {
 
 }

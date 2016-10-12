@@ -26,6 +26,7 @@ public class ExceptionHandler extends AbstractHandlerExceptionResolver {
             ResponseText responseText = new ResponseText();
             responseText.setErrno(COMMON_ERROR_CODE);
             responseText.setMsg(ex.getMessage());
+            response.setContentType("text/json;charset=utf-8");
             response.setCharacterEncoding("utf-8");
             Object resp = null;
             String callback = request.getParameter("callback");

@@ -9,6 +9,29 @@ public class ResponseText {
     private Object data;
     private String msg;
 
+    /**
+     * this is nihao1method
+     * @return nihao1
+     */
+    public String hello(){
+        return "nihao1";
+    }
+    /**
+     * this is nihao2method
+     * @return nihao2
+     */
+    public String hello(int a){
+        return "nihao2";
+    }
+    /**
+     * this is nihao3method
+     * @return nihao3
+     */
+    public String hello(String b){
+        return "nihao3";
+    }
+
+
     public ResponseText(){}
     public ResponseText(Object data) {
         this.data = data;
