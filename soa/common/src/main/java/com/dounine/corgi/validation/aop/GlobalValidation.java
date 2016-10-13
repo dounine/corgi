@@ -1,4 +1,4 @@
-package com.dounine.corgi.validation;
+package com.dounine.corgi.validation.aop;
 
 import com.alibaba.fastjson.JSON;
 import com.dounine.corgi.commons.ResponseText;

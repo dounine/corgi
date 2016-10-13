@@ -2,7 +2,7 @@ package corgi.spring.test_java_config;
 
 import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.rpc.proxy.RPC;
-import com.dounine.corgi.spring.ApplicationContextUtils;
+import com.dounine.corgi.spring.ApplicationContext;
 import com.dounine.corgi.rpc.spring.Reference;
 import corgi.spring.test_java_config.code.ApplicationConfiguration;
 import corgi.spring.test_java_config.code.UserApi;
@@ -26,7 +26,7 @@ public class JunitTest extends AbstractJUnit4SpringContextTests{
     @Before
     public void initContext(){
         RPC.export(9999);
-        ApplicationContextUtils.setApplicationContext(super.applicationContext);
+        ApplicationContext.setApplicationContext(super.applicationContext);
     }
 
     @Test

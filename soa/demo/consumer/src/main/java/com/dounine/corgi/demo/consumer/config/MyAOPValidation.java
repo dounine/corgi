@@ -1,6 +1,6 @@
 package com.dounine.corgi.demo.consumer.config;
 
-import com.dounine.corgi.validation.GlobalValidation;
+import com.dounine.corgi.validation.aop.GlobalValidation;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package corgi.spring.test_void;
 
-import com.dounine.corgi.spring.ApplicationContextUtils;
+import com.dounine.corgi.spring.ApplicationContext;
 import corgi.spring.test_void.code.ApplicationConfiguration;
 import corgi.spring.test_void.code.People;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class Demo {
     @Test
     public void testLogin(){
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
-        ApplicationContextUtils.setApplicationContext(context);
+        ApplicationContext.setApplicationContext(context);
         System.out.println(context.getBean(People.class).login("admin"));
     }
 

@@ -1,7 +1,7 @@
 package com.dounine.corgi.demo;
 
 import com.dounine.corgi.demo.boot.App;
-import com.dounine.corgi.spring.ApplicationContextUtils;
+import com.dounine.corgi.spring.ApplicationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -16,7 +16,7 @@ public class Application {
         LOGGER.info("sso-provider starting...");
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(App.class);
-        ApplicationContextUtils.setApplicationContext(context);
+        ApplicationContext.setApplicationContext(context);
         CountDownLatch countDownLatch = new CountDownLatch(1);
         try {
             countDownLatch.await();

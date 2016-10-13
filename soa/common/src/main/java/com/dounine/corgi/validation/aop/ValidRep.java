@@ -1,4 +1,4 @@
-package com.dounine.corgi.validation;
+package com.dounine.corgi.validation.aop;
 
 /**
  * Created by huanghuanlai on 16/7/21.
