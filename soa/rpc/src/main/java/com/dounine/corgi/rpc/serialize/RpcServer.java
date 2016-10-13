@@ -2,7 +2,7 @@ package com.dounine.corgi.rpc.serialize;
 
 import com.dounine.corgi.exception.RPCException;
 import com.dounine.corgi.exception.SerException;
-import com.dounine.corgi.rpc.spring.ApplicationBeanUtils;
+import com.dounine.corgi.rpc.spring.ApplicationContextUtils;
 import com.dounine.corgi.rpc.spring.Service;
 
 import java.io.IOException;
@@ -25,8 +25,15 @@ public class RpcServer implements Runnable {
         this.socket = socket;
     }
 
+    public void checkSpringContext(){
+        if(null==ApplicationContextUtils.getContext()){
+            throw new RPCException("CORGI rpc spring context not null.");
+        }
+    }
+
     @Override
     public void run() {
+        checkSpringContext();
         ObjectInputStream ois = null;
         ObjectOutputStream oos = null;
         Throwable exception = null;
@@ -39,7 +46,7 @@ public class RpcServer implements Runnable {
             Object[] args = (Object[]) ois.readObject();//read method paramters values
             Method method = clazz.getMethod(methodName, paramterTypes);//get local interfact method
             oos = new ObjectOutputStream(socket.getOutputStream());
-            Map obs = ApplicationBeanUtils.getAac().getBeansOfType(clazz);
+            Map obs = ApplicationContextUtils.getContext().getBeansOfType(clazz);
             Optional<Object> oo = obs.values().stream().filter(o -> o.getClass().getAnnotation(Service.class).version().equals(version)).findFirst();
             if (!oo.isPresent() && obs.values().size() == 0) {
                 throw new RPCException("class not found.");

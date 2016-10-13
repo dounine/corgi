@@ -1,7 +1,7 @@
 package corgi.spring.test_void;
 
-import com.dounine.corgi.rpc.spring.ApplicationBeanUtils;
-import corgi.spring.test_void.code.ApplicationConfigurationTest;
+import com.dounine.corgi.rpc.spring.ApplicationContextUtils;
+import corgi.spring.test_void.code.ApplicationConfiguration;
 import corgi.spring.test_void.code.People;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -13,8 +13,8 @@ public class Demo {
 
     @Test
     public void testLogin(){
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfigurationTest.class);
-        ApplicationBeanUtils.setApplicationContext(context);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
+        ApplicationContextUtils.setApplicationContext(context);
         System.out.println(context.getBean(People.class).login("admin"));
     }
 
