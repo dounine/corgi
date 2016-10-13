@@ -1,4 +1,4 @@
-package com.dounine.corgi.rpc.spring;
+package com.dounine.corgi.spring;
 
 import org.springframework.context.support.AbstractApplicationContext;
 

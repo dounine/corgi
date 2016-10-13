@@ -1,6 +1,6 @@
 package corgi.spring.test_version;
 
-import com.dounine.corgi.rpc.spring.ApplicationContextUtils;
+import com.dounine.corgi.spring.ApplicationContextUtils;
 import corgi.spring.test_version.code.ApplicationConfiguration;
 import corgi.spring.test_version.code.People;
 import org.junit.Test;

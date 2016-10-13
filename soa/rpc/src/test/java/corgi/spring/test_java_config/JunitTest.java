@@ -2,7 +2,7 @@ package corgi.spring.test_java_config;
 
 import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.rpc.proxy.RPC;
-import com.dounine.corgi.rpc.spring.ApplicationContextUtils;
+import com.dounine.corgi.spring.ApplicationContextUtils;
 import com.dounine.corgi.rpc.spring.Reference;
 import corgi.spring.test_java_config.code.ApplicationConfiguration;
 import corgi.spring.test_java_config.code.UserApi;
@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Created by huanghuanlai on 2016/10/13.
+ * Created by huanghuanulai on 2016/10/13.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfiguration.class)

@@ -1,6 +1,6 @@
 package corgi.spring.test_exception;
 
-import com.dounine.corgi.rpc.spring.ApplicationContextUtils;
+import com.dounine.corgi.spring.ApplicationContextUtils;
 import corgi.spring.test_exception.code.ApplicationConfiguration;
 import corgi.spring.test_exception.code.People;
 import org.junit.Test;

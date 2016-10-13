@@ -2,7 +2,7 @@ package com.dounine.corgi.rpc.serialize;
 
 import com.dounine.corgi.exception.RPCException;
 import com.dounine.corgi.exception.SerException;
-import com.dounine.corgi.rpc.spring.ApplicationContextUtils;
+import com.dounine.corgi.spring.ApplicationContextUtils;
 import com.dounine.corgi.rpc.spring.Service;
 
 import java.io.IOException;
