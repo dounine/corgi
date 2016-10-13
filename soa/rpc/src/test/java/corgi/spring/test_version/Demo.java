@@ -16,6 +16,7 @@ public class Demo {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfigurationTest.class);
         ApplicationBeanUtils.setApplicationContext(context);
         System.out.println(context.getBean(People.class).login("admin"));
+        System.out.println(context.getBean(People.class).login("admin2"));
     }
 
 }
