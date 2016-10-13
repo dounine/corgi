@@ -1,4 +1,0 @@
-rootProject.name = 'rpc'
-
-include ':commons'
-project(':commons').projectDir = new File(settingsDir, '../../commons')

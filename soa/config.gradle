@@ -53,6 +53,7 @@ allprojects {
         zkclient_version = "0.9"
         zookeeper_version = "3.4.8"
         jetty_version = "6.1.26"
+        spring_data_mongodb_version = "1.9.4.RELEASE"
         spring_boot_gradle_plugin_version = "1.4.1.RELEASE"
     }
 }

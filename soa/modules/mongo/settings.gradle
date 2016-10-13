@@ -1,4 +1,0 @@
-rootProject.name = 'mongo'
-
-include ':commons'
-project(':commons').projectDir = new File(settingsDir, '../../commons')

@@ -1,0 +1,17 @@
+apply plugin: 'spring-boot'
+
+dependencies {
+    compile project(':rpc')
+    compile project(':demo:api')
+    compile("org.springframework.boot:spring-boot-starter-web")
+}
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_gradle_plugin_version")
+    }
+}

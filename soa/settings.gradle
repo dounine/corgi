@@ -1,7 +1,8 @@
 rootProject.name = 'corgi'
 
-include ':commons'
-include ':modules:rpc'
-include ':modules:sso:consumer'
-include ':modules:sso:provider'
-include ':modules:sso:api'
+include ':common'
+include ':rpc'
+include ':db:mongo'
+include ':demo:api'
+include ':demo:consumer'
+include ':demo:provider'

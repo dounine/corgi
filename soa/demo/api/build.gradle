@@ -1,0 +1,9 @@
+apply from: '../../config.gradle'
+apply plugin: 'java'
+
+dependencies {
+    compile project(':common')
+    compile group:'org.hibernate',name:'hibernate-validator',version:"$hibernate_validator_version"
+    compile group:'org.apache.commons',name:'commons-lang3',version:"$commons_version"
+    compile group:'ch.qos.logback',name:'logback-classic',version:"$logback_version"
+}

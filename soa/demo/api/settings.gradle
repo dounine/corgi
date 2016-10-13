@@ -1,0 +1,6 @@
+rootProject.name = 'api'
+
+include ':rpc'
+include ':common'
+project(':rpc').projectDir = new File(settingsDir, '../../../rpc')
+project(':common').projectDir = new File(settingsDir, '../../../common')
