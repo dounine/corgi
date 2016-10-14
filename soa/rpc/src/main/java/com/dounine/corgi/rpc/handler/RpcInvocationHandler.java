@@ -34,6 +34,7 @@ public class RpcInvocationHandler implements InvocationHandler{
         RpcInvocation rpcInvocation = new RpcInvocation();
         rpcInvocation.setArgs(args);
         rpcInvocation.setMethod(method);
+        rpcInvocation.setAddress(invoker.getAddress());
         rpcInvocation.setInterfaceClass(proxy.getClass().getInterfaces()[0]);
         rpcInvocation.setVersion(invoker.getVersion());
 

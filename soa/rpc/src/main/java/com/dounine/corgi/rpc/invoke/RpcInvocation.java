@@ -63,8 +63,11 @@ public class RpcInvocation<T> implements Invocation<T> {
 
     @Override
     public Result invoke(Invocation invoker) {
-        RpcClient rpcClient = new RpcClient(invoker);
-        return rpcClient.fetch();
+        return new RpcClient(invoker).fetch();
+    }
+
+    public void setAddress(InetSocketAddress address) {
+        this.address = address;
     }
 
     public void setMethod(Method method) {
