@@ -5,7 +5,6 @@
 **/gradle/
 **/project/
 **/.sass-cache/
-**/db/
 **/.idea/
 **/*.iml
 **/*.ipr
