@@ -2,6 +2,7 @@ package com.dounine.corgi.rpc.serialize;
 
 import com.dounine.corgi.exception.RPCException;
 import com.dounine.corgi.rpc.invoke.Invocation;
+import com.dounine.corgi.rpc.proxy.RPC;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -33,6 +34,7 @@ public class RpcClient {
         ObjectInputStream ois = null;
         try {
             socket = new Socket(invocation.getAddress().getAddress(),invocation.getAddress().getPort());
+            socket.setSoTimeout(RPC.SOCKET_TIMEOUT);
             oos = new ObjectOutputStream(socket.getOutputStream());
             oos.writeObject(invocation.getInterfaceClass());
             oos.writeUTF(invocation.getMethod().getName());

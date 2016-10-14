@@ -15,6 +15,8 @@ import java.net.Socket;
  */
 public class RPC {
 
+    public static final int SOCKET_TIMEOUT = 10000;
+
     public static void export(final int port) {
         if (port <= 0 || port > 65535) {
             throw new IllegalArgumentException("CORGI rpc Invalid port"+port);
@@ -29,6 +31,7 @@ public class RPC {
                     ServerSocket serverSocket = new ServerSocket(port);
                     for(;;){
                         socket = serverSocket.accept();
+                        socket.setSoTimeout(SOCKET_TIMEOUT);
                         System.out.println("CORGI "+socket.getInetAddress()+" rpc consumer connected.");
                         ThreadPools.getExecutor().execute(new RpcServer(socket));
                     }
