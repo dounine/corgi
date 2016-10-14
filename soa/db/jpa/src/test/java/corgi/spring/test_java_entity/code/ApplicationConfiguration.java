@@ -3,6 +3,7 @@ package corgi.spring.test_java_entity.code;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -11,9 +12,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 
 @Configuration
-@EnableJpaRepositories(basePackages = {"corgi.spring.test_java_service.dao"})
+@EnableJpaRepositories
 @EnableTransactionManagement(proxyTargetClass = true)
-@ComponentScan(basePackages = { "com.dounine.corgi.jpa","corgi.spring.test_java_service"},
+@PropertySource("classpath:config.properties")
+@ComponentScan(basePackages = {"corgi.spring.test_java_entity.code"},
         excludeFilters = {@ComponentScan.Filter(
                 type = FilterType.ANNOTATION,
                 value = {Configuration.class})})

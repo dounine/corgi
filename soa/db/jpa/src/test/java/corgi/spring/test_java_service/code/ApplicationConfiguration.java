@@ -12,9 +12,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 
 @Configuration
-@EnableJpaRepositories(basePackages = {"corgi.spring.test_java_service.dao"})
-//@EnableTransactionManagement(proxyTargetClass = true)
-@ComponentScan(basePackages = {"com.dounine.corgi.jpa", "corgi.spring.test_java_service"},
+@EnableJpaRepositories(basePackages = {"corgi.spring.test_java_service.code.dao"})
+@EnableTransactionManagement(proxyTargetClass = true)
+@PropertySource("classpath:config.properties")
+@ComponentScan(basePackages = {"corgi.spring.test_java_service.code"},
         excludeFilters = {@ComponentScan.Filter(
                 type = FilterType.ANNOTATION,
                 value = {Configuration.class})})

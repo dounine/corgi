@@ -5,22 +5,18 @@ import com.dounine.corgi.jpa.dto.Condition;
 import com.dounine.corgi.jpa.enums.DataType;
 import com.dounine.corgi.jpa.enums.RestrictionType;
 import com.dounine.corgi.jpa.exception.SerException;
-import corgi.spring.test_java_entity.code.ApplicationConfiguration;
+import corgi.spring.test_java_service.code.ApplicationConfiguration;
 import corgi.spring.test_java_service.code.dto.UserDto;
 import corgi.spring.test_java_service.code.entity.User;
 import corgi.spring.test_java_service.code.entity.UserDetails;
 import corgi.spring.test_java_service.code.entity.UserInterest;
 import corgi.spring.test_java_service.code.service.IUserSer;
-import corgi.spring.test_java_service.code.service.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,7 +28,7 @@ import java.util.Set;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes =ApplicationConfiguration.class)
-public class JunitTest extends AbstractJUnit4SpringContextTests {
+public class JunitTest {
 
 
 
@@ -41,6 +37,7 @@ public class JunitTest extends AbstractJUnit4SpringContextTests {
 
     }
 
+    @Autowired
     private IUserSer userSer;
 
     /**
@@ -52,7 +49,7 @@ public class JunitTest extends AbstractJUnit4SpringContextTests {
         user.setUsername("liguiqin");
         user.setPassword("123456");
         user.setMoney(5000.0);
-        //userSer.save(user);
+        userSer.save(user);
         System.out.println(JSON.toJSONString(user));
     }
 
@@ -79,7 +76,7 @@ public class JunitTest extends AbstractJUnit4SpringContextTests {
         interest.setCreateTime(LocalDateTime.now());
         interests.add(interest);
         user.setInterests(interests);
-        //userSer.save(user);
+        userSer.save(user);
         System.out.println(JSON.toJSONString(user));
     }
 

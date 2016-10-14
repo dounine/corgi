@@ -9,10 +9,9 @@ dependencies {
     compile "org.springframework:spring-context:$spring_version"
     compile "org.springframework.data:spring-data-jpa:$spring_jpa_version"
     compile group:'org.springframework',name:'spring-test',version:"$spring_version"
-    compile "org.hibernate:hibernate-code:$hibernate_version"
     compile "mysql:mysql-connector-java:$mysql_connector_version"
     compile "org.springframework:spring-jdbc:$spring_jdbc_version"
-    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.2.2.Final'
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: "$hibernate_version"
     compile group: 'org.hibernate.common', name: 'hibernate-commons-annotations', version: '5.0.1.Final'
     compile group: 'com.alibaba', name: 'druid', version: '1.0.26'
     compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.0.Final'
