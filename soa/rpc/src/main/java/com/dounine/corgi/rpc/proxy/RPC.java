@@ -4,6 +4,8 @@ import com.dounine.corgi.rpc.handler.RpcInvocationHandler;
 import com.dounine.corgi.rpc.invoke.RpcInvocation;
 import com.dounine.corgi.rpc.serialize.RpcServer;
 import com.dounine.corgi.rpc.utils.ThreadPools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.Proxy;
@@ -15,6 +17,8 @@ import java.net.Socket;
  */
 public class RPC {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RPC.class);
+
     public static final int SOCKET_TIMEOUT = 10000;
 
     public static void export(final int port) {
@@ -22,17 +26,19 @@ public class RPC {
             throw new IllegalArgumentException("CORGI rpc Invalid port"+port);
         }
 
-        System.out.println("CORGI rpc provider port:"+port+" started.\n");
+        LOGGER.info("CORGI rpc provider port:"+port+" starting.");
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Socket socket = null;
                 try {
                     ServerSocket serverSocket = new ServerSocket(port);
+                    LOGGER.info("CORGI rpc provider port:"+port+" started.");
+                    LOGGER.info("CORGI rpc connect watching.");
                     for(;;){
                         socket = serverSocket.accept();
                         socket.setSoTimeout(SOCKET_TIMEOUT);
-                        System.out.println("CORGI "+socket.getInetAddress()+" rpc consumer connected.");
+                        LOGGER.info("CORGI "+socket.getRemoteSocketAddress()+" client connected.");
                         ThreadPools.getExecutor().execute(new RpcServer(socket));
                     }
                 } catch (IOException e) {

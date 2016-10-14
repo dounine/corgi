@@ -4,6 +4,8 @@ import com.dounine.corgi.exception.RPCException;
 import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.spring.ApplicationContext;
 import com.dounine.corgi.rpc.spring.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,6 +20,8 @@ import java.util.Optional;
  * Created by huanghuanlai on 16/9/26.
  */
 public class RpcServer implements Runnable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcServer.class);
 
     private Socket socket;
 
@@ -56,7 +60,7 @@ public class RpcServer implements Runnable {
             Object result = method.invoke(oo.get(), args);
             oos.writeObject(null);//write null exception
             oos.writeObject(result);//write metod invoke result
-            System.out.println("CORGI rpc provider service finish.\n");
+            LOGGER.info("CORGI "+socket.getRemoteSocketAddress()+" client service finish.");
         } catch (IOException e) {
             exception = e;
         } catch (ClassNotFoundException e) {
@@ -97,6 +101,7 @@ public class RpcServer implements Runnable {
                 if (socket.isConnected()) {
                     try {
                         socket.close();
+                        LOGGER.info("CORGI "+socket.getRemoteSocketAddress()+" client connect closed.\n");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
