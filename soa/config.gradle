@@ -55,6 +55,11 @@ allprojects {
         jetty_version = "6.1.26"
         spring_data_mongodb_version = "1.9.4.RELEASE"
         spring_boot_gradle_plugin_version = "1.4.1.RELEASE"
+        spring_jpa_version="1.10.3.RELEASE"
+        hibernate_version="5.2.2.Final"
+        mysql_connector_version="6.0.4"
+        spring_jdbc_version="4.3.3.RELEASE"
+        hibernate_annotations_version="3.5.6-Final"
     }
 }
 
