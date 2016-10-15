@@ -1,7 +1,7 @@
 package com.dounine.corgi.demo.consumer.ctrl;
 
 import com.dounine.corgi.commons.ResponseText;
-import com.dounine.corgi.rpc.spring.Reference;
+import com.dounine.corgi.rpc.spring.annotation.Reference;
 import com.dounine.corgi.demo.service.user.IUserSer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

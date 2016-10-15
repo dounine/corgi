@@ -1,4 +1,4 @@
-package corgi.spring.test_version.code;
+package corgi.spring.test_thread_pools.code;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
  */
 @Configuration
 @PropertySource("classpath:rpc.properties")
-@ComponentScan(basePackages = {"corgi.spring.test_version","corgi.common"},
+@ComponentScan(basePackages = {"corgi.spring.test_thread_pools","corgi.common"},
         excludeFilters = {@ComponentScan.Filter(
                 type = FilterType.ANNOTATION,
                 value = {Configuration.class})})

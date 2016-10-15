@@ -8,8 +8,8 @@ dependencies {
     compile group:'com.alibaba',name:'fastjson',version:"$fastjson_version"
     compile group:'org.springframework',name:'spring-test',version:"$spring_version"
     compile group:'org.springframework',name:'spring-context',version:"$spring_version"
+    compile group:'org.springframework',name:'spring-beans',version:"$spring_version"
     compile group:'com.101tec',name:'zkclient',version:"$zkclient_version"
     compile group:'org.apache.zookeeper',name:'zookeeper',version:"$zookeeper_version"
-    compile group:'org.mortbay.jetty',name:'jetty',version:"$jetty_version"
-    compile group:'org.springframework',name:'spring-beans',version:"$spring_version"
+    compile group: 'cglib', name: 'cglib', version: "$cglib_version"
 }

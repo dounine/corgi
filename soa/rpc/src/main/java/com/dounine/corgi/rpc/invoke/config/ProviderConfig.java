@@ -1,6 +1,6 @@
 package com.dounine.corgi.rpc.invoke.config;
 
-import com.dounine.corgi.rpc.zookeeper.Client;
+import com.dounine.corgi.rpc.zk.Client;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 /**
  * Created by huanghuanlai on 16/7/27.
  */
-public class Provider {
+public class ProviderConfig {
 
     private String target;
     private int port;

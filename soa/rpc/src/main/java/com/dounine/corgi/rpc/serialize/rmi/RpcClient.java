@@ -1,8 +1,10 @@
-package com.dounine.corgi.rpc.serialize;
+package com.dounine.corgi.rpc.serialize.rmi;
 
 import com.dounine.corgi.exception.RPCException;
 import com.dounine.corgi.rpc.invoke.Invocation;
-import com.dounine.corgi.rpc.proxy.RPC;
+import com.dounine.corgi.rpc.serialize.result.IResult;
+import com.dounine.corgi.rpc.serialize.result.InvokeResult;
+import com.dounine.corgi.rpc.utils.RpcProperties;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,69 +15,69 @@ import java.net.Socket;
 /**
  * Created by huanghuanlai on 16/9/22.
  */
-public class RpcClient {
-
+public class RpcClient implements IClient{
+    private static final int RPC_SOCKET_TIMEOUT = RpcProperties.instance().getInteger("corgi.rpc.rmi.timeout");
     protected Invocation invocation;
-    protected Result result;
+    protected IResult result;
 
-    public RpcClient(Invocation invocation){
+    public RpcClient(Invocation invocation) {
         this.invocation = invocation;
-        if(!validInvocation()){
+        if (!validInvocation()) {
             throw new RPCException("invocation not empty");
         }
-        if(!validAddress()){
+        if (!validAddress()) {
             throw new RPCException("address not empty");
         }
     }
 
-    public Result fetch(){
+    public IResult fetch() {
         Socket socket = null;
         ObjectOutputStream oos = null;
         ObjectInputStream ois = null;
         try {
-            socket = new Socket(invocation.getAddress().getAddress(),invocation.getAddress().getPort());
-            socket.setSoTimeout(RPC.SOCKET_TIMEOUT);
+            socket = new Socket(invocation.getAddress().getAddress(), invocation.getAddress().getPort());
+            socket.setSoTimeout(RPC_SOCKET_TIMEOUT);
+            ois = new ObjectInputStream(socket.getInputStream());
             oos = new ObjectOutputStream(socket.getOutputStream());
-            oos.writeObject(invocation.getInterfaceClass());
             oos.writeUTF(invocation.getMethod().getName());
             oos.writeUTF(invocation.getVersion());
+            oos.writeObject(invocation.getMethod().getDeclaringClass());
             oos.writeObject(invocation.getMethod().getParameterTypes());
             oos.writeObject(invocation.getArgs());
-            ois = new ObjectInputStream(socket.getInputStream());
             Object exception = ois.readObject();
-            Result result = null;
-            if(null!=exception){
-                result = new RequestResult(null,(Throwable)exception);
-            }else{
-                result = new RequestResult(ois.readObject(),null);
+            IResult result = null;
+            if (null != exception) {
+                result = new InvokeResult(null, (Throwable) exception);
+            } else {
+                result = new InvokeResult(ois.readObject(), null);
             }
             this.result = result;
         } catch (IOException e) {
-            if(e instanceof ConnectException){
+            if (e instanceof ConnectException) {
                 throw new RPCException("服务方连接失败");
-            }else{
+            } else {
                 e.printStackTrace();
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }finally {
-            if(null!=ois){
+        } finally {
+            if (null != ois) {
                 try {
                     ois.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(null!=oos){
+            if (null != oos) {
                 try {
                     ois.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(null!=socket){
+            if (null != socket) {
                 try {
-                    if(socket.isConnected()){
+                    if (socket.isConnected()) {
                         socket.close();
                     }
                 } catch (IOException e) {
@@ -86,15 +88,15 @@ public class RpcClient {
         return this.result;
     }
 
-    public boolean validInvocation(){
-        return null!=invocation;
+    public boolean validInvocation() {
+        return null != invocation;
     }
 
-    public boolean validAddress(){
-        return null!=invocation.getAddress();
+    public boolean validAddress() {
+        return null != invocation.getAddress();
     }
 
-    public Result getResult() {
+    public IResult getResult() {
         return this.result;
     }
 }

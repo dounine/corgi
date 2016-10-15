@@ -1,4 +1,4 @@
-package corgi.spring.test_version.code;
+package corgi.spring.test_thread_pools.code;
 
 import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.rpc.spring.annotation.Reference;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class People {
 
-    @Reference(version = "1.0.2")
+    @Reference(version = "1.0.0")
     UserApi userApi;
 
     public String login(String username){

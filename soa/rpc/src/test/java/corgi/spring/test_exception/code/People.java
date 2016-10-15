@@ -1,7 +1,7 @@
 package corgi.spring.test_exception.code;
 
 import com.dounine.corgi.exception.SerException;
-import com.dounine.corgi.rpc.spring.Reference;
+import com.dounine.corgi.rpc.spring.annotation.Reference;
 import org.springframework.stereotype.Service;
 
 /**

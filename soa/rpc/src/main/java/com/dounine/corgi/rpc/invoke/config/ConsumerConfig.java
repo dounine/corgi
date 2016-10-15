@@ -1,6 +1,6 @@
 package com.dounine.corgi.rpc.invoke.config;
 
-import com.dounine.corgi.rpc.zookeeper.Client;
+import com.dounine.corgi.rpc.zk.Client;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by huanghuanlai on 16/7/27.
  */
-public class Consumer {
+public class ConsumerConfig {
     private String url;
     private Client client;
     private boolean useZK = true;

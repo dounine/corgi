@@ -1,5 +1,6 @@
 package corgi.spring.test_version;
 
+import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.spring.ApplicationContext;
 import corgi.spring.test_version.code.ApplicationConfiguration;
 import corgi.spring.test_version.code.People;
@@ -17,7 +18,13 @@ public class Demo {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
         ApplicationContext.setApplicationContext(context);
         Assert.assertEquals("success",context.getBean(People.class).login("admin"));
-        System.out.println(context.getBean(People.class).login("admin2"));
+        try {
+            context.getBean(People.class).login("admin2");
+        }catch (Throwable e){
+            if(!(e instanceof SerException)){
+                Assert.fail(e.getMessage());
+            }
+        }
     }
 
 }

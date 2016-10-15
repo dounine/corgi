@@ -1,4 +1,4 @@
-package com.dounine.corgi.rpc.zookeeper;
+package com.dounine.corgi.rpc.zk;
 
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;

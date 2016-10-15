@@ -1,6 +1,7 @@
 package com.dounine.corgi.rpc.invoke;
 
-import com.dounine.corgi.rpc.serialize.Result;
+
+import com.dounine.corgi.rpc.serialize.result.IResult;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -9,8 +10,6 @@ import java.net.InetSocketAddress;
  * Created by huanghuanlai on 16/9/26.
  */
 public interface Invocation<T> {
-
-    Class<T> getInterfaceClass();
 
     String getVersion();
 
@@ -34,5 +33,5 @@ public interface Invocation<T> {
 
 
 
-    Result invoke(Invocation<T> invoker);
+    IResult invoke(Invocation<T> invoker);
 }

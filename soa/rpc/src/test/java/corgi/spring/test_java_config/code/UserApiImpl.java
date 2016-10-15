@@ -2,7 +2,7 @@ package corgi.spring.test_java_config.code;
 
 
 import com.dounine.corgi.exception.SerException;
-import com.dounine.corgi.rpc.spring.Service;
+import com.dounine.corgi.rpc.spring.annotation.Service;
 
 /**
  * Created by huanghuanlai on 16/9/27.

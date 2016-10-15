@@ -1,9 +1,9 @@
-package com.dounine.corgi.rpc.serialize;
+package com.dounine.corgi.rpc.serialize.rmi;
 
 import com.dounine.corgi.exception.RPCException;
 import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.spring.ApplicationContext;
-import com.dounine.corgi.rpc.spring.Service;
+import com.dounine.corgi.rpc.spring.annotation.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +19,7 @@ import java.util.Optional;
 /**
  * Created by huanghuanlai on 16/9/26.
  */
-public class RpcServer implements Runnable {
+public class RpcServer implements Runnable, IServer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcServer.class);
 
@@ -29,46 +29,46 @@ public class RpcServer implements Runnable {
         this.socket = socket;
     }
 
-    public void checkSpringContext(){
-        if(null== ApplicationContext.getContext()){
-            throw new RPCException("CORGI rpc spring context not null.");
-        }
+    @Override
+    public void run() {
+        push();
     }
 
     @Override
-    public void run() {
+    public void push() {
         checkSpringContext();
         ObjectInputStream ois = null;
         ObjectOutputStream oos = null;
         Throwable exception = null;
         try {
-            ois = new ObjectInputStream(socket.getInputStream());
-            Class<?> clazz = (Class<?>) ois.readObject();//read invoke class object
-            String methodName = ois.readUTF();//read invoke method
-            String version = ois.readUTF();//read invoke class version
-            Class<?>[] paramterTypes = (Class<?>[]) ois.readObject();//read method paramters type
-            Object[] args = (Object[]) ois.readObject();//read method paramters values
-            Method method = clazz.getMethod(methodName, paramterTypes);//get local interfact method
             oos = new ObjectOutputStream(socket.getOutputStream());
+            ois = new ObjectInputStream(socket.getInputStream());
+
+            String methodName = ois.readUTF();
+            String version = ois.readUTF();
+            Class<?> clazz = (Class<?>) ois.readObject();
+            Class<?>[] paramterTypes = (Class<?>[]) ois.readObject();
+            Object[] args = (Object[]) ois.readObject();
+            Method method = clazz.getMethod(methodName, paramterTypes);
             Map obs = ApplicationContext.getContext().getBeansOfType(clazz);
             Optional<Object> oo = obs.values().stream().filter(o -> o.getClass().getAnnotation(Service.class).version().equals(version)).findFirst();
             if (!oo.isPresent() && obs.values().size() == 0) {
                 throw new RPCException("class not found.");
-            }else if(!oo.isPresent()&&obs.values().size()>0){
-                throw new RPCException("class version:"+version+" not found.");
+            } else if (!oo.isPresent() && obs.values().size() > 0) {
+                throw new RPCException("class version [ " + version + " ] not found.");
             }
             Object result = method.invoke(oo.get(), args);
             oos.writeObject(null);//write null exception
             oos.writeObject(result);//write metod invoke result
-            LOGGER.info("CORGI "+socket.getRemoteSocketAddress()+" client service finish.");
+            LOGGER.info("CORGI [ " + socket.getRemoteSocketAddress() + " ] client service finish.");
         } catch (IOException e) {
             exception = e;
         } catch (ClassNotFoundException e) {
             exception = e;
         } catch (InvocationTargetException e) {
-            if(e.getCause() instanceof SerException){
+            if (e.getCause() instanceof SerException) {
                 exception = e.getCause();
-            }else{
+            } else {
                 exception = e;
             }
         } catch (IllegalAccessException e) {
@@ -101,12 +101,18 @@ public class RpcServer implements Runnable {
                 if (socket.isConnected()) {
                     try {
                         socket.close();
-                        LOGGER.info("CORGI "+socket.getRemoteSocketAddress()+" client connect closed.\n");
+                        LOGGER.info("CORGI [ " + socket.getRemoteSocketAddress() + " ] client connect closed.\n");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
+        }
+    }
+
+    public void checkSpringContext() {
+        if (null == ApplicationContext.getContext()) {
+            throw new RPCException("CORGI rpc spring context not null.");
         }
     }
 }
