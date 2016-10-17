@@ -13,7 +13,7 @@ public class InvokeResult implements IResult {
     }
 
     @Override
-    public Object data() throws Throwable {
+    public Object result() throws Throwable {
         if(this.hasException()){
             throw this.exception();
         }

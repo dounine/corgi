@@ -15,8 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class RegisterConfig implements IRegister {
 
-    private String host;
     private int port;
+    private String host;
     private String type;
     private ZkClient client;
     private static final Map<Class, AtomicInteger> invokeCount = new ConcurrentHashMap<>();

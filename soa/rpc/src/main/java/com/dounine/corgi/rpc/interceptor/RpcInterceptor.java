@@ -1,8 +1,6 @@
 package com.dounine.corgi.rpc.interceptor;
 
 import com.dounine.corgi.rpc.invoke.Invocation;
-import com.dounine.corgi.rpc.invoke.RpcInvocation;
-import com.dounine.corgi.rpc.invoke.config.IRegister;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -14,11 +12,9 @@ import java.lang.reflect.Method;
 public class RpcInterceptor implements MethodInterceptor{
 
     private final Invocation<?> invoker;
-    private final IRegister register;
 
-    public RpcInterceptor(final Invocation<?> invoker,final IRegister register){
+    public RpcInterceptor(final Invocation<?> invoker){
         this.invoker = invoker;
-        this.register = register;
     }
 
     @Override
@@ -34,6 +30,6 @@ public class RpcInterceptor implements MethodInterceptor{
         if ("equals".equals(methodName) && parameterTypes.length == 1) {
             return invoker.equals(args[0]);
         }
-        return invoker.invoke(new RpcInvocation(args,method,register)).data();
+        return invoker.fetch(args,method).result();
     }
 }

@@ -2,7 +2,6 @@ package com.dounine.corgi.rpc.spring;
 
 import com.dounine.corgi.rpc.RPC;
 import com.dounine.corgi.rpc.spring.annotation.Reference;
-import com.dounine.corgi.rpc.utils.VersionContext;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -27,8 +26,7 @@ public class RpcConsumer extends RpcConPro implements BeanPostProcessor,IRpcConP
                 boolean oldAcc = field.isAccessible();
                 field.setAccessible(true);
                 try {
-                    VersionContext.initVersion(field.getAnnotation(Reference.class).version());
-                    field.set(bean, RPC.getProxy(field.getType(),register));
+                    field.set(bean, RPC.getProxy(field.getType(),field.getAnnotation(Reference.class).version(),register));
                     field.setAccessible(oldAcc);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();

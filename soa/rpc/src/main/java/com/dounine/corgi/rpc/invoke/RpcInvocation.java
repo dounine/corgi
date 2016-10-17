@@ -6,7 +6,6 @@ import com.dounine.corgi.rpc.listen.RpcListener;
 import com.dounine.corgi.rpc.serialize.result.IResult;
 import com.dounine.corgi.rpc.serialize.rmi.IClient;
 import com.dounine.corgi.rpc.serialize.rmi.RpcClient;
-import com.dounine.corgi.rpc.utils.VersionContext;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -16,24 +15,30 @@ import java.net.InetSocketAddress;
  */
 public class RpcInvocation<T> implements Invocation<T> {
 
-    private InetSocketAddress address;
     private Method method;
     private Object[] args;
+    private String version;
     private IRegister register;
 
-    public RpcInvocation(Object[] args,Method method,final IRegister register){
+    public RpcInvocation(Object[] args,Method method,String version){
         this.args = args;
         this.method = method;
-        this.register = register;
+        this.version = version;
     }
 
-    public RpcInvocation(IRegister register){
+    public RpcInvocation(String version,IRegister register){
+        this.version = version;
         this.register = register;
     }
 
     @Override
+    public IRegister getRegister() {
+        return register;
+    }
+
+    @Override
     public String getVersion() {
-        return VersionContext.currentVersion();
+        return this.version;
     }
 
     @Override
@@ -53,8 +58,11 @@ public class RpcInvocation<T> implements Invocation<T> {
     }
 
     @Override
-    public IResult invoke(Invocation invoker) {
-        IClient client = new RpcClient(invoker);
+    public IResult fetch(Object[] args,Method method) {
+        this.args = args;
+        this.method = method;
+
+        IClient client = new RpcClient(this);
         RpcListener.waitRpcListener();//wait rpc listened
         return client.fetch();
     }

@@ -8,7 +8,6 @@ import com.dounine.corgi.rpc.zk.ZkClient;
 public class ProtocolConfig implements IProtocol{
 
     private int port;
-    private boolean useZK = true;
     private ZkClient client;
     private String type;
 
