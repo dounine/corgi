@@ -4,6 +4,7 @@ package corgi.spring.test_java_service.code.dao;
 import com.dounine.corgi.jpa.dao.MyRep;
 import corgi.spring.test_java_service.code.dto.UserDto;
 import corgi.spring.test_java_service.code.entity.User;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.QueryHints;
 
 import javax.persistence.QueryHint;
@@ -19,8 +20,15 @@ public interface IUserRep extends MyRep<User,UserDto> {
      * @param username 用户名
      * @return 用户信息
      */
+
+    @Cacheable("daoCache")
     User findByUsername(String username);
 
+    /**
+     * 查询缓存
+     * @param nickname
+     * @return
+     */
     @QueryHints(value={@QueryHint(name="org.hibernate.cacheable",value="true")})
     List<User> findByNickname(String nickname);
 }

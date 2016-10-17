@@ -27,6 +27,7 @@ public class UserServiceImpl extends ServiceImpl<User, UserDto> implements IUser
 
     @Override
     public User findByUsername(String username) throws SerException {
+       // System.out.println("service cache");
         return userRep.findByUsername(username);
     }
 
@@ -34,4 +35,5 @@ public class UserServiceImpl extends ServiceImpl<User, UserDto> implements IUser
     public List<User> findByNickname(String nickname) throws SerException {
         return userRep.findByNickname(nickname);
     }
+
 }

@@ -4,6 +4,8 @@ package com.dounine.corgi.jpa.service;
 import com.dounine.corgi.jpa.dto.BaseDto;
 import com.dounine.corgi.jpa.entity.BaseEntity;
 import com.dounine.corgi.jpa.exception.SerException;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.util.List;
 import java.util.Map;

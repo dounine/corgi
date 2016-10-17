@@ -9,17 +9,17 @@ import java.util.List;
  */
 public class BaseDto extends PageDto implements Serializable {
     private static final long serialVersionUID = -3558525794931360478L;
-    private List<String> sort; //排序字段 (有排序字段默认排序)
+    private List<String> sorts; //排序字段 (有排序字段默认排序)
     private String order = "desc"; //默认排序方式
     private List<Condition> conditions = new ArrayList<Condition>(0);// 类搜索条件
 
 
-    public List<String> getSort() {
-        return sort;
+    public List<String> getSorts() {
+        return sorts;
     }
 
-    public void setSort(List<String> sort) {
-        this.sort = sort;
+    public void setSorts(List<String> sorts) {
+        this.sorts = sorts;
     }
 
     public String getOrder() {

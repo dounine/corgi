@@ -7,12 +7,15 @@ import com.dounine.corgi.jpa.dto.BaseDto;
 import com.dounine.corgi.jpa.entity.BaseEntity;
 import com.dounine.corgi.jpa.exception.RepException;
 import com.dounine.corgi.jpa.exception.SerException;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
