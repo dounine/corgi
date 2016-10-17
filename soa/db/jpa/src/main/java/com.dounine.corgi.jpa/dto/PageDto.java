@@ -5,7 +5,7 @@ package com.dounine.corgi.jpa.dto;
  */
 public class PageDto {
     private int limit = 10;//每显示数量
-    private int page = 0;//当前页
+    private int page = 1;//当前页
 
     public Integer getLimit() {
         return limit;
@@ -16,7 +16,7 @@ public class PageDto {
     }
 
     public Integer getPage() {
-        return page;
+        return this.page = this.page-1;
     }
 
     public void setPage(Integer page) {

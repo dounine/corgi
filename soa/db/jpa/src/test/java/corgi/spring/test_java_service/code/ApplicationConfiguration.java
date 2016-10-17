@@ -1,5 +1,6 @@
 package corgi.spring.test_java_service.code;
 
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableJpaRepositories(basePackages = {"corgi.spring.test_java_service.code.dao"})
 @EnableTransactionManagement(proxyTargetClass = true)
+@EnableCaching
 @PropertySource("classpath:config.properties")
 @ComponentScan(basePackages = {"corgi.spring.test_java_service.code"},
         excludeFilters = {@ComponentScan.Filter(

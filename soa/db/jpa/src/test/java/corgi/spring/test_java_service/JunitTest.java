@@ -11,34 +11,47 @@ import corgi.spring.test_java_service.code.entity.User;
 import corgi.spring.test_java_service.code.entity.UserDetails;
 import corgi.spring.test_java_service.code.entity.UserInterest;
 import corgi.spring.test_java_service.code.service.IUserSer;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by huanghuanlai on 2016/10/13.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes =ApplicationConfiguration.class)
+@ContextConfiguration(classes = ApplicationConfiguration.class)
 public class JunitTest {
-
-
-
-    @Test
-    public void start(){
-
-    }
 
     @Autowired
     private IUserSer userSer;
+
+
+    @Before
+    public void init()throws SerException {
+        if(null==userSer.findByUsername("liguiqin")){
+            User user = new User();
+            user.setUsername("liguiqin");
+            user.setPassword("123456");
+            user.setMoney(5000.0);
+            user.setAge(55);
+            user.setHeight(1.2f);
+            user.setNickname("xiaoming");
+
+            UserDetails details = new UserDetails();
+            details.setAddress("天河");
+            details.setTelephone("110");
+            user.setDetails(details);
+            userSer.save(user);
+        }
+    }
+
 
     /**
      * 插入对象
@@ -46,7 +59,7 @@ public class JunitTest {
     @Test
     public void addUser() throws SerException {
         User user = new User();
-        user.setUsername("liguiqin");
+        user.setUsername("qin_add");
         user.setPassword("123456");
         user.setMoney(5000.0);
         userSer.save(user);
@@ -59,10 +72,9 @@ public class JunitTest {
     @Test
     public void add() throws SerException {
         User user = new User();
-        user.setUsername("liguiqin66");
+        user.setUsername("qin_details");
         user.setAge(77);
         user.setPassword("7777755");
-
         UserDetails details = new UserDetails();
         details.setEmail("liguiqin@qq.com");
         details.setAddress("广州");
@@ -71,7 +83,7 @@ public class JunitTest {
         Set<UserInterest> interests = new HashSet<>(1);
         UserInterest interest = new UserInterest();
         interest.setSeq(1);
-        interest.setName("cpmputer");
+        interest.setName("computer");
         interest.setUser(user);
         interest.setCreateTime(LocalDateTime.now());
         interests.add(interest);
@@ -87,8 +99,12 @@ public class JunitTest {
     @Test
     public void findByPage() throws SerException {
         UserDto dto = new UserDto();
-       // List<User> users = userSer.findByPage(dto);
-    //    System.out.println(JSON.toJSONString(users));
+        dto.setPage(3);
+        dto.setSorts(Arrays.asList("username"));
+        List<User> users = userSer.findByPage(dto);
+        for(User u : users){
+            System.out.println(u.getUsername());
+        }
     }
 
 
@@ -104,8 +120,8 @@ public class JunitTest {
         condition.setFieldType(DataType.INT);
         condition.setRestrict(RestrictionType.BETWEEN);
         dto.getConditions().add(condition);
-        //List<User> users = userSer.findByCis(dto, true); //按条件查询并分页
-     //   System.out.println(JSON.toJSONString(users));
+        List<User> users = userSer.findByCis(dto, true); //按条件查询并分页
+        System.out.println(JSON.toJSONString(users));
     }
 
 
@@ -118,7 +134,7 @@ public class JunitTest {
         User user = userSer.findByUsername("liguiqin");
         user.setPassword("666 this is a pass");
         user.getDetails().setTelephone("1999999");
-        //userSer.update(user);
+        userSer.update(user);
         System.out.println(JSON.toJSONString(user));
     }
 
@@ -128,7 +144,7 @@ public class JunitTest {
     @Test
     public void remove() throws Throwable {
         User user = userSer.findByUsername("liguiqin");
-       // userSer.remove(user.getId());
+        userSer.remove(user.getId());
         System.out.println("remove user success!");
     }
 
@@ -142,8 +158,8 @@ public class JunitTest {
         c.setValues(new String[]{"gui"});
         c.setRestrict(RestrictionType.LIKE);
         dto.getConditions().add(c);
-      //  User user = userSer.findOne(dto);
-        //System.out.println(JSON.toJSONString(user));
+        User user = userSer.findOne(dto);
+        System.out.println(JSON.toJSONString(user));
     }
 
     /**
@@ -152,15 +168,15 @@ public class JunitTest {
     @Test
     public void addAll() throws Throwable {
         List<User> users = new ArrayList<>(5);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 15; i++) {
             User user = new User();
-            user.setUsername("testName" + i);
+            user.setUsername("test" + i);
             user.setAge(20 + i);
             user.setPassword("password" + i);
             users.add(user);
 
         }
-        //userSer.save(users);
+        userSer.save(users);
         System.out.println(JSON.toJSONString(users));
 
     }
@@ -171,34 +187,80 @@ public class JunitTest {
     @Test
     public void updateAll() throws Throwable {
         UserDto dto = new UserDto();
-        addAll();
         List<User> users = null;
         Condition c = new Condition("username", DataType.STRING);
         c.setValues(new String[]{"testName"});
         c.setRestrict(RestrictionType.LIKE);
         dto.getConditions().add(c);
-     //   users = userSer.findByCis(dto, true);
-        int i = 0;
+        users = userSer.findByCis(dto, true);
         for (User user : users) {
-            user.setUsername("updateName" + i++);
+            user.setUsername("update" +  new Random().nextInt(9999));
         }
-     //   userSer.update(users);
+        userSer.update(users);
         System.out.println(JSON.toJSONString(users));
 
     }
 
 
+    /**
+     * 数据回滚
+     * @throws Throwable
+     */
+    @Transactional
+    @Test
+    public void rollBack() throws Throwable {
+        User user = userSer.findByUsername("liguiqin");
+        user.setAge(555);
+        userSer.update(user);
+        int i = 9/0; // fail
+    }
+
+
 
     /**
-     * 数据缓存
+     * 查询缓存(区别与实体缓存，该缓存可支持查询语句)
+     *  配置：dao/userRep
+     *  @QueryHints(value={@QueryHint(name="org.hibernate.cacheable",value="true")})
+     *  findByNickname()
+     *  集合缓存
+     *  配置：test_java_service/entity/User
+     *    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE,region ="entityCache" )
+     *     private Set<UserInterest> interests;
+     *
      */
     @Test
-    public void cache() throws Throwable {
-        String name = "liguiqin";
+    public void cache_findByNickname() throws Throwable {
+        String name = "xiaoming";
         userSer.findByNickname(name);
         userSer.findByNickname(name);
         userSer.findByNickname(name);
         userSer.findByNickname(name);
+        userSer.findByNickname(name);
+        userSer.findByNickname(name);
+    }
+
+
+    /**
+     * service/dao 缓存
+     * service （缓存生效查看service调用次数）
+     * dao(缓存生效查看sql查询次数)
+     *
+     * service 配置： @Cacheable("serviceCache")
+     *   User findByUsername(String username) throws SerException;
+     *
+     *   dao 配置： @Cacheable("daoCache")
+     *   User findByUsername(String username);
+     * @throws Throwable
+     */
+    @Test
+    public void cache_findByUsername() throws Throwable {
+        String name ="liguiqin";
+        userSer.findByUsername(name);
+        userSer.findByUsername(name);
+        userSer.findByUsername(name);
+        userSer.findByUsername(name);
+        userSer.findByUsername(name);
+        userSer.findByUsername(name);
     }
 
 
