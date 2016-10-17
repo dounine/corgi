@@ -1,10 +1,11 @@
 package com.dounine.corgi.rpc.invoke;
 
+import com.dounine.corgi.rpc.invoke.config.IRegister;
+import com.dounine.corgi.rpc.invoke.config.NodeInfo;
 import com.dounine.corgi.rpc.listen.RpcListener;
 import com.dounine.corgi.rpc.serialize.result.IResult;
 import com.dounine.corgi.rpc.serialize.rmi.IClient;
 import com.dounine.corgi.rpc.serialize.rmi.RpcClient;
-import com.dounine.corgi.rpc.utils.RpcContext;
 import com.dounine.corgi.rpc.utils.VersionContext;
 
 import java.lang.reflect.Method;
@@ -18,19 +19,16 @@ public class RpcInvocation<T> implements Invocation<T> {
     private InetSocketAddress address;
     private Method method;
     private Object[] args;
+    private IRegister register;
 
-    public RpcInvocation(Object[] args,Method method){
-        initAddressPort();
+    public RpcInvocation(Object[] args,Method method,final IRegister register){
         this.args = args;
         this.method = method;
+        this.register = register;
     }
 
-    public void initAddressPort(){
-        this.address = new InetSocketAddress(RpcContext.currentHost(),RpcContext.currentPort());//set default
-    }
-
-    public RpcInvocation(){
-        initAddressPort();
+    public RpcInvocation(IRegister register){
+        this.register = register;
     }
 
     @Override
@@ -39,8 +37,9 @@ public class RpcInvocation<T> implements Invocation<T> {
     }
 
     @Override
-    public InetSocketAddress getAddress() {
-        return address;
+    public InetSocketAddress getAddress(Class<T> clazz) {
+        NodeInfo nodeInfo = register.getNodeInfo(clazz);
+        return new InetSocketAddress(nodeInfo.getHost(),nodeInfo.getPort());
     }
 
     @Override

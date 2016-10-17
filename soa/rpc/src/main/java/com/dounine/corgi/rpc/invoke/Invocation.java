@@ -17,7 +17,7 @@ public interface Invocation<T> {
      * get invoke fetch address
      * @return address:localhost,port
      */
-    InetSocketAddress getAddress();
+    InetSocketAddress getAddress(Class<T> clazz);
 
     /**
      * get invoke execute method

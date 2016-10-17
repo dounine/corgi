@@ -2,6 +2,9 @@ package com.dounine.corgi.rpc;
 
 import com.dounine.corgi.rpc.interceptor.RpcInterceptor;
 import com.dounine.corgi.rpc.invoke.RpcInvocation;
+import com.dounine.corgi.rpc.invoke.config.IProtocol;
+import com.dounine.corgi.rpc.invoke.config.IRegister;
+import com.dounine.corgi.rpc.invoke.config.RegisterConfig;
 import com.dounine.corgi.rpc.listen.RpcListener;
 import net.sf.cglib.proxy.Enhancer;
 import org.slf4j.Logger;
@@ -15,16 +18,12 @@ public class RPC {
 
     public static final Enhancer ENHANCER = new Enhancer();
 
-    public static void export(final int port) {
-        if (port <= 0 || port > 65535) {
-            throw new IllegalArgumentException("CORGI rpc Invalid port "+port);
-        }
-        LOGGER.info("CORGI rpc provider port [ "+port+" ] starting.");
-        new Thread(new RpcListener(port)).start();
+    public static void export(IProtocol protocolConfig) {
+        new Thread(new RpcListener(protocolConfig)).start();
     }
 
-    public static <T> T getProxy(Class<T> interfaceClass){
-        ENHANCER.setCallback(new RpcInterceptor(new RpcInvocation<T>()));
+    public static <T> T getProxy(Class<T> interfaceClass, IRegister register){
+        ENHANCER.setCallback(new RpcInterceptor(new RpcInvocation<T>(register),register));
         ENHANCER.setInterfaces(new Class<?>[]{interfaceClass});
         return (T) ENHANCER.create();
     }
