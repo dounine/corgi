@@ -135,12 +135,12 @@ public class MySpecification<BE extends BaseEntity, BD extends BaseDto> implemen
      */
     public PageRequest getPageRequest(BD dto) {
         PageRequest pageRequest = null;
-        if (dto.getSort() != null && dto.getSort().size() > 0) {
-            Sort.Direction sort = Sort.Direction.ASC;
+        if (dto.getSorts() != null && dto.getSorts().size() > 0) {
+            Sort.Direction dct = Sort.Direction.ASC;
             if (dto.getOrder().equals("desc")) {
-                sort = Sort.Direction.DESC;
+                dct = Sort.Direction.DESC;
             }
-            pageRequest = new PageRequest(dto.getPage(), dto.getLimit(), sort); //分页带排序
+            pageRequest = new PageRequest(dto.getPage(), dto.getLimit(), new Sort(dct, dto.getSorts())); //分页带排序
         } else {
             pageRequest = new PageRequest(dto.getPage(), dto.getLimit()); //分页不带排序
         }

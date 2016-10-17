@@ -1,9 +1,15 @@
 package corgi.spring.test_java_service.code.entity;
 
 import com.dounine.corgi.jpa.entity.BaseEntity;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -14,7 +20,8 @@ import java.util.Set;
 @Table(name="test_user")
 public class User extends BaseEntity {
 
-    @Column(unique = true,length = 12)
+    //非空约束，唯一约束
+    @Column(unique = true,length = 20,nullable = false)
     private String username;
     private String password;
     @OrderBy(value = "age desc ")
@@ -51,12 +58,13 @@ public class User extends BaseEntity {
     //CascadeType 级联所有,根据需要选择级联更新,级联保存,级联删除....
     @ManyToOne(cascade = {CascadeType.ALL})
     //多对一配置 details_id 为 外键关联id
-    @JoinColumn(name = "details_id",nullable=false)
+    @JoinColumn(name = "details_id")
     private UserDetails details;
 
     //一对多配置  FetchType 是否懒加载, (OneToMany默认懒加载LAZY,ManyToOne为默认加载EAGER)
     @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE},fetch = FetchType.EAGER)
     @OrderBy(value = "seq ASC")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE,region ="entityCache" )
     private Set<UserInterest> interests;
 
     public String getUsername() {

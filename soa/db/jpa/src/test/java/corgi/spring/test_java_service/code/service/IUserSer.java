@@ -5,6 +5,8 @@ import com.dounine.corgi.jpa.exception.SerException;
 import com.dounine.corgi.jpa.service.IService;
 import corgi.spring.test_java_service.code.dto.UserDto;
 import corgi.spring.test_java_service.code.entity.User;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -13,8 +15,10 @@ import java.util.List;
  */
 public interface IUserSer extends IService<User, UserDto> {
 
+    @Cacheable("serviceCache")
     User findByUsername(String username) throws SerException;
 
     List<User> findByNickname(String nickname) throws SerException;
+
 
 }
