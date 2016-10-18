@@ -36,8 +36,10 @@ public enum RestrictionType {
      * 不等于
      */
     NE,//不等于
+
     GTEQ,//大于等于
-    LTEQ,;//小于等于
+
+    LTEQ;//小于等于
 
 
     public static RestrictionType valueOf(Object val) {

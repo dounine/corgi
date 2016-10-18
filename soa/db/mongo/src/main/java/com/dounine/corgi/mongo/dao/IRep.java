@@ -3,8 +3,6 @@ package com.dounine.corgi.mongo.dao;
 import com.dounine.corgi.mongo.dto.BaseDto;
 import com.dounine.corgi.mongo.entity.BaseEntity;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-
 import java.util.List;
 import java.util.Map;
 

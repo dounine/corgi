@@ -80,10 +80,10 @@ public class RepImpl<Entity extends BaseEntity, Dto extends BaseDto> implements 
     }
 
     @Override
-    public List<Entity> findByCis(Dto dto,boolean pageAndSort){
+    public List<Entity> findByCis(Dto dto, boolean pageAndSort) {
         Query query = new Query();
         query = init_search(query, dto);
-        if(pageAndSort){
+        if (pageAndSort) {
             query = init_sort(query, dto);
             query.skip(dto.getSkip());
             query.limit(dto.getLimit());
@@ -94,7 +94,7 @@ public class RepImpl<Entity extends BaseEntity, Dto extends BaseDto> implements 
 
     @Override
     public Entity findById(String id) {
-        Entity entity =mongoTemplate.findById(id, clazz);
+        Entity entity = mongoTemplate.findById(id, clazz);
         return mongoTemplate.findById(id, clazz);
     }
 
@@ -155,15 +155,13 @@ public class RepImpl<Entity extends BaseEntity, Dto extends BaseDto> implements 
     }
 
 
-
-
     private Query init_search(Query query, Dto dto) {
         List<Condition> conditions = dto.getConditions();
         Stream<Condition> stream = conditions.stream();
         stream.forEach(model -> {
             String[] values = model.getValues();
-            RestrictionType restrict =  model.getRestrict();
-            DataType dataType =  model.getFieldType();
+            RestrictionType restrict = model.getRestrict();
+            DataType dataType = model.getFieldType();
             String field = model.getField();
 
             switch (restrict) {
@@ -171,18 +169,23 @@ public class RepImpl<Entity extends BaseEntity, Dto extends BaseDto> implements 
                     query.addCriteria(Criteria.where(field).is(switchSearchType(dataType, values[0])));
                     break;
                 case LIKE:
-                    if(dataType.equals(DataType.STRING)){
-                        query.addCriteria(Criteria.where(field).regex(switchSearchType(dataType,values[0]).toString()));
+                    if (dataType.equals(DataType.STRING)) {
+                        query.addCriteria(Criteria.where(field).regex(switchSearchType(dataType, values[0]).toString()));
                     }
                     break;
                 case BETWEEN:
-                    if (null!=values && values.length==2) {
+                    if (null != values && values.length == 2) {
                         query.addCriteria(Criteria.where(field).gt(switchSearchType(dataType, values[0])).lt(switchSearchType(dataType, values[1])));
                     }
                     break;
                 case GT:
-
                     query.addCriteria(Criteria.where(field).gt(switchSearchType(dataType, values[0])));
+                    break;
+                case GTEQ:
+                    query.addCriteria(Criteria.where(field).gte(switchSearchType(dataType, values[0])));
+                    break;
+                case LTEQ:
+                    query.addCriteria(Criteria.where(field).lte(switchSearchType(dataType, values[0])));
                     break;
                 case LT:
                     query.addCriteria(Criteria.where(field).lt(switchSearchType(dataType, values[0])));
@@ -239,6 +242,9 @@ public class RepImpl<Entity extends BaseEntity, Dto extends BaseDto> implements 
                 case DOUBLE:
                     field_value = NumberUtils.createDouble(value.toString());
                     break;
+                case BOOLEAN:
+                    field_value = Boolean.parseBoolean(value.toString());
+                    break;
                 default:
                     field_value = value;
                     CONSOLE.info("value type not defined：" + value);
@@ -247,8 +253,6 @@ public class RepImpl<Entity extends BaseEntity, Dto extends BaseDto> implements 
         }
         return field_value;
     }
-
-
 
 
 }

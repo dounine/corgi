@@ -7,13 +7,12 @@ public enum DataType {
     STRING(0),
     INT(1),
     FLOAT(2),
-    CHAR(3),
-    DOUBLE(4),
-    BOOLEAN(5),
-    LONG(6),
-    LOCALDATE(7),
-    LOCALTIME(8),
-    LOCALDATETIME(9);
+    DOUBLE(3),
+    BOOLEAN(4),
+    LONG(5),
+    LOCALDATE(6),
+    LOCALTIME(7),
+    LOCALDATETIME(8);
     private int code;
 
     DataType(int code) {
