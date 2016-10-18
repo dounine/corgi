@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface IRegister {
 
+    String getType();
+
     ZkClient getClient();
 
     NodeInfo getNodeInfo(Class clazz);

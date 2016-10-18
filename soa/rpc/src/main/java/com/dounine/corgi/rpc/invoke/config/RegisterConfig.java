@@ -30,6 +30,9 @@ public class RegisterConfig implements IRegister {
 
     @Override
     public NodeInfo getNodeInfo(Class clazz) {
+        if(!"zk".equals(type)){
+            return new NodeInfo(host,port);
+        }
         String hostAndPort = getBalancedUrl(clazz);
         if (StringUtils.isNotBlank(hostAndPort)) {
             String[] hp = hostAndPort.split(":");

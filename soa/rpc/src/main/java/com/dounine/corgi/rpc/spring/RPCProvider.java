@@ -6,6 +6,8 @@ import com.dounine.corgi.rpc.invoke.config.ProtocolConfig;
 import com.dounine.corgi.rpc.listen.RpcListener;
 import com.dounine.corgi.rpc.spring.annotation.Service;
 import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationEvent;
@@ -16,14 +18,14 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
-
 /**
  * Created by huanghuanlai on 2016/10/12.
  */
-public class RpcProvider extends RpcConPro implements ApplicationListener,BeanPostProcessor,IRpcConPro {
+public class RpcProvider extends RpcConPro implements ApplicationListener, BeanPostProcessor, IRpcConPro {
 
-    static String hostName = null;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcProvider.class);
+
+    protected static String hostName = null;
     private static final List<Class> REGISTER_ClASS = new ArrayList<>();
 
     static {
@@ -55,7 +57,7 @@ public class RpcProvider extends RpcConPro implements ApplicationListener,BeanPo
     }
 
     public boolean checkRpcService(Object bean) {
-        return bean.getClass().isAnnotationPresent(Service.class);
+        return bean.getClass().isAnnotationPresent(Service.class) && "zk".equals(register.getType());
     }
 
     @Override

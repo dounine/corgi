@@ -1,14 +1,11 @@
 package com.dounine.corgi.rpc.invoke.config;
 
-import com.dounine.corgi.rpc.zk.ZkClient;
-
 /**
  * Created by huanghuanlai on 16/7/27.
  */
 public class ProtocolConfig implements IProtocol{
 
     private int port;
-    private ZkClient client;
     private String type;
 
     @Override
