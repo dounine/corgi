@@ -1,5 +1,6 @@
 package com.dounine.corgi.rpc.spring;
 
+import com.dounine.corgi.rpc.invoke.config.IProtocol;
 import com.dounine.corgi.rpc.invoke.config.IRegister;
 import org.springframework.context.annotation.Bean;
 
@@ -8,13 +9,22 @@ import org.springframework.context.annotation.Bean;
  */
 public interface IRpcConPro {
 
-    String getType();
+    default String getType(){
+        return null;
+    }
 
-    String getHost();
+    default String getHost(){
+        return null;
+    }
 
-    int getPort();
+    default int getPort(){
+        return 3333;
+    }
 
     @Bean
     IRegister getRegister();
+
+    @Bean
+    IProtocol getProtocol();
 
 }

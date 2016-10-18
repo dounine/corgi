@@ -10,7 +10,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Bean;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -35,8 +34,8 @@ public class RpcProvider extends RpcConPro implements ApplicationListener,BeanPo
         }
     }
 
-    @Bean
-    public IProtocol getProtocolConfig() {
+    @Override
+    public IProtocol getProtocol() {
         ProtocolConfig protocolConfig = new ProtocolConfig();
         protocolConfig.setPort(getPort());
         protocolConfig.setType(getType());
@@ -46,7 +45,7 @@ public class RpcProvider extends RpcConPro implements ApplicationListener,BeanPo
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         if (!RpcListener.isListener()) {
-            RPC.export(getProtocolConfig());
+            RPC.export(getProtocol());
         }
     }
 
@@ -68,19 +67,14 @@ public class RpcProvider extends RpcConPro implements ApplicationListener,BeanPo
     }
 
     public void registerObject(Object bean) {
-        Class apiClass = null;
         for (Class interfac : bean.getClass().getInterfaces()) {
             if (!REGISTER_ClASS.contains(interfac)) {
-                apiClass = interfac;
-                break;
+                REGISTER_ClASS.add(interfac);
+                String apiPath = interfac.getName().replace(".", "/");
+                register.getClient().createPersistent("/" + apiPath);
+                register.getClient().createEpseq("/" + apiPath + "/node", nodeInfo());
+                LOGGER.info("CORGI rpc provider { name : '" + interfac.getName() + "' }");
             }
-        }
-        if (null != apiClass) {
-            REGISTER_ClASS.add(apiClass);
-            String apiPath = apiClass.getName().replace(".", "/");
-            register.getClient().createPersistent("/" + apiPath);
-            register.getClient().createEpseq("/" + apiPath + "/node", nodeInfo());
-            LOGGER.info("CORGI rpc provider { name : '" + apiClass.getName() + "' }");
         }
     }
 
@@ -88,17 +82,14 @@ public class RpcProvider extends RpcConPro implements ApplicationListener,BeanPo
         return hostName + ":" + getPort();
     }
 
-    @Override
     public String getType() {
         return getValue()[2];
     }
 
-    @Override
     public String getHost() {
         return getValue()[0];
     }
 
-    @Override
     public int getPort() {
         return Integer.parseInt(getValue()[1]);
     }
