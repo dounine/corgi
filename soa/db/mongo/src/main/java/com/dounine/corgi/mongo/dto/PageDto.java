@@ -7,15 +7,10 @@ public class PageDto {
     private Integer skip = 0;//起始记录下标
     private Integer limit = 10;//每显示数量
     private Integer page = 1;//当前页
-    private Integer offset = 0;//页数偏移量
 
     public Integer getSkip() {
-        this.skip = (this.page - 1) * limit;
-        return skip;
-    }
-
-    public void setSkip(Integer skip) {
-        this.skip = skip;
+       this.skip = (this.page - 1) * limit;
+       return skip ;
     }
 
     public Integer getLimit() {
@@ -34,11 +29,7 @@ public class PageDto {
         this.page = page;
     }
 
-    public Integer getOffset() {
-        return offset;
-    }
-
-    public void setOffset(Integer offset) {
-        this.offset = offset;
+    public void setSkip(Integer skip) {
+        this.skip = skip;
     }
 }

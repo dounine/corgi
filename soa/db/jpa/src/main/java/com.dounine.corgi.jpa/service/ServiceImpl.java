@@ -75,6 +75,12 @@ public class ServiceImpl<BE extends BaseEntity, BD extends BaseDto> extends Fina
     }
 
     @Override
+    public List<BE> findByCis(BD dto) throws SerException {
+        MySpecification mySpecification = new MySpecification<BE, BD>(dto);
+        return myRepository.findAll(mySpecification);
+    }
+
+    @Override
     public Long countByCis(BD dto) throws SerException {
         MySpecification mySpecification = new MySpecification<BE, BD>(dto);
         return myRepository.count(mySpecification);

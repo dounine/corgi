@@ -94,6 +94,18 @@ public class JunitTest {
 
 
     /**
+     * 查询全部
+     */
+    @Test
+    public void findAll() throws SerException {
+        List<User> users = userSer.findAll();
+        for(User u : users){
+            System.out.println(u.getUsername());
+        }
+    }
+
+
+    /**
      * 分页查询,可带条件及排序
      */
     @Test
