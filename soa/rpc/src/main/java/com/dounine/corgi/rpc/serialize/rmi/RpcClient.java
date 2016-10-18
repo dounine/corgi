@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
@@ -25,23 +26,24 @@ public class RpcClient implements IClient{
         if (!validInvocation()) {
             throw new RPCException("invocation not empty");
         }
-        if (!validAddress()) {
-            throw new RPCException("address not empty");
-        }
     }
+
+
 
     public IResult fetch() {
         Socket socket = null;
         ObjectOutputStream oos = null;
         ObjectInputStream ois = null;
         try {
-            socket = new Socket(invocation.getAddress().getAddress(), invocation.getAddress().getPort());
+            Class clazz = invocation.getMethod().getDeclaringClass();
+            InetSocketAddress isa = invocation.getAddress(clazz);
+            socket = new Socket(isa.getAddress(), isa.getPort());
             socket.setSoTimeout(RPC_SOCKET_TIMEOUT);
             ois = new ObjectInputStream(socket.getInputStream());
             oos = new ObjectOutputStream(socket.getOutputStream());
             oos.writeUTF(invocation.getMethod().getName());
             oos.writeUTF(invocation.getVersion());
-            oos.writeObject(invocation.getMethod().getDeclaringClass());
+            oos.writeObject(clazz);
             oos.writeObject(invocation.getMethod().getParameterTypes());
             oos.writeObject(invocation.getArgs());
             Object exception = ois.readObject();
@@ -92,9 +94,6 @@ public class RpcClient implements IClient{
         return null != invocation;
     }
 
-    public boolean validAddress() {
-        return null != invocation.getAddress();
-    }
 
     public IResult getResult() {
         return this.result;

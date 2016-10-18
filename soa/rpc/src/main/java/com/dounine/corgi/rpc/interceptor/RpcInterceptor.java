@@ -1,7 +1,6 @@
 package com.dounine.corgi.rpc.interceptor;
 
 import com.dounine.corgi.rpc.invoke.Invocation;
-import com.dounine.corgi.rpc.invoke.RpcInvocation;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -31,6 +30,6 @@ public class RpcInterceptor implements MethodInterceptor{
         if ("equals".equals(methodName) && parameterTypes.length == 1) {
             return invoker.equals(args[0]);
         }
-        return invoker.invoke(new RpcInvocation(args,method)).data();
+        return invoker.fetch(args,method).result();
     }
 }

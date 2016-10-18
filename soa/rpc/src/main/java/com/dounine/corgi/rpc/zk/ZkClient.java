@@ -1,7 +1,6 @@
 package com.dounine.corgi.rpc.zk;
 
 import org.I0Itec.zkclient.IZkDataListener;
-import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.exception.ZkNoNodeException;
 import org.I0Itec.zkclient.exception.ZkNodeExistsException;
 import org.apache.zookeeper.Watcher;
@@ -11,12 +10,12 @@ import java.util.List;
 /**
  * Created by huanghuanlai on 16/7/28.
  */
-public class Client {
-    private ZkClient zkClient;
+public class ZkClient {
+    private org.I0Itec.zkclient.ZkClient zkClient;
     private volatile Watcher.Event.KeeperState state = Watcher.Event.KeeperState.SyncConnected;
 
-    public Client(String url) {
-        zkClient = new ZkClient(url);
+    public ZkClient(String url) {
+        zkClient = new org.I0Itec.zkclient.ZkClient(url);
     }
 
     public void createPersistent(String path) {

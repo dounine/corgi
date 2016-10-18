@@ -1,5 +1,6 @@
 package com.dounine.corgi.rpc.listen;
 
+import com.dounine.corgi.rpc.invoke.config.IProtocol;
 import com.dounine.corgi.rpc.serialize.rmi.RpcServer;
 import com.dounine.corgi.rpc.utils.RpcProperties;
 import com.dounine.corgi.rpc.utils.ThreadPools;
@@ -20,17 +21,18 @@ public class RpcListener implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcListener.class);
     private static boolean isListener = false;
     private static final int RPC_SOCKET_TIMEOUT = RpcProperties.instance().getInteger("corgi.rpc.rmi.timeout");
-    private int port;
-    public RpcListener(final int port){
-        this.port = port;
+
+    private IProtocol protocol;
+    public RpcListener(final IProtocol protocol){
+        this.protocol = protocol;
     }
 
     @Override
     public void run() {
         Socket socket = null;
         try {
-            ServerSocket serverSocket = new ServerSocket(port);
-            LOGGER.info("CORGI rpc provider port [ "+port+" ] started.");
+            ServerSocket serverSocket = new ServerSocket(protocol.getPort());
+            LOGGER.info("CORGI rpc provider port [ "+protocol.getPort()+" ] started.");
             LOGGER.info("CORGI rpc connect watching...");
             RPC_LISTENERED.countDown();
             isListener = true;

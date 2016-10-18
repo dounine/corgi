@@ -5,7 +5,7 @@ package com.dounine.corgi.rpc.serialize.result;
  */
 public interface IResult {
 
-    Object data() throws Throwable;
+    Object result() throws Throwable;
 
     Throwable exception();
 
