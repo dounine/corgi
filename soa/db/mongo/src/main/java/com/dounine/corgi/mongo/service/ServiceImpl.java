@@ -4,25 +4,10 @@ import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.mongo.constant.FinalCommons;
 import com.dounine.corgi.mongo.dao.IRep;
 import com.dounine.corgi.mongo.dto.BaseDto;
-import com.dounine.corgi.mongo.dto.Condition;
 import com.dounine.corgi.mongo.entity.BaseEntity;
-import com.dounine.corgi.mongo.enums.DataType;
-import com.dounine.corgi.mongo.enums.RestrictionType;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Created by lgq on 16/9/3.
