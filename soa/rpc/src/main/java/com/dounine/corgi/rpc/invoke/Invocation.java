@@ -1,8 +1,9 @@
 package com.dounine.corgi.rpc.invoke;
 
 
-import com.dounine.corgi.rpc.invoke.config.IRegister;
+import com.dounine.corgi.cluster.Balance;
 import com.dounine.corgi.rpc.serialize.result.IResult;
+import com.dounine.corgi.rpc.spring.annotation.Reference;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -12,29 +13,15 @@ import java.net.InetSocketAddress;
  */
 public interface Invocation<T> {
 
-    IRegister getRegister();
+    Balance getBalance();
 
-    String getVersion();
+    Reference getReference();
 
-    /**
-     * get invoke fetch address
-     * @return address:localhost,port
-     */
     InetSocketAddress getAddress(Class<T> clazz);
 
-    /**
-     * get invoke execute method
-     * @return method
-     */
     Method getMethod();
 
-    /**
-     * get invoke execute method args
-     * @return args
-     */
     Object[] getArgs();
-
-
 
     IResult fetch(Object[] args,Method method);
 }

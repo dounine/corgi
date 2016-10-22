@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
  * Created by huanghuanlai on 16/9/27.
  */
 @Configuration
-@PropertySource("classpath:rpc.properties")
+@PropertySource("classpath:corgi.properties")
 @ComponentScan(basePackages = {"corgi.spring.test_exception","corgi.common"},
         excludeFilters = {@ComponentScan.Filter(
                 type = FilterType.ANNOTATION,

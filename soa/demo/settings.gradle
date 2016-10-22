@@ -1,0 +1,4 @@
+rootProject.name = 'demo'
+
+include ':consumer'
+include ':provider'

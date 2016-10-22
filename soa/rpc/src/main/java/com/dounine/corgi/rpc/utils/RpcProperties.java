@@ -15,7 +15,7 @@ import java.util.Properties;
  * Created by huanghuanlai on 2016/10/15.
  */
 public class RpcProperties {
-    public static final String RPC_PROPERTIES_FILENAME = "rpc.properties";
+    public static final String RPC_PROPERTIES_FILENAME = "corgi.properties";
     private static final RpcProperties PROPERTIES = new RpcProperties(RpcProperties.RPC_PROPERTIES_FILENAME);
     private static Logger logger = LoggerFactory.getLogger(RpcProperties.class);
 

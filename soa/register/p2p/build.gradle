@@ -1,0 +1,7 @@
+apply from: '../../config.gradle'
+
+dependencies {
+    compile project(':common')
+    compile project(':cluster')
+    compile project(':register:api')
+}

@@ -1,0 +1,9 @@
+apply from: '../../config.gradle'
+
+dependencies {
+    compile project(':common')
+    compile project(':cluster')
+    compile project(':register:api')
+    compile group:'com.101tec',name:'zkclient',version:"$zkclient_version"
+    compile group:'org.apache.zookeeper',name:'zookeeper',version:"$zookeeper_version"
+}

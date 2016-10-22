@@ -1,0 +1,18 @@
+apply from: '../config.gradle'
+
+dependencies {
+    compile project(':common')
+    compile group:'commons-fileupload',name:'commons-fileupload',version:"$commons_fileupload_version"
+    compile group:'commons-io',name:'commons-io',version:"$commons_io_version"
+    compile group:'org.apache.commons',name:'commons-lang3',version:"$commons_version"
+    compile group:'com.alibaba',name:'fastjson',version:"$fastjson_version"
+    compile group:'org.springframework',name:'spring-test',version:"$spring_version"
+    compile group:'org.springframework',name:'spring-context',version:"$spring_version"
+    compile group:'org.springframework',name:'spring-beans',version:"$spring_version"
+    compile group:'com.101tec',name:'zkclient',version:"$zkclient_version"
+    compile group:'org.apache.zookeeper',name:'zookeeper',version:"$zookeeper_version"
+    compile group: 'cglib', name: 'cglib', version: "$cglib_version"// https://mvnrepository.com/artifact/com.esotericsoftware/kryo
+    compile group: 'com.esotericsoftware', name: 'kryo', version: "$kryo_version"
+    // https://mvnrepository.com/artifact/de.javakaffee/kryo-serializers
+    compile group: 'de.javakaffee', name: 'kryo-serializers', version: '0.41'
+}

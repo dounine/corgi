@@ -10,4 +10,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface Reference {
     String version() default "1.0.0";
+    int timeout() default 3000;
+    String url() default "";
 }

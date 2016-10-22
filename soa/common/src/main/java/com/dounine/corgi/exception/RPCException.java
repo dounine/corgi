@@ -1,17 +1,16 @@
 package com.dounine.corgi.exception;
 
-import java.lang.reflect.UndeclaredThrowableException;
+import java.io.Serializable;
 
 /**
  * Created by huanghuanlai on 16/8/19.
  */
-public class RPCException extends UndeclaredThrowableException {
+public class RPCException extends RuntimeException implements Serializable{
 
     protected String message;
 
-    public RPCException(){
-        super(null);
-    }
+    public RPCException(){}
+
     public RPCException(String message){
         super(new Throwable(message));
         this.message = message;

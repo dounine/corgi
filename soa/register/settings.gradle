@@ -1,0 +1,5 @@
+rootProject.name = 'register'
+
+include ':api'
+include ':p2p'
+include ':zookeeper'

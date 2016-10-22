@@ -7,6 +7,8 @@ public class InvokeResult implements IResult {
     private Object data;
     private Throwable exception;
 
+    public InvokeResult(){}
+
     public InvokeResult(Object data, Throwable exception) {
         this.data = data;
         this.exception = exception;

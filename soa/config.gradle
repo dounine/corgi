@@ -31,6 +31,7 @@ allprojects {
     }
 
     ext {
+        kryo_version = '4.0.0'
         junit_version = '4.12'
         commons_version = '3.4'
         slf4j_version = '1.7.19'

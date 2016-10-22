@@ -1,6 +1,11 @@
 rootProject.name = 'corgi'
 
 include ':common'
+include ':register:api'
+include ':register:p2p'
+include ':register:zookeeper'
+include ':cluster'
+include ':monitor'
 include ':rpc'
 include ':db:mongo'
 include ':db:jpa'

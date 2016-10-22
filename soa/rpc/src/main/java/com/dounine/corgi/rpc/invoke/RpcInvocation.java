@@ -1,11 +1,11 @@
 package com.dounine.corgi.rpc.invoke;
 
-import com.dounine.corgi.rpc.invoke.config.IRegister;
-import com.dounine.corgi.rpc.invoke.config.NodeInfo;
-import com.dounine.corgi.rpc.listen.RpcListener;
+import com.dounine.corgi.cluster.Balance;
+import com.dounine.corgi.rpc.listen.RpcContainer;
 import com.dounine.corgi.rpc.serialize.result.IResult;
 import com.dounine.corgi.rpc.serialize.rmi.IClient;
 import com.dounine.corgi.rpc.serialize.rmi.RpcClient;
+import com.dounine.corgi.rpc.spring.annotation.Reference;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -17,34 +17,34 @@ public class RpcInvocation<T> implements Invocation<T> {
 
     private Method method;
     private Object[] args;
-    private String version;
-    private IRegister register;
+    private Reference reference;
+    private Balance balance;
 
-    public RpcInvocation(Object[] args,Method method,String version){
+    public RpcInvocation(Object[] args,Method method,Reference reference){
         this.args = args;
         this.method = method;
-        this.version = version;
+        this.reference = reference;
     }
 
-    public RpcInvocation(String version,IRegister register){
-        this.version = version;
-        this.register = register;
-    }
-
-    @Override
-    public IRegister getRegister() {
-        return register;
+    public RpcInvocation(Reference reference, Balance balance){
+        this.reference = reference;
+        this.balance = balance;
     }
 
     @Override
-    public String getVersion() {
-        return this.version;
+    public Balance getBalance() {
+        return balance;
+    }
+
+    @Override
+    public Reference getReference() {
+        return this.reference;
     }
 
     @Override
     public InetSocketAddress getAddress(Class<T> clazz) {
-        NodeInfo nodeInfo = register.getNodeInfo(clazz);
-        return new InetSocketAddress(nodeInfo.getHost(),nodeInfo.getPort());
+        String balanceUrls[] = balance.getBalance("/"+clazz.getName().replace(".","/")).split(":");
+        return new InetSocketAddress(balanceUrls[0],Integer.parseInt(balanceUrls[1]));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class RpcInvocation<T> implements Invocation<T> {
         this.method = method;
 
         IClient client = new RpcClient(this);
-        RpcListener.waitRpcListener();//wait rpc listened
+        RpcContainer.waitRpcListener();//wait rpc listened
         return client.fetch();
     }
 }

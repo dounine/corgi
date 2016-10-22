@@ -17,7 +17,7 @@ import java.net.Socket;
  * Created by huanghuanlai on 16/9/22.
  */
 public class RpcClient implements IClient{
-    private static final int RPC_SOCKET_TIMEOUT = RpcProperties.instance().getInteger("corgi.rpc.rmi.timeout");
+    private static final int RPC_SOCKET_TIMEOUT = RpcProperties.instance().getInteger("corgi.consumer.timeout");
     protected Invocation invocation;
     protected IResult result;
 
@@ -42,7 +42,7 @@ public class RpcClient implements IClient{
             ois = new ObjectInputStream(socket.getInputStream());
             oos = new ObjectOutputStream(socket.getOutputStream());
             oos.writeUTF(invocation.getMethod().getName());
-            oos.writeUTF(invocation.getVersion());
+            oos.writeUTF(invocation.getReference().version());
             oos.writeObject(clazz);
             oos.writeObject(invocation.getMethod().getParameterTypes());
             oos.writeObject(invocation.getArgs());

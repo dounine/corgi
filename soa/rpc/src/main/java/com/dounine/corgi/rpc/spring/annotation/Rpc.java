@@ -1,0 +1,15 @@
+package com.dounine.corgi.rpc.spring.annotation;
+
+import java.lang.annotation.*;
+
+/**
+ * Created by huanghuanlai on 16/10/10.
+ */
+@org.springframework.stereotype.Service
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Rpc {
+    String value() default "";
+    int timeout() default 3000;
+}

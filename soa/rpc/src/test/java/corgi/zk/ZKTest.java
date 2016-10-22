@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class ZKTest {
 
-    ZkClient client = new ZkClient("localhost:2181");
+    ZkClient client = new ZkClient("localhost:2181",3000);
 
 
     @Test
