@@ -9,7 +9,8 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Rpc {
+public @interface Method {
     String value() default "";
     int timeout() default 3000;
+    int retries() default 2;
 }

@@ -2,7 +2,7 @@ package corgi.spring.test_timeout.code;
 
 
 import com.dounine.corgi.exception.SerException;
-import com.dounine.corgi.rpc.spring.annotation.Rpc;
+import com.dounine.corgi.rpc.spring.annotation.Method;
 import com.dounine.corgi.rpc.spring.annotation.Service;
 
 /**
@@ -12,7 +12,7 @@ import com.dounine.corgi.rpc.spring.annotation.Service;
 public class UserApiImpl implements UserApi {
 
     @Override
-    @Rpc(timeout = 3000)
+    @Method(timeout = 3000)
     public void login(String username) throws SerException {
 //        try {
 //            Thread.sleep(600);
