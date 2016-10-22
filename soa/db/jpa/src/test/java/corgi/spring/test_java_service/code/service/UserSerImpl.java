@@ -15,7 +15,7 @@ import java.util.List;
  * Created by lgq on 16-10-13.
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<User, UserDto> implements IUserSer {
+public class UserSerImpl extends ServiceImpl<User, UserDto> implements IUserSer {
 
     @Autowired
     private IUserRep userRep;

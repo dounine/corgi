@@ -1,12 +1,10 @@
 package com.dounine.corgi.mongo.dto;
 
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by lgq on 16-9-2.
@@ -15,9 +13,7 @@ public class BaseDto extends PageDto implements Serializable {
     private static final long serialVersionUID = -3558525794931360478L;
     private List<String> sort; //排序字段
     private String order = "desc"; //排序方式
-    private List<SearchJson> searchJsons = new ArrayList<SearchJson>(0);// 类搜索条件
-    private Criteria criteria = null; //添加自定义条件
-
+    private List<Condition> conditions = new ArrayList<Condition>(0);// 类搜索条件
 
     public List<String> getSort() {
         return sort;
@@ -35,19 +31,12 @@ public class BaseDto extends PageDto implements Serializable {
         this.order = order;
     }
 
-    public List<SearchJson> getSearchJsons() {
-        return searchJsons;
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
-    public void setSearchJsons(List<SearchJson> searchJsons) {
-        this.searchJsons = searchJsons;
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
-    public Criteria getCriteria() {
-        return criteria;
-    }
-
-    public void setCriteria(Criteria criteria) {
-        this.criteria = criteria;
-    }
 }

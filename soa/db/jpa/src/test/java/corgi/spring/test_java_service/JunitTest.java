@@ -94,6 +94,18 @@ public class JunitTest {
 
 
     /**
+     * 查询全部
+     */
+    @Test
+    public void findAll() throws SerException {
+        List<User> users = userSer.findAll();
+        for(User u : users){
+            System.out.println(u.getUsername());
+        }
+    }
+
+
+    /**
      * 分页查询,可带条件及排序
      */
     @Test
@@ -142,7 +154,7 @@ public class JunitTest {
      * 删除对象
      */
     @Test
-    public void remove() throws Throwable {
+    public void remove()throws SerException {
         User user = userSer.findByUsername("liguiqin");
         userSer.remove(user.getId());
         System.out.println("remove user success!");
@@ -152,7 +164,7 @@ public class JunitTest {
      * 模糊查询
      */
     @Test
-    public void findByLike() throws Throwable {
+    public void findByLike() throws SerException{
         UserDto dto = new UserDto();
         Condition c = new Condition("username", DataType.STRING);
         c.setValues(new String[]{"gui"});
@@ -166,7 +178,7 @@ public class JunitTest {
      * 批量添加数据
      */
     @Test
-    public void addAll() throws Throwable {
+    public void addAll()throws SerException {
         List<User> users = new ArrayList<>(5);
         for (int i = 0; i < 15; i++) {
             User user = new User();
@@ -185,7 +197,7 @@ public class JunitTest {
      * 批量修改数据
      */
     @Test
-    public void updateAll() throws Throwable {
+    public void updateAll() throws SerException{
         UserDto dto = new UserDto();
         List<User> users = null;
         Condition c = new Condition("username", DataType.STRING);
@@ -204,11 +216,11 @@ public class JunitTest {
 
     /**
      * 数据回滚
-     * @throws Throwable
+     * @throws SerException
      */
     @Transactional
     @Test
-    public void rollBack() throws Throwable {
+    public void rollBack()throws SerException {
         User user = userSer.findByUsername("liguiqin");
         user.setAge(555);
         userSer.update(user);
@@ -229,7 +241,7 @@ public class JunitTest {
      *
      */
     @Test
-    public void cache_findByNickname() throws Throwable {
+    public void cache_findByNickname()throws SerException {
         String name = "xiaoming";
         userSer.findByNickname(name);
         userSer.findByNickname(name);
@@ -253,7 +265,7 @@ public class JunitTest {
      * @throws Throwable
      */
     @Test
-    public void cache_findByUsername() throws Throwable {
+    public void cache_findByUsername()throws SerException {
         String name ="liguiqin";
         userSer.findByUsername(name);
         userSer.findByUsername(name);

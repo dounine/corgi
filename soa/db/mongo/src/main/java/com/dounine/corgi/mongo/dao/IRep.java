@@ -3,15 +3,13 @@ package com.dounine.corgi.mongo.dao;
 import com.dounine.corgi.mongo.dto.BaseDto;
 import com.dounine.corgi.mongo.entity.BaseEntity;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by lgq on 16/9/3.
  */
-public interface IDao<Entity extends BaseEntity, Dto extends BaseDto> {
+public interface IRep<Entity extends BaseEntity, Dto extends BaseDto> {
 
 
     /**
@@ -25,10 +23,10 @@ public interface IDao<Entity extends BaseEntity, Dto extends BaseDto> {
     /**
      * 查询分页数据
      *
-     * @param query
+     * @param dto
      * @return
      */
-    List<Entity> findByPage(Query query);
+    List<Entity> findByPage(Dto dto);
 
 
     /**
@@ -36,15 +34,15 @@ public interface IDao<Entity extends BaseEntity, Dto extends BaseDto> {
      *
      * @return
      */
-    Long count(Query query);
+    Long count(Dto dto);
 
     /**
      * 查询第一个对象
      *
-     * @param conditions
+     * @param dto
      * @return
      */
-    Entity findOne(Map<String, Object> conditions);
+    Entity findOne(Dto dto);
 
 
     /**
@@ -55,6 +53,14 @@ public interface IDao<Entity extends BaseEntity, Dto extends BaseDto> {
      */
     List<Entity> findByCriteria(Criteria criteria);
 
+    /**
+     * 自定义查询
+     *
+     * @param dto
+     * @return
+     */
+    List<Entity> findByCis(Dto dto,boolean pageAndSort);
+
 
     /**
      * 查询某个对象
@@ -64,13 +70,6 @@ public interface IDao<Entity extends BaseEntity, Dto extends BaseDto> {
      */
     Entity findById(String id);
 
-    /**
-     * 查询符合某个条件对象
-     *
-     * @param field param values
-     * @return
-     */
-    List<Entity> findByIn(String field, List<String> values);
 
     /**
      * 保存对象
@@ -127,36 +126,6 @@ public interface IDao<Entity extends BaseEntity, Dto extends BaseDto> {
      * @param conditions
      */
     public List<Entity> findByCis(Map<String, Object> conditions);
-
-    /**
-     * 根据字段条件查询对象列表数量
-     *
-     * @param conditions
-     */
-    long countByCis(Map<String, Object> conditions);
-
-
-    /**
-     * 模糊条件查询对象列表(只支持字段属性是字符串的查询)
-     *
-     * @param conditions
-     */
-    List<Entity> findByFuzzy(Map<String, Object> conditions);
-
-    /**
-     * 更新符合条件对象列表
-     *
-     * @param entity
-     * @param conditions
-     */
-    void UpdateByCis(Entity entity, Map<String, Object> conditions);
-
-    /**
-     * 删除符合条件对象列表
-     *
-     * @param conditions
-     */
-    void removeByCis(Map<String, Object> conditions);
 
 
 }

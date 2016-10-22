@@ -33,7 +33,10 @@ public enum RestrictionType {
      * 不等于
      */
     NE,//不等于
-    ;
+
+    GTEQ,//大于等于
+
+    LTEQ;//小于等于
 
     public static RestrictionType valueOf(Object val) {
         String vv = String.valueOf(val);
@@ -54,6 +57,10 @@ public enum RestrictionType {
                 return RestrictionType.OR;
             case "NE":
                 return RestrictionType.NE;
+            case "GTEQ":
+                return RestrictionType.GTEQ;
+            case "lTEQ":
+                return RestrictionType.LTEQ;
             default:
                 return RestrictionType.EQ;
         }

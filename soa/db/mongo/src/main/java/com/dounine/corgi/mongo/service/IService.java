@@ -6,7 +6,6 @@ import com.dounine.corgi.mongo.entity.BaseEntity;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by lgq on 16/9/3.
@@ -39,12 +38,31 @@ public interface IService<Entity extends BaseEntity, Dto extends BaseDto> {
 
 
     /**
+     * 条件查询
+     * 分页及排序
+     * @param dto
+     * @return
+     * @throws SerException
+     */
+    List<Entity> findByCis(Dto dto,boolean pageAndSort)throws SerException;
+
+    /**
+     * 条件查询
+     * 默认不分页及排序
+     * @param dto
+     * @return
+     * @throws SerException
+     */
+    List<Entity> findByCis(Dto dto)throws SerException;
+
+
+    /**
      * 查询第一个对象
      *
-     * @param conditions
+     * @param dto
      * @return
      */
-    Entity findOne(Map<String, Object> conditions) throws SerException;
+    Entity findOne(Dto dto) throws SerException;
 
 
     /**
@@ -64,14 +82,6 @@ public interface IService<Entity extends BaseEntity, Dto extends BaseDto> {
      */
     Entity findById(String id) throws SerException;
 
-
-    /**
-     * 查询符合某个条件对象
-     *
-     * @param field param values
-     * @return
-     */
-    List<Entity> findByIn(String field, List<String> values) throws SerException;
 
     /**
      * 保存对象
@@ -122,41 +132,5 @@ public interface IService<Entity extends BaseEntity, Dto extends BaseDto> {
      * @param entities
      */
     void update(List<Entity> entities)throws SerException;
-
-    /**
-     * 根据字段条件查询对象列表
-     *
-     * @param conditions
-     */
-    List<Entity> findByCis(Map<String, Object> conditions) throws SerException;
-
-    /**
-     * 根据字段条件查询对象列表数量
-     *
-     * @param conditions
-     */
-    long countByCis(Map<String, Object> conditions) throws SerException;
-
-    /**
-     * 模糊条件查询对象列表(只支持字段属性是字符串的查询)throws SerException
-     *
-     * @param conditions
-     */
-    List<Entity> findByFuzzy(Map<String, Object> conditions) throws SerException;
-
-    /**
-     * 更新符合条件对象列表
-     *
-     * @param entity
-     * @param conditions
-     */
-    void UpdateByCis(Entity entity, Map<String, Object> conditions) throws SerException;
-
-    /**
-     * 删除符合条件对象列表
-     *
-     * @param conditions
-     */
-    void removeByCis(Map<String, Object> conditions) throws SerException;
 
 }
