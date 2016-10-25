@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class JunitTest extends AbstractJUnit4SpringContextTests{
 
     @Test
-    public void generateUserTable(){
+    public void generateTable(){
 
     }
 

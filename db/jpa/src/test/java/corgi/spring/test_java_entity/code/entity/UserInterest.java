@@ -22,6 +22,7 @@ public class UserInterest extends BaseEntity {
     @JSONField(serialize = false)
     private User user;
 
+
     public String getName() {
         return name;
     }

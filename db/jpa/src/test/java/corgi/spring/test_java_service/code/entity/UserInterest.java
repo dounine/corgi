@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * Created by lgq on 16-10-6.
+ * one -to -many
  * 测试一对多关系
  */
 @Entity
@@ -21,6 +22,7 @@ public class UserInterest extends BaseEntity {
     @JoinColumn(name = "user_id")
     @JSONField(serialize = false)
     private User user;
+
 
     public String getName() {
         return name;

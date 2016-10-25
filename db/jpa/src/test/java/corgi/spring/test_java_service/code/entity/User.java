@@ -1,15 +1,9 @@
 package corgi.spring.test_java_service.code.entity;
 
 import com.dounine.corgi.jpa.entity.BaseEntity;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.Cache;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -17,54 +11,49 @@ import java.util.Set;
  * Created by huanghuanlai on 16/4/28.
  */
 @Entity
-@Table(name="test_user")
+@Table(name = "test_user")
 public class User extends BaseEntity {
 
-    //非空约束，唯一约束
-    @Column(unique = true,length = 20,nullable = false)
+    @Column(unique = true, length = 12)
     private String username;
     private String password;
     @OrderBy(value = "age desc ")
     private Integer age;
+    @Column(name = "money", nullable = true, precision = 12, scale = 2)//12位数字可保留两位小数，可以为空
     private Double money;
     private Float height;
     private String nickname;
-    @DateTimeFormat(pattern="yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime accessTime = LocalDateTime.now();
 
+    //optional 属性 是定义该关联类是否必须存在,值为false 时，关联类双方都必须存在(inner join) true是为left join
+
+    //CascadeType.PERSIST（级联新建）、CascadeType.REMOVE（级联删除）、CascadeType.REFRESH（级联刷新）、CascadeType.MERGE（级联更新）中选择一个或多个。还有一个选择是使用CascadeType.ALL，表示选择全部四项。    @ManyToOne(cascade = {CascadeType.ALL})
+
+    /** one-to-one
+     * 除了 many to one 其他关联关系都有mappedBy属性，使用mappedBy的一端为主控方，
+     * 主控方来维持对象关系
+     * mappedBy = "user" User 为主控方，维持userInfo（被控方关系）
+     * private UserInfo userInfo;
+     */
+    @OneToOne(optional = true, cascade = CascadeType.ALL, mappedBy = "user")
+    private UserInfo userInfo;
+
+
     /**
-     * 只有在双向关联时才会使用mappedBy属性，
-     * 只有OneToOne、OneToMany、ManyToMany上才有mappedBy属性，ManyToOne不存在该属性。
-     * 使用了mappedBy的一端称为关系目标方（被控方），
-     * 另一端为关系拥有方（控制方）。
-     * 相应的对象称之为被控对象和主控对象。
+     * many-to-one
      */
-
-
-    /**一般用many to one 即可
-     * User类（主控方）
-     *  private UserDetails details;
-     * @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-     * @JoinColumn(name = "details_id")
-     * @Fetch(FetchMode.JOIN)
-     *
-     * UserDetails类(被控方)
-     * private User user ;
-     * @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-     */
-
-
-
-    //CascadeType 级联所有,根据需要选择级联更新,级联保存,级联删除....
     @ManyToOne(cascade = {CascadeType.ALL})
-    //多对一配置 details_id 为 外键关联id
-    @JoinColumn(name = "details_id")
-    private UserDetails details;
+    //多对一配置 group_id作为外键关联映射表的主键列关联
+    //ManyToOne 指定 many 一方是不能独立存在的，否则存在孤儿数据
+    @JoinColumn(name = "group_id", nullable = true)
+    private UserGroup group;
 
-    //一对多配置  FetchType 是否懒加载, (OneToMany默认懒加载LAZY,ManyToOne为默认加载EAGER)
-    @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE},fetch = FetchType.EAGER)
+    //OneToMany(cascade = CascadeType.ALL, mappedBy = "oneId")//指向多的那方的pojo的关联外键字段
+    //private Set<Many> manys;
+    //一对多配置  FetchType 是否懒加载, (OneToMany默认懒加载LAZY,ManyToOne为默认加载EAGER)一般由多的一方维护关系
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @OrderBy(value = "seq ASC")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE,region ="entityCache" )
     private Set<UserInterest> interests;
 
     public String getUsername() {
@@ -107,14 +96,6 @@ public class User extends BaseEntity {
         this.height = height;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
     public LocalDateTime getAccessTime() {
         return accessTime;
     }
@@ -123,12 +104,20 @@ public class User extends BaseEntity {
         this.accessTime = accessTime;
     }
 
-    public UserDetails getDetails() {
-        return details;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setDetails(UserDetails details) {
-        this.details = details;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public UserGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(UserGroup group) {
+        this.group = group;
     }
 
     public Set<UserInterest> getInterests() {
@@ -137,5 +126,13 @@ public class User extends BaseEntity {
 
     public void setInterests(Set<UserInterest> interests) {
         this.interests = interests;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

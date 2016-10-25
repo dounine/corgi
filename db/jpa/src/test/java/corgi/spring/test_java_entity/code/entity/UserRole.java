@@ -10,14 +10,14 @@ import javax.persistence.*;
  * 应该用双向many-to-one 来达到多对多关联的目的
  */
 @Entity
-@Table(name = "test_user_teacher")
-public class User_Teacher extends BaseEntity {
+@Table(name = "test_user_role")
+public class UserRole extends BaseEntity {
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "uid")
     private User user;
     @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "tid")
-    private Teacher teacher;
+    @JoinColumn(name = "rid")
+    private Role role;
 
     public User getUser() {
         return user;
@@ -27,11 +27,11 @@ public class User_Teacher extends BaseEntity {
         this.user = user;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public Role getRole() {
+        return role;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
