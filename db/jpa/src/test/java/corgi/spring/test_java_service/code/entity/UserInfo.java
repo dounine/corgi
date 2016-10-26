@@ -1,27 +1,45 @@
 package corgi.spring.test_java_service.code.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.dounine.corgi.jpa.entity.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.time.LocalDateTime;
+import javax.persistence.*;
 
 /**
- * Created by lgq on 16-9-4.
- * 用户详情信息
- * 测试多对一关系
+ * Created by lgq on 16-10-25.
  */
 @Entity
-@Table(name="test_user_details")
-public class UserDetails extends BaseEntity {
+@Table(name = "test_userInfo")
+public class UserInfo extends BaseEntity{
+
+    private String email;
+    private String fox;
     private String company; //所在单位
     private String address; //通讯地址
     private String postcodes; //邮编
     private String contact; // 联系人
     private String telephone;//联系电话
-    private String fax; // 传真
-    private String email;//邮箱
-    private LocalDateTime createTime;//填表日期???
+
+
+    @OneToOne(optional = false, cascade = CascadeType.REFRESH)
+    @JoinColumn(name="user_id")
+    @JSONField(serialize = false)
+    private User user;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFox() {
+        return fox;
+    }
+
+    public void setFox(String fox) {
+        this.fox = fox;
+    }
 
     public String getCompany() {
         return company;
@@ -63,27 +81,11 @@ public class UserDetails extends BaseEntity {
         this.telephone = telephone;
     }
 
-    public String getFax() {
-        return fax;
+    public User getUser() {
+        return user;
     }
 
-    public void setFax(String fax) {
-        this.fax = fax;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

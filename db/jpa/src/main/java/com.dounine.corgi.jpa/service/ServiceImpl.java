@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -97,7 +98,7 @@ public class ServiceImpl<BE extends BaseEntity, BD extends BaseDto> extends Fina
     }
 
     @Override
-    public void save(List<BE> entities) throws SerException {
+    public void save(Collection<BE> entities) throws SerException {
         myRepository.save(entities);
     }
 
@@ -112,7 +113,7 @@ public class ServiceImpl<BE extends BaseEntity, BD extends BaseDto> extends Fina
     }
 
     @Override
-    public void remove(List<BE> entities) {
+    public void remove(Collection<BE> entities) {
         myRepository.deleteInBatch(entities);
     }
 
@@ -122,7 +123,7 @@ public class ServiceImpl<BE extends BaseEntity, BD extends BaseDto> extends Fina
     }
 
     @Override
-    public void update(List<BE> entities) throws SerException {
+    public void update(Collection<BE> entities) throws SerException {
         Stream<BE> stream = entities.stream();
         stream.forEach(entity -> {
             myRepository.saveAndFlush(entity);

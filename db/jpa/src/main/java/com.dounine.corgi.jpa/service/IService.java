@@ -7,6 +7,7 @@ import com.dounine.corgi.jpa.exception.SerException;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +88,7 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      *
      * @param entities
      */
-    void save(List<BE> entities) throws SerException;
+    void save(Collection<BE> entities) throws SerException;
 
     /**
      * 通过id删除对象
@@ -108,7 +109,7 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      *
      * @param entities
      */
-    void remove(List<BE> entities) throws SerException;
+    void remove(Collection<BE> entities) throws SerException;
 
 
     /**
@@ -123,7 +124,7 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      *
      * @param entities
      */
-    void update(List<BE> entities) throws SerException;
+    void update(Collection<BE> entities) throws SerException;
 
 
     boolean exists(String id) throws SerException;
