@@ -1,6 +1,10 @@
 package corgi.spring.test_java_service.code.entity;
 
 import com.dounine.corgi.jpa.entity.BaseEntity;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 

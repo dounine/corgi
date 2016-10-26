@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * 多个用户属于一个用户组
  */
 @Entity
-@Table(name = "user_group")
+@Table(name = "test_user_group")
 public class UserGroup extends BaseEntity{
     @Column(unique = true)
     private String name ;

@@ -2,6 +2,8 @@ package corgi.spring.test_java_service.code.entity;
 
 import com.dounine.corgi.jpa.entity.BaseEntity;
 import com.dounine.corgi.jpa.enums.Status;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +18,10 @@ public class Role extends BaseEntity {
     private String name; //角色名
     private LocalDateTime createTime; //创建时间
     private Status status;
+
+    @OneToMany(mappedBy = "role", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private Set<UserRole> userRoles;
+
 
     public String getName() {
         return name;
@@ -41,5 +47,11 @@ public class Role extends BaseEntity {
         this.status = status;
     }
 
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
 
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
 }

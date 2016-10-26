@@ -57,6 +57,18 @@ public class User extends BaseEntity {
     @OrderBy(value = "seq ASC")
     private Set<UserInterest> interests;
 
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.EXTRA)
+    private Set<UserRole> userRoles;
+
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
+
     public String getUsername() {
         return username;
     }

@@ -20,6 +20,11 @@ public class Role extends BaseEntity {
     private LocalDateTime createTime; //创建时间
     private Status status;
 
+    @OneToMany(mappedBy = "role", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+   @LazyCollection(LazyCollectionOption.EXTRA)
+    private Set<UserRole> userRoles;
+
+
     public String getName() {
         return name;
     }
@@ -43,4 +48,12 @@ public class Role extends BaseEntity {
     public void setStatus(Status status) {
         this.status = status;
     }
-   }
+
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
+}

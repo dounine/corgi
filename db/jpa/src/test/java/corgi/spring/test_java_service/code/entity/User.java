@@ -1,6 +1,8 @@
 package corgi.spring.test_java_service.code.entity;
 
 import com.dounine.corgi.jpa.entity.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -11,7 +13,7 @@ import java.util.Set;
  * Created by huanghuanlai on 16/4/28.
  */
 @Entity
-@Table(name = "test_user")
+@Table(name="test_user")
 public class User extends BaseEntity {
 
     @Column(unique = true, length = 12)
@@ -43,9 +45,9 @@ public class User extends BaseEntity {
     /**
      * many-to-one
      */
-    @ManyToOne(cascade = {CascadeType.ALL})
     //多对一配置 group_id作为外键关联映射表的主键列关联
     //ManyToOne 指定 many 一方是不能独立存在的，否则存在孤儿数据
+    @ManyToOne(cascade = {CascadeType.ALL},optional = false)
     @JoinColumn(name = "group_id", nullable = true)
     private UserGroup group;
 
@@ -55,6 +57,17 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @OrderBy(value = "seq ASC")
     private Set<UserInterest> interests;
+
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private Set<UserRole> userRoles;
+
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
 
     public String getUsername() {
         return username;

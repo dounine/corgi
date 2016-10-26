@@ -32,6 +32,7 @@ public class ManyToOne {
     /**
      *   双方共同维护关系
      *   ManyToOne 指定 many 一方是不能独立存在的，否则存在孤儿数据
+     *  一般一个group都要存在用户
      */
 
     @Autowired
@@ -76,6 +77,8 @@ public class ManyToOne {
         userSer.update(user);
         System.out.println(JSON.toJSONString(user));
     }
+
+
 
     /**
      * 删除被引用的用户组
