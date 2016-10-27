@@ -17,10 +17,11 @@ public class UserInterest extends BaseEntity {
     private Integer seq;
     private LocalDateTime createTime;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
     @JSONField(serialize = false)
     private User user;
+
 
     public String getName() {
         return name;

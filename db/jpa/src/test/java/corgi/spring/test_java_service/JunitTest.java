@@ -8,8 +8,8 @@ import com.dounine.corgi.jpa.exception.SerException;
 import corgi.spring.test_java_service.code.ApplicationConfiguration;
 import corgi.spring.test_java_service.code.dto.UserDto;
 import corgi.spring.test_java_service.code.entity.User;
-import corgi.spring.test_java_service.code.entity.UserDetails;
 import corgi.spring.test_java_service.code.entity.UserInterest;
+import corgi.spring.test_java_service.code.service.IUserInterestSer;
 import corgi.spring.test_java_service.code.service.IUserSer;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +29,10 @@ import java.util.*;
 @ContextConfiguration(classes = ApplicationConfiguration.class)
 public class JunitTest {
 
+    /**
+     * 基础增删改查，批量操作等
+     */
+
     @Autowired
     private IUserSer userSer;
 
@@ -43,55 +47,9 @@ public class JunitTest {
             user.setAge(55);
             user.setHeight(1.2f);
             user.setNickname("xiaoming");
-
-            UserDetails details = new UserDetails();
-            details.setAddress("天河");
-            details.setTelephone("110");
-            user.setDetails(details);
             userSer.save(user);
         }
     }
-
-
-    /**
-     * 插入对象
-     */
-    @Test
-    public void addUser() throws SerException {
-        User user = new User();
-        user.setUsername("qin_add");
-        user.setPassword("123456");
-        user.setMoney(5000.0);
-        userSer.save(user);
-        System.out.println(JSON.toJSONString(user));
-    }
-
-    /**
-     * 保存对象,(保存 many-to-one,one-to-many )
-     */
-    @Test
-    public void add() throws SerException {
-        User user = new User();
-        user.setUsername("qin_details");
-        user.setAge(77);
-        user.setPassword("7777755");
-        UserDetails details = new UserDetails();
-        details.setEmail("liguiqin@qq.com");
-        details.setAddress("广州");
-        user.setDetails(details);
-
-        Set<UserInterest> interests = new HashSet<>(1);
-        UserInterest interest = new UserInterest();
-        interest.setSeq(1);
-        interest.setName("computer");
-        interest.setUser(user);
-        interest.setCreateTime(LocalDateTime.now());
-        interests.add(interest);
-        user.setInterests(interests);
-        userSer.save(user);
-        System.out.println(JSON.toJSONString(user));
-    }
-
 
     /**
      * 查询全部
@@ -145,7 +103,6 @@ public class JunitTest {
 
         User user = userSer.findByUsername("liguiqin");
         user.setPassword("666 this is a pass");
-        user.getDetails().setTelephone("1999999");
         userSer.update(user);
         System.out.println(JSON.toJSONString(user));
     }
@@ -212,7 +169,16 @@ public class JunitTest {
         System.out.println(JSON.toJSONString(users));
 
     }
+    /**
+     * 批量删除数据
+     */
+    @Test
+    public void removeAll() throws SerException{
+        List<User> users = userSer.findAll();
+        userSer.remove(users);
+        System.out.println(JSON.toJSONString(userSer.findAll()));
 
+    }
 
     /**
      * 数据回滚

@@ -4,17 +4,24 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.dounine.corgi.jpa.boot.Constant;
 import net.sf.ehcache.config.CacheConfiguration;
 import org.apache.commons.lang3.ArrayUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+import org.springframework.orm.hibernate5.support.OpenSessionInViewFilter;
+import org.springframework.orm.hibernate5.support.OpenSessionInViewInterceptor;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.servlet.FilterConfig;
 
 import java.util.*;
 
@@ -69,6 +76,18 @@ public class Components {
         jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);
         return jpaTransactionManager;
     }
+
+
+    @Bean(name = "openSessionInViewInterceptor")
+    public OpenSessionInViewInterceptor openSessionInViewInterceptor(EntityManager entityManager) {
+        OpenSessionInViewInterceptor inViewInterceptor = new OpenSessionInViewInterceptor();
+        Session session = (org.hibernate.Session) entityManager.getDelegate();
+        SessionFactory sessionFactory  =session.getSessionFactory();
+        inViewInterceptor.setSessionFactory(sessionFactory);
+        return inViewInterceptor;
+    }
+
+
 
     /**
      * 加载缓存配置
