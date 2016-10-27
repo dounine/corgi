@@ -6,7 +6,6 @@ import com.dounine.corgi.rpc.invoke.Invocation;
 import com.dounine.corgi.rpc.invoke.RpcInvocation;
 import com.dounine.corgi.rpc.listen.RpcContainer;
 import com.dounine.corgi.rpc.protocol.IProtocol;
-import com.dounine.corgi.rpc.register.IRegister;
 import com.dounine.corgi.rpc.spring.annotation.Reference;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
