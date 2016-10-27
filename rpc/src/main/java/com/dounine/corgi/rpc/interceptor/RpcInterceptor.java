@@ -19,6 +19,7 @@ public class RpcInterceptor implements MethodInterceptor{
 
     @Override
     public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+
         String methodName = method.getName();
         Class<?>[] parameterTypes = method.getParameterTypes();
         if ("toString".equals(methodName) && parameterTypes.length == 0) {
@@ -32,4 +33,5 @@ public class RpcInterceptor implements MethodInterceptor{
         }
         return invoker.fetch(args,method).result();
     }
+
 }

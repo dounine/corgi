@@ -19,4 +19,7 @@ public class Demo {
         Assert.assertEquals("success",context.getBean(People.class).login("admin"));
     }
 
+
+
 }
+
