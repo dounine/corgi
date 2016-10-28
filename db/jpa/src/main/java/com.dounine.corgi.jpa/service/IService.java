@@ -126,7 +126,23 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      */
     void update(Collection<BE> entities) throws SerException;
 
-
     boolean exists(String id) throws SerException;
+
+    /**
+     * 查询最大值字段
+     * @param field
+     * @return
+     * @throws SerException
+     */
+    String findByMaxField(String field,Class clazz) throws SerException;
+
+    /**
+     * 查询最小值字段
+     * @param field
+     * @return
+     * @throws SerException
+     */
+    String findByMinField(String field,Class clazz) throws SerException;
+
 
 }

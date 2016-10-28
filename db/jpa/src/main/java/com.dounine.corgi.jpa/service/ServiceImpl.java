@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
@@ -33,6 +34,8 @@ public class ServiceImpl<BE extends BaseEntity, BD extends BaseDto> extends Fina
 
     @Autowired
     protected MyRep<BE, BD> myRepository;
+    @Autowired
+    protected EntityManager entityManager;
 
     @Override
     public List<BE> findAll() throws SerException {
@@ -157,4 +160,23 @@ public class ServiceImpl<BE extends BaseEntity, BD extends BaseDto> extends Fina
         return new SerException(msg);
     }
 
+    @Override
+    public String findByMaxField(String field,Class clazz) throws SerException {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT MAX ( ");
+        jpql.append(field);
+        jpql.append(") FROM ");
+        jpql.append(clazz.getSimpleName());
+        return entityManager.createQuery(jpql.toString()).getSingleResult().toString();
+    }
+
+    @Override
+    public String findByMinField(String field,Class clazz) throws SerException {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("SELECT MIN (");
+        jpql.append(field);
+        jpql.append(")FROM ");
+        jpql.append(clazz.getSimpleName());
+        return entityManager.createQuery(jpql.toString()).getSingleResult().toString();
+    }
 }
