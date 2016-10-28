@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+
 import javax.persistence.criteria.*;
 import java.lang.reflect.Method;
 import java.time.format.DateTimeParseException;
@@ -39,7 +40,7 @@ public class MySpecification<BE extends BaseEntity, BD extends BaseDto> implemen
     public Predicate toPredicate(Root<BE> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         List<Predicate> preList = null;
         try {
-            preList = initPredicates(dto, root, cb);
+            preList = initPredicates(dto, root, cb,query);
         } catch (RepException e) {
             throw e;
         }
@@ -50,7 +51,8 @@ public class MySpecification<BE extends BaseEntity, BD extends BaseDto> implemen
     }
 
 
-    private List<Predicate> initPredicates(BD dto, Root<BE> root, CriteriaBuilder cb) throws RepException {
+    private List<Predicate> initPredicates(BD dto, Root<BE> root, CriteriaBuilder cb,CriteriaQuery<?> query) throws RepException {
+
         List<Predicate> preList = new ArrayList<>(0); //条件列表
         List<Condition> conditions = dto.getConditions() != null ? dto.getConditions() : new ArrayList<>(0);//避免条件列表为空
         Stream<Condition> stream = conditions.stream();
@@ -71,16 +73,25 @@ public class MySpecification<BE extends BaseEntity, BD extends BaseDto> implemen
                     }
                 }
                 RestrictionType type = model.getRestrict();
-                if (type == RestrictionType.LIKE) {
-                    predicate = cb.like(root.get(field).as(clazz),"%"+model.getValues()[0]+ "%");
-                }else {
-                    Object[] values = PrimitiveUtil.convertValuesByType(model.getValues(), model.getFieldType());
-                    if (type == RestrictionType.IN) {
-                        predicate = (Predicate) method.invoke(cb, root.get(field).as(clazz), values);
-                    } else {
-                        predicate = (Predicate) method.invoke(cb, ArrayUtils.add(values, 0, root.get(field).as(clazz)));
-                    }
+                switch (type) {
+                    case LIKE:
+                        predicate = cb.like(root.get(field).as(clazz), "%" + model.getValues()[0] + "%");
+                        break;
+                    case ISNULL:
+                        predicate = cb.isNull(root.get(field).as(clazz));
+                        break;
+                    case ISNOTNULL:
+                        predicate = cb.isNotNull(root.get(field).as(clazz));
+                        break;
+                    default:
+                        Object[] values = PrimitiveUtil.convertValuesByType(model.getValues(), model.getFieldType());
+                        if (type == RestrictionType.IN) {
+                            predicate = (Predicate) method.invoke(cb, root.get(field).as(clazz), values);
+                        } else {
+                            predicate = (Predicate) method.invoke(cb, ArrayUtils.add(values, 0, root.get(field).as(clazz)));
+                        }
                 }
+
 
             } catch (Exception e) {
                 e.printStackTrace();
