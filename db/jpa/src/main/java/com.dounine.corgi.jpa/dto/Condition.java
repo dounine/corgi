@@ -19,10 +19,10 @@ public class Condition {
         this.field = field;
         this.fieldType =fieldType;
     }
-    public Condition(String field,DataType fieldType,String value){
+    public Condition(String field,DataType fieldType,Object value){
         this.field = field;
         this.fieldType =fieldType;
-        values = new String[]{value};
+        values = new String[]{String.valueOf(value)};
     }
 
     public RestrictionType getRestrict() {

@@ -83,12 +83,7 @@ public class JunitTest {
     @Test
     public void findByCis() throws SerException {
         UserDto dto = new UserDto();
-        Condition condition = new Condition();
-        String[] between =
-                new String[]{"true"};
-                condition.setValues(between);
-        condition.setField("superMan");
-        condition.setFieldType(DataType.BOOLEAN);
+        Condition condition = new Condition("superMan",DataType.BOOLEAN,true);
         condition.setRestrict(RestrictionType.EQ);
         dto.getConditions().add(condition);
         List<User> users = userSer.findByCis(dto); //按条件查询并分页
