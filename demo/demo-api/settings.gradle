@@ -1,4 +1,4 @@
-rootProject.name = 'api'
+rootProject.name = 'demo-api'
 
 include ':rpc'
 include ':common'

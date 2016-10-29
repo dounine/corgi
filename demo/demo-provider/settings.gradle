@@ -1,4 +1,4 @@
-rootProject.name = 'provider'
+rootProject.name = 'demo-provider'
 
 include ':rpc'
 include ':common'

@@ -10,6 +10,5 @@ dependencies {
 	compile "org.slf4j:slf4j-api:$slf4j_version"
 	compile "org.slf4j:slf4j-log4j12:$slf4j_version"
 	compile "com.alibaba:fastjson:$fastjson_version"
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
 
 }

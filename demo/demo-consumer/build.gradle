@@ -2,7 +2,7 @@ apply plugin: 'spring-boot'
 
 dependencies {
     compile project(':rpc')
-    compile project(':demo:api')
+    compile project(':demo:demo-api')
     compile("org.springframework.boot:spring-boot-starter-web")
 }
 

@@ -5,6 +5,6 @@ mainClassName='com.dounine.corgi.demo.Application'
 
 dependencies {
     compile project(':rpc')
-    compile project(':demo:api')
+    compile project(':demo:demo-api')
     compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '1.9.4.RELEASE'
 }
