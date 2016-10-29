@@ -12,9 +12,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "test_user_role")
 public class UserRole extends BaseEntity {
+
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "uid")
     private User user;
+
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "rid")
     private Role role;

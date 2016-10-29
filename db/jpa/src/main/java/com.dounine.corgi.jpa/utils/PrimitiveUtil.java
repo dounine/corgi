@@ -55,7 +55,7 @@ public class PrimitiveUtil {
                 case FLOAT:result[i] = Float.parseFloat(values[i]); break;
                 case CHAR:result[i] = values[i].charAt(0); break;
                 case DOUBLE:result[i] = Double.parseDouble(values[i]); break;
-                case BOOLEAN:result[i] = Integer.parseInt(values[i]); break;
+                case BOOLEAN:result[i] = Boolean.parseBoolean(values[i]); break;
                 case LONG:result[i] = Long.parseLong(values[i]); break;
                 case LOCALDATE:result[i] = LocalDate.parse(values[i]); break;
                 case LOCALTIME:result[i] = LocalTime.parse(values[i]); break;
