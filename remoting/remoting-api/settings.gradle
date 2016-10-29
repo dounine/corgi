@@ -1,4 +1,4 @@
-rootProject.name = 'p2p'
+rootProject.name = 'remoting-api'
 
 include ':common'
 project(':common').projectDir = new File(settingsDir, '../../common')

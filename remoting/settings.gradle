@@ -1,4 +1,0 @@
-rootProject.name = 'remoting'
-
-include ':api'
-include ':p2p'

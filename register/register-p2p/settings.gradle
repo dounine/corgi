@@ -1,4 +1,4 @@
-rootProject.name = 'zookeeper'
+rootProject.name = 'register-p2p'
 
 include ':common'
 project(':common').projectDir = new File(settingsDir, '../../common')
