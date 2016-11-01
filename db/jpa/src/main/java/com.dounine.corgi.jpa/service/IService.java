@@ -21,7 +21,9 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      *
      * @return
      */
-    List<BE> findAll() throws SerException;
+    default  List<BE> findAll() throws SerException{
+        return null;
+    }
 
     /**
      * 查询分页数据
@@ -29,7 +31,9 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      * @param dto
      * @return
      */
-    List<BE> findByPage(BD dto) throws SerException;
+    default List<BE> findByPage(BD dto) throws SerException{
+        return null;
+    }
 
     /**
      * 查询数据量
@@ -37,10 +41,14 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      * @param dto
      * @return
      */
-    Long count(BD dto) throws SerException;
+    default Long count(BD dto) throws SerException{
+        return  null;
+    }
 
 
-    BE findOne(BD dto) throws SerException;
+    default BE findOne(BD dto) throws SerException{
+        return  null;
+    }
 
     /**
      * 根据条件询对象列表
@@ -48,7 +56,9 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      * @param dto
      * @return
      */
-    List<BE> findByCis(BD dto,Boolean pageAndSort) throws SerException;
+    default List<BE> findByCis(BD dto,Boolean pageAndSort) throws SerException{
+        return null;
+    }
 
     /**
      * 根据条件询对象列表
@@ -56,7 +66,9 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      * @param dto
      * @return
      */
-    List<BE> findByCis(BD dto) throws SerException;
+    default List<BE> findByCis(BD dto) throws SerException{
+        return null;
+    }
 
 
     /**
@@ -65,7 +77,9 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      * @param dto
      * @return
      */
-    Long countByCis(BD dto ) throws SerException;
+    default Long countByCis(BD dto ) throws SerException{
+        return null;
+    }
 
     /**
      * 查询某个对象
@@ -73,7 +87,9 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      * @param id
      * @return
      */
-    BE findById(String id) throws SerException;
+    default BE findById(String id) throws SerException{
+        return null;
+    }
 
 
     /**
@@ -81,35 +97,45 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      *
      * @param entity
      */
-    BE save(BE entity) throws SerException;
+    default BE save(BE entity) throws SerException{
+        return  null;
+    }
 
     /**
      * 保存对象列表
      *
      * @param entities
      */
-    void save(Collection<BE> entities) throws SerException;
+    default void save(Collection<BE> entities) throws SerException{
+
+    }
 
     /**
      * 通过id删除对象
      *
      * @param id
      */
-    void remove(String id) throws SerException;
+    default  void remove(String id) throws SerException{
+
+    }
 
     /**
      * 删除对象
      *
      * @param entity
      */
-    void remove(BE entity) throws SerException;
+    default void remove(BE entity) throws SerException{
+
+    }
 
     /**
      * 删除对象列表
      *
      * @param entities
      */
-    void remove(Collection<BE> entities) throws SerException;
+    default void remove(Collection<BE> entities) throws SerException{
+
+    }
 
 
     /**
@@ -117,16 +143,22 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      *
      * @param entity
      */
-    void update(BE entity) throws SerException;
+    default void update(BE entity) throws SerException{
+
+    }
 
     /**
      * 更新对象
      *
      * @param entities
      */
-    void update(Collection<BE> entities) throws SerException;
+    default void update(Collection<BE> entities) throws SerException{
 
-    boolean exists(String id) throws SerException;
+    }
+
+    default Boolean exists(String id) throws SerException{
+        return null;
+    }
 
     /**
      * 查询最大值字段
@@ -134,7 +166,9 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      * @return
      * @throws SerException
      */
-    String findByMaxField(String field,Class clazz) throws SerException;
+    default String findByMaxField(String field,Class clazz) throws SerException{
+        return null;
+    }
 
     /**
      * 查询最小值字段
@@ -142,7 +176,20 @@ public interface IService<BE extends BaseEntity, BD extends BaseDto> {
      * @return
      * @throws SerException
      */
-    String findByMinField(String field,Class clazz) throws SerException;
+    default  String findByMinField(String field,Class clazz) throws SerException{
+        return null;
+    }
+
+    /**
+     * 查询最小值字段
+     * @param field
+     * @return
+     * @throws SerException
+     */
+    default  String findByMinFieldTest(String field,Class clazz) throws SerException{
+        return null;
+    }
+
 
 
 }

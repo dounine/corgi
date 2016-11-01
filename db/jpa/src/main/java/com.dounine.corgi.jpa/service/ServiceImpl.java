@@ -135,7 +135,7 @@ public class ServiceImpl<BE extends BaseEntity, BD extends BaseDto> extends Fina
     }
 
     @Override
-    public boolean exists(String id) throws SerException {
+    public Boolean exists(String id) throws SerException {
         return myRepository.exists(id);
     }
 
@@ -178,5 +178,10 @@ public class ServiceImpl<BE extends BaseEntity, BD extends BaseDto> extends Fina
         jpql.append(")FROM ");
         jpql.append(clazz.getSimpleName());
         return entityManager.createQuery(jpql.toString()).getSingleResult().toString();
+    }
+
+    @Override
+    public String findByMinFieldTest(String field, Class clazz) throws SerException {
+        return null;
     }
 }
