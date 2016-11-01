@@ -1,4 +1,4 @@
-package com.dounine.corgi.demo.consumer.config;
+package com.dounine.corgi.demo.config;
 
 import com.dounine.corgi.validation.aop.GlobalValidation;
 import org.aspectj.lang.annotation.Aspect;

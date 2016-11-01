@@ -1,4 +1,4 @@
-package com.dounine.corgi.demo.consumer.config.exception;
+package com.dounine.corgi.demo.config.exception;
 
 import com.dounine.corgi.exception.ExceptionHandler;
 

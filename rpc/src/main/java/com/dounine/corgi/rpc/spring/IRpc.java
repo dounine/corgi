@@ -1,7 +1,7 @@
 package com.dounine.corgi.rpc.spring;
 
 import com.dounine.corgi.cluster.Balance;
-import com.dounine.corgi.register.api.Register;
+import com.dounine.corgi.register.Register;
 import com.dounine.corgi.rpc.protocol.IProtocol;
 
 /**

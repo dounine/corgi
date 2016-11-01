@@ -1,4 +1,4 @@
-package com.dounine.corgi.demo.consumer.config.beans;
+package com.dounine.corgi.demo.config.beans;
 
 import com.dounine.corgi.rpc.spring.SpringProcessor;
 import org.springframework.stereotype.Component;

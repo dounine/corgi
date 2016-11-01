@@ -1,4 +1,4 @@
-package com.dounine.corgi.register.api;
+package com.dounine.corgi.register;
 
 import com.dounine.corgi.cluster.ClusterPaths;
 

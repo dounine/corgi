@@ -1,4 +1,4 @@
-package com.dounine.corgi.demo.consumer.ctrl;
+package com.dounine.corgi.demo.ctrl;
 
 import com.dounine.corgi.commons.ResponseText;
 import com.dounine.corgi.rpc.spring.annotation.Reference;

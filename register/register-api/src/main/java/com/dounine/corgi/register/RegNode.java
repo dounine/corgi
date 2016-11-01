@@ -1,4 +1,4 @@
-package com.dounine.corgi.register.api;
+package com.dounine.corgi.register;
 
 /**
  * Created by huanghuanlai on 2016/10/21.

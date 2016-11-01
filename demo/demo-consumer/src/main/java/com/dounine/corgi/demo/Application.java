@@ -1,6 +1,6 @@
-package com.dounine.corgi.demo.consumer;
+package com.dounine.corgi.demo;
 
-import com.dounine.corgi.demo.consumer.config.exception.MyHanException;
+import com.dounine.corgi.demo.config.exception.MyHanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;

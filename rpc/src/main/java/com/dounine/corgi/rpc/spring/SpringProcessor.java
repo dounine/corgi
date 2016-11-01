@@ -3,7 +3,7 @@ package com.dounine.corgi.rpc.spring;
 import com.dounine.corgi.cluster.Balance;
 import com.dounine.corgi.cluster.CirculationBalance;
 import com.dounine.corgi.cluster.ClusterPaths;
-import com.dounine.corgi.register.api.*;
+import com.dounine.corgi.register.*;
 import com.dounine.corgi.rpc.RpcApp;
 import com.dounine.corgi.rpc.listen.RpcContainer;
 import com.dounine.corgi.rpc.protocol.CorgiProtocol;

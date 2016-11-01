@@ -1,4 +1,4 @@
-package com.dounine.corgi.register.api;
+package com.dounine.corgi.register;
 
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.exception.ZkNoNodeException;
