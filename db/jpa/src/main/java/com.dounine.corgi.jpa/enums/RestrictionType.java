@@ -8,6 +8,7 @@ public enum RestrictionType {
      * 相等
      */
     EQ,//相等
+
     /**
      * 在什么之间
      */
@@ -39,7 +40,11 @@ public enum RestrictionType {
 
     GTEQ,//大于等于
 
-    LTEQ;//小于等于
+    LTEQ,//小于等于
+
+    ISNULL,
+    ISNOTNULL,;
+
 
 
     public static RestrictionType valueOf(Object val) {
@@ -65,6 +70,10 @@ public enum RestrictionType {
                 return RestrictionType.OR;
             case "NE":
                 return RestrictionType.NE;
+            case "ISNULL":
+                return RestrictionType.ISNULL;
+            case "ISNOTNULL":
+                return RestrictionType.ISNOTNULL;
             default:
                 return RestrictionType.EQ;
         }
@@ -91,6 +100,10 @@ public enum RestrictionType {
                 return "or";
             case NE:
                 return "ne";
+            case ISNULL:
+                return "isNull";
+            case ISNOTNULL:
+                return "isNotNull";
             default:
                 return "equal";
         }

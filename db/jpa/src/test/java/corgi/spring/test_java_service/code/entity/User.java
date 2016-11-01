@@ -27,6 +27,8 @@ public class User extends BaseEntity {
     private String nickname;
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime accessTime = LocalDateTime.now();
+    @Column(columnDefinition = "TINYINT(1)")
+    private boolean superMan;
 
     //optional 属性 是定义该关联类是否必须存在,值为false 时，关联类双方都必须存在(inner join) true是为left join
 
@@ -47,8 +49,8 @@ public class User extends BaseEntity {
      */
     //多对一配置 group_id作为外键关联映射表的主键列关联
     //ManyToOne 指定 many 一方是不能独立存在的，否则存在孤儿数据
-    @ManyToOne(cascade = {CascadeType.ALL},optional = false)
-    @JoinColumn(name = "group_id", nullable = true)
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "group_id")
     private UserGroup group;
 
     //OneToMany(cascade = CascadeType.ALL, mappedBy = "oneId")//指向多的那方的pojo的关联外键字段
@@ -147,5 +149,13 @@ public class User extends BaseEntity {
 
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public boolean isSuperMan() {
+        return superMan;
+    }
+
+    public void setSuperMan(boolean superMan) {
+        this.superMan = superMan;
     }
 }

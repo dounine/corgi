@@ -2,6 +2,7 @@ package corgi.spring.test_java_entity.code.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dounine.corgi.jpa.entity.BaseEntity;
+
 import javax.persistence.*;
 
 /**

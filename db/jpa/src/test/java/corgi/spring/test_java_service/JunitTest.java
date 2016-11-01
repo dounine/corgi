@@ -47,6 +47,7 @@ public class JunitTest {
             user.setAge(55);
             user.setHeight(1.2f);
             user.setNickname("xiaoming");
+            user.setSuperMan(true);
             userSer.save(user);
         }
     }
@@ -82,15 +83,10 @@ public class JunitTest {
     @Test
     public void findByCis() throws SerException {
         UserDto dto = new UserDto();
-        Condition condition = new Condition();
-        String[] between =
-                new String[]{"1", "99"};
-        condition.setField("age");
-        condition.setValues(between);
-        condition.setFieldType(DataType.INT);
-        condition.setRestrict(RestrictionType.BETWEEN);
+        Condition condition = new Condition("superMan",DataType.BOOLEAN,true);
+        condition.setRestrict(RestrictionType.EQ);
         dto.getConditions().add(condition);
-        List<User> users = userSer.findByCis(dto, true); //按条件查询并分页
+        List<User> users = userSer.findByCis(dto); //按条件查询并分页
         System.out.println(JSON.toJSONString(users));
     }
 

@@ -2,6 +2,7 @@ package corgi.spring.test_java_entity.code.entity;
 
 import com.dounine.corgi.jpa.entity.BaseEntity;
 import com.dounine.corgi.jpa.enums.Status;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;

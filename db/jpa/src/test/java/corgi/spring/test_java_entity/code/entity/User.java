@@ -1,9 +1,8 @@
 package corgi.spring.test_java_entity.code.entity;
 
 import com.dounine.corgi.jpa.entity.BaseEntity;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -26,6 +25,8 @@ public class User extends BaseEntity {
     private String nickname;
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime accessTime = LocalDateTime.now();
+    @Column(columnDefinition = "TINYINT(1)")
+    private boolean superMan;
 
     //optional 属性 是定义该关联类是否必须存在,值为false 时，关联类双方都必须存在(inner join) true是为left join
 
@@ -44,10 +45,10 @@ public class User extends BaseEntity {
     /**
      * many-to-one
      */
-    @ManyToOne(cascade = {CascadeType.ALL})
     //多对一配置 group_id作为外键关联映射表的主键列关联
     //ManyToOne 指定 many 一方是不能独立存在的，否则存在孤儿数据
-    @JoinColumn(name = "group_id", nullable = true)
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "group_id")
     private UserGroup group;
 
     //OneToMany(cascade = CascadeType.ALL, mappedBy = "oneId")//指向多的那方的pojo的关联外键字段
@@ -58,7 +59,6 @@ public class User extends BaseEntity {
     private Set<UserInterest> interests;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    @LazyCollection(LazyCollectionOption.EXTRA)
     private Set<UserRole> userRoles;
 
     public Set<UserRole> getUserRoles() {
@@ -147,5 +147,13 @@ public class User extends BaseEntity {
 
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public boolean isSuperMan() {
+        return superMan;
+    }
+
+    public void setSuperMan(boolean superMan) {
+        this.superMan = superMan;
     }
 }
