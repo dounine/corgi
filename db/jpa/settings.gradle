@@ -1,4 +1,0 @@
-rootProject.name = 'jpa'
-
-include ':common'
-project(':common').projectDir = new File(settingsDir, '../../common')
