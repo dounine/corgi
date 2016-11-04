@@ -5,6 +5,9 @@ import com.dounine.corgi.rpc.invoke.Invocation;
 import com.dounine.corgi.rpc.serialize.result.IResult;
 import com.dounine.corgi.rpc.serialize.result.InvokeResult;
 import com.dounine.corgi.rpc.utils.RpcProperties;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,7 +20,8 @@ import java.net.Socket;
  * Created by huanghuanlai on 16/9/22.
  */
 public class RpcClient implements IClient{
-    private static final int RPC_SOCKET_TIMEOUT = RpcProperties.instance().getInteger("corgi.consumer.timeout");
+    private static final int RPC_SOCKET_TIMEOUT = RpcProperties.instance().getInteger("corgi.consumer.timeout",10000);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcClient.class);
     protected Invocation invocation;
     protected IResult result;
 
@@ -36,7 +40,14 @@ public class RpcClient implements IClient{
         ObjectInputStream ois = null;
         try {
             Class clazz = invocation.getMethod().getDeclaringClass();
-            InetSocketAddress isa = invocation.getAddress(clazz);
+            InetSocketAddress isa = null;
+            String autoUrl = invocation.getReference().url();
+            if(StringUtils.isNotBlank(autoUrl)){
+                isa = new InetSocketAddress(autoUrl.split(":")[0],Integer.parseInt(autoUrl.split(":")[1]));
+                LOGGER.info("CORGI RPC use Autowired url [ "+autoUrl+" ]");
+            }else{
+                isa = invocation.getAddress(clazz);
+            }
             socket = new Socket(isa.getAddress(), isa.getPort());
             socket.setSoTimeout(RPC_SOCKET_TIMEOUT);
             ois = new ObjectInputStream(socket.getInputStream());

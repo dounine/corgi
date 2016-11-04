@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 public final class ThreadPools {
     private ThreadPools(){}
 
-    private final static ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(RpcProperties.instance().getInteger("corgi.provider.threads"));
+    private final static ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(RpcProperties.instance().getInteger("corgi.provider.threads",100));
 
     public static ExecutorService getExecutor(){
         return EXECUTOR_SERVICE;

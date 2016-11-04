@@ -37,7 +37,7 @@ public class RpcProperties {
         if (properties.containsKey(key)) {
             return properties.getProperty(key);
         }
-        return "";
+        return null;
     }
 
     public String getProperty(String key) {
