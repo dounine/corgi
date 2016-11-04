@@ -46,11 +46,11 @@ public class RpcContainer implements Runnable {
     }
 
     public static void waitRpcListener(){
-        try {
-            RPC_LISTENERED.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            RPC_LISTENERED.await();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public static boolean isListener(){

@@ -5,7 +5,7 @@ import com.dounine.corgi.rpc.listen.RpcContainer;
 import com.dounine.corgi.rpc.serialize.result.IResult;
 import com.dounine.corgi.rpc.serialize.rmi.IClient;
 import com.dounine.corgi.rpc.serialize.rmi.RpcClient;
-import com.dounine.corgi.rpc.spring.annotation.Reference;
+import com.dounine.corgi.rpc.spring.annotation.Autowired;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -17,16 +17,16 @@ public class RpcInvocation<T> implements Invocation<T> {
 
     private Method method;
     private Object[] args;
-    private Reference reference;
+    private Autowired reference;
     private Balance balance;
 
-    public RpcInvocation(Object[] args,Method method,Reference reference){
+    public RpcInvocation(Object[] args,Method method,Autowired reference){
         this.args = args;
         this.method = method;
         this.reference = reference;
     }
 
-    public RpcInvocation(Reference reference, Balance balance){
+    public RpcInvocation(Autowired reference, Balance balance){
         this.reference = reference;
         this.balance = balance;
     }
@@ -37,7 +37,7 @@ public class RpcInvocation<T> implements Invocation<T> {
     }
 
     @Override
-    public Reference getReference() {
+    public Autowired getReference() {
         return this.reference;
     }
 

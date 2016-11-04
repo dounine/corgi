@@ -8,12 +8,11 @@ import com.dounine.corgi.rpc.RpcApp;
 import com.dounine.corgi.rpc.listen.RpcContainer;
 import com.dounine.corgi.rpc.protocol.CorgiProtocol;
 import com.dounine.corgi.rpc.protocol.IProtocol;
-import com.dounine.corgi.rpc.spring.annotation.Reference;
+import com.dounine.corgi.rpc.spring.annotation.Autowired;
 import com.dounine.corgi.rpc.spring.annotation.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -44,13 +43,13 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
         }
     }
 
-    @Autowired
+    @org.springframework.beans.factory.annotation.Autowired
     protected Environment env;
-    @Autowired
+    @org.springframework.beans.factory.annotation.Autowired
     protected Register register;
-    @Autowired
+    @org.springframework.beans.factory.annotation.Autowired
     protected IProtocol protocol;
-    @Autowired
+    @org.springframework.beans.factory.annotation.Autowired
     protected Balance balance;
 
     @Override
@@ -74,11 +73,11 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
     public void reflectProxyReference(Object bean){
         Class<?> cls = bean.getClass();
         for (Field field : cls.getDeclaredFields()) {
-            if (field.isAnnotationPresent(Reference.class)) {
+            if (field.isAnnotationPresent(Autowired.class)) {
                 boolean oldAcc = field.isAccessible();
                 field.setAccessible(true);
                 try {
-                    field.set(bean, RpcApp.instance().getProxy(field.getType(),field.getAnnotation(Reference.class),balance));
+                    field.set(bean, RpcApp.instance().getProxy(field.getType(),field.getAnnotation(Autowired.class),balance));
                     field.setAccessible(oldAcc);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -147,10 +146,15 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
 
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
-        if(!RpcContainer.isListener()){
+        if(!RpcContainer.isListener()&&exportRpcApp()){
             RpcApp.init(getProtocol(),env.getProperty("corgi.application.name")).export();
         }
     }
+
+    public boolean exportRpcApp(){
+        return true;
+    }
+
 
 
 

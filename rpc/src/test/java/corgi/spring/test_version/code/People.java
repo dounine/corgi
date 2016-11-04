@@ -1,7 +1,7 @@
 package corgi.spring.test_version.code;
 
 import com.dounine.corgi.exception.SerException;
-import com.dounine.corgi.rpc.spring.annotation.Reference;
+import com.dounine.corgi.rpc.spring.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class People {
 
-    @Reference(version = "1.0.2")
+    @Autowired(version = "1.0.2")
     UserApi userApi;
 
     public String login(String username){

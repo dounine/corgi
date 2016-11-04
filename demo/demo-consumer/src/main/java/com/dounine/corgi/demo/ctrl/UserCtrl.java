@@ -1,7 +1,7 @@
 package com.dounine.corgi.demo.ctrl;
 
 import com.dounine.corgi.commons.ResponseText;
-import com.dounine.corgi.rpc.spring.annotation.Reference;
+import com.dounine.corgi.rpc.spring.annotation.Autowired;
 import com.dounine.corgi.demo.service.user.IUserSer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserCtrl {
 
-    @Reference(version = "1.0.0")
+    @Autowired(version = "1.0.0")
     private IUserSer userSer;
 
     @GetMapping("hello")

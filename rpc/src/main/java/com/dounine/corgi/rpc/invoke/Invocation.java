@@ -3,7 +3,7 @@ package com.dounine.corgi.rpc.invoke;
 
 import com.dounine.corgi.cluster.Balance;
 import com.dounine.corgi.rpc.serialize.result.IResult;
-import com.dounine.corgi.rpc.spring.annotation.Reference;
+import com.dounine.corgi.rpc.spring.annotation.Autowired;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -15,7 +15,7 @@ public interface Invocation<T> {
 
     Balance getBalance();
 
-    Reference getReference();
+    Autowired getReference();
 
     InetSocketAddress getAddress(Class<T> clazz);
 
