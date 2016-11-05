@@ -1,6 +1,6 @@
 package com.dounine.corgi.rpc.interceptor;
 
-import com.dounine.corgi.rpc.invoke.Invocation;
+import com.dounine.corgi.remoting.Invocation;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 

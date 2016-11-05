@@ -2,8 +2,8 @@ package corgi.spring.test_timeout.code;
 
 
 import com.dounine.corgi.exception.SerException;
-import com.dounine.corgi.rpc.spring.annotation.Method;
-import com.dounine.corgi.rpc.spring.annotation.Service;
+import com.dounine.corgi.spring.rpc.Method;
+import com.dounine.corgi.spring.rpc.Service;
 
 /**
  * Created by huanghuanlai on 16/9/27.

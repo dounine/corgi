@@ -1,11 +1,12 @@
 package com.dounine.corgi.rpc.invoke;
 
 import com.dounine.corgi.cluster.Balance;
+import com.dounine.corgi.remoting.FetchRemoting;
+import com.dounine.corgi.remoting.IResult;
+import com.dounine.corgi.remoting.Invocation;
+import com.dounine.corgi.remoting.P2PFetchRemoting;
 import com.dounine.corgi.rpc.listen.RpcContainer;
-import com.dounine.corgi.rpc.serialize.result.IResult;
-import com.dounine.corgi.rpc.serialize.rmi.IClient;
-import com.dounine.corgi.rpc.serialize.rmi.RpcClient;
-import com.dounine.corgi.rpc.spring.annotation.Autowired;
+import com.dounine.corgi.spring.rpc.Autowired;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -58,11 +59,11 @@ public class RpcInvocation<T> implements Invocation<T> {
     }
 
     @Override
-    public IResult fetch(Object[] args,Method method) {
+    public IResult fetch(Object[] args, Method method) {
         this.args = args;
         this.method = method;
 
-        IClient client = new RpcClient(this);
+        FetchRemoting client = new P2PFetchRemoting(this);
         RpcContainer.waitRpcListener();//wait rpc listened
         return client.fetch();
     }

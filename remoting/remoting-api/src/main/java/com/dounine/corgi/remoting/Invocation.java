@@ -1,9 +1,8 @@
-package com.dounine.corgi.rpc.invoke;
+package com.dounine.corgi.remoting;
 
 
 import com.dounine.corgi.cluster.Balance;
-import com.dounine.corgi.rpc.serialize.result.IResult;
-import com.dounine.corgi.rpc.spring.annotation.Autowired;
+import com.dounine.corgi.spring.rpc.Autowired;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -23,5 +22,5 @@ public interface Invocation<T> {
 
     Object[] getArgs();
 
-    IResult fetch(Object[] args,Method method);
+    IResult fetch(Object[] args, Method method);
 }

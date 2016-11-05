@@ -1,7 +1,7 @@
 package corgi.spring.test_zk.code;
 
 import com.dounine.corgi.exception.SerException;
-import com.dounine.corgi.rpc.spring.annotation.Autowired;
+import com.dounine.corgi.spring.rpc.Autowired;
 import org.springframework.stereotype.Service;
 
 /**

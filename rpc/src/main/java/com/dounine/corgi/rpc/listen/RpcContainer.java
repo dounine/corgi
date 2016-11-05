@@ -1,7 +1,7 @@
 package com.dounine.corgi.rpc.listen;
 
+import com.dounine.corgi.remoting.P2PPushRemoting;
 import com.dounine.corgi.rpc.protocol.IProtocol;
-import com.dounine.corgi.rpc.serialize.rmi.RpcServer;
 import com.dounine.corgi.rpc.utils.ThreadPools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class RpcContainer implements Runnable {
                 socket = serverSocket.accept();
 //                socket.setSoTimeout(RPC_SOCKET_TIMEOUT);
                 LOGGER.info("CORGI [ "+socket.getRemoteSocketAddress()+" ] client connected.");
-                ThreadPools.getExecutor().execute(new RpcServer(socket));
+                ThreadPools.getExecutor().execute(new P2PPushRemoting(socket));
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -5,6 +5,6 @@ package com.dounine.corgi.remoting;
  */
 public interface PushRemoting {
 
-    void push(PushData pushData);
+    void push();
 
 }

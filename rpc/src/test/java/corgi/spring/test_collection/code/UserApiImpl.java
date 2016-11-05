@@ -1,7 +1,6 @@
 package corgi.spring.test_collection.code;
 
-
-import com.dounine.corgi.rpc.spring.annotation.Service;
+import com.dounine.corgi.spring.rpc.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;

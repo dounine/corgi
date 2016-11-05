@@ -1,7 +1,7 @@
 package corgi.spring.test_collection.code;
 
-import com.dounine.corgi.rpc.spring.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.dounine.corgi.spring.rpc.Autowired;
+import com.dounine.corgi.spring.rpc.Service;
 
 import java.util.List;
 import java.util.Map;

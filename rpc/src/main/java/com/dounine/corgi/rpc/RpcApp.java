@@ -1,12 +1,12 @@
 package com.dounine.corgi.rpc;
 
 import com.dounine.corgi.cluster.Balance;
+import com.dounine.corgi.remoting.Invocation;
 import com.dounine.corgi.rpc.interceptor.RpcInterceptor;
-import com.dounine.corgi.rpc.invoke.Invocation;
 import com.dounine.corgi.rpc.invoke.RpcInvocation;
 import com.dounine.corgi.rpc.listen.RpcContainer;
 import com.dounine.corgi.rpc.protocol.IProtocol;
-import com.dounine.corgi.rpc.spring.annotation.Autowired;
+import com.dounine.corgi.spring.rpc.Autowired;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package com.dounine.corgi.rpc.spring.annotation;
+package com.dounine.corgi.spring.rpc;
 
 import java.lang.annotation.*;
 

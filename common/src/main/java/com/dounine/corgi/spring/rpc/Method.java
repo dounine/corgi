@@ -1,4 +1,4 @@
-package com.dounine.corgi.rpc.spring.annotation;
+package com.dounine.corgi.spring.rpc;
 
 import java.lang.annotation.*;
 
@@ -6,11 +6,11 @@ import java.lang.annotation.*;
  * Created by huanghuanlai on 16/10/10.
  */
 @org.springframework.stereotype.Service
-@Target({ElementType.FIELD, ElementType.TYPE})
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Service {
+public @interface Method {
     String value() default "";
-    String version() default "1.0.0";
-    int timeout() default 4000;
+    int timeout() default 3000;
+    int retries() default 2;
 }

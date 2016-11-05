@@ -2,12 +2,13 @@ apply from: '../config.gradle'
 apply plugin: 'java'
 
 dependencies {
-    compile "org.springframework:spring-web:$spring_version"
-    compile "javax.servlet:javax.servlet-api:$javax_servlet_version"
-    compile "org.springframework:spring-webmvc:$spring_version"
-    compile "org.aspectj:aspectjweaver:$aspectjrt_version"
-    compile "org.apache.commons:commons-lang3:$commons_version"
-	compile "org.slf4j:slf4j-api:$slf4j_version"
-	compile "org.slf4j:slf4j-log4j12:$slf4j_version"
-	compile "com.alibaba:fastjson:$fastjson_version"
+    compile group: 'org.springframework',name: 'spring-web',version: "$spring_version"
+    compile group: 'javax.servlet',name: 'javax.servlet-api',version: "$javax_servlet_version"
+    compile group: 'org.springframework',name: 'spring-webmvc',version: "$spring_version"
+    compile group: 'org.aspectj',name:'aspectjweaver',version: "$aspectjrt_version"
+    compile group: 'org.apache.commons',name: 'commons-lang3',version: "$commons_version"
+	compile group: 'org.slf4j',name: 'slf4j-api',version: "$slf4j_version"
+	compile group: 'org.slf4j',name: 'slf4j-log4j12',version: "$slf4j_version"
+	compile group: 'com.alibaba',name: 'fastjson',version: "$fastjson_version"
+
 }
