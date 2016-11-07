@@ -3,7 +3,7 @@ package com.dounine.corgi.remoting;
 /**
  * Created by huanghuanlai on 16/9/26.
  */
-public class DefaultResult implements IResult {
+public class DefaultResult implements Result {
     private Object data;
     private Throwable exception;
 

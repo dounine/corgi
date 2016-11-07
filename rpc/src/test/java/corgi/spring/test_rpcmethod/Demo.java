@@ -1,8 +1,9 @@
-package corgi.spring.test_url;
+package corgi.spring.test_rpcmethod;
 
+import com.dounine.corgi.exception.RPCException;
 import com.dounine.corgi.spring.ApplicationContext;
-import corgi.spring.test_url.code.ApplicationConfiguration;
-import corgi.spring.test_url.code.People;
+import corgi.spring.test_rpcmethod.code.ApplicationConfiguration;
+import corgi.spring.test_rpcmethod.code.People;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -16,7 +17,13 @@ public class Demo {
     public void testLogin(){
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
         ApplicationContext.setApplicationContext(context);
-        Assert.assertEquals("success",context.getBean(People.class).login("admin"));
+        try {
+            Assert.assertEquals("success",context.getBean(People.class).login("admin"));
+        }catch (RPCException e){
+            if(!e.getMessage().equals("API接口连接超时")){
+                Assert.fail("fail");
+            }
+        }
     }
 
 }

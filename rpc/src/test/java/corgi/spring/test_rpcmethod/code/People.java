@@ -1,4 +1,4 @@
-package corgi.spring.test_timeout.code;
+package corgi.spring.test_rpcmethod.code;
 
 import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.spring.rpc.Reference;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class People {
 
-    @Reference(version = "1.0.0",timeout = 3000)
+    @Reference(version = "1.0.0")
     UserApi userApi;
 
     public String login(String username){

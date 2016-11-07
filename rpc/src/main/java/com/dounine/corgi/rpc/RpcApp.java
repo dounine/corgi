@@ -6,7 +6,7 @@ import com.dounine.corgi.rpc.interceptor.RpcInterceptor;
 import com.dounine.corgi.rpc.invoke.RpcInvocation;
 import com.dounine.corgi.rpc.listen.RpcContainer;
 import com.dounine.corgi.rpc.protocol.IProtocol;
-import com.dounine.corgi.spring.rpc.Autowired;
+import com.dounine.corgi.spring.rpc.Reference;
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import org.slf4j.Logger;
@@ -41,7 +41,7 @@ public class RpcApp {
         new Thread(new RpcContainer(getProtocol())).start();
     }
 
-    public <T> T getProxy(Class<T> interfaceClass, Autowired reference, Balance balance) {
+    public <T> T getProxy(Class<T> interfaceClass, Reference reference, Balance balance) {
         Invocation<T> invocation = new RpcInvocation<T>(reference, balance);
         Callback callback = new RpcInterceptor(invocation);
         ENHANCER.setCallback(callback);

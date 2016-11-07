@@ -2,7 +2,7 @@ package corgi.spring.test_java_config;
 
 import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.spring.ApplicationContext;
-import com.dounine.corgi.spring.rpc.Autowired;
+import com.dounine.corgi.spring.rpc.Reference;
 import corgi.spring.test_java_config.code.ApplicationConfiguration;
 import corgi.spring.test_java_config.code.UserApi;
 import org.junit.Before;
@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = ApplicationConfiguration.class)
 public class JunitTest extends AbstractJUnit4SpringContextTests {
 
-    @Autowired(version = "1.0.0")
+    @Reference(version = "1.0.0")
     UserApi userApi;
 
     @Before

@@ -1,7 +1,7 @@
 package corgi.spring.test_thread_pools.code;
 
 import com.dounine.corgi.exception.SerException;
-import com.dounine.corgi.spring.rpc.Autowired;
+import com.dounine.corgi.spring.rpc.Reference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class People {
 
-    @Autowired(version = "1.0.0")
+    @Reference(version = "1.0.0")
     UserApi userApi;
 
     public String login(String username){

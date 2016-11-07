@@ -1,10 +1,10 @@
 package com.dounine.corgi.demo.service.user;
 
-import com.dounine.corgi.exception.SerException;
-import com.dounine.corgi.rpc.spring.annotation.Service;
 import com.dounine.corgi.demo.entity.user.User;
 import com.dounine.corgi.demo.session.TokenUtils;
 import com.dounine.corgi.demo.session.UserSession;
+import com.dounine.corgi.exception.SerException;
+import com.dounine.corgi.spring.rpc.Service;
 
 /**
  * Created by huanghuanlai on 16/5/24.

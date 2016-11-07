@@ -2,11 +2,11 @@ package com.dounine.corgi.rpc.invoke;
 
 import com.dounine.corgi.cluster.Balance;
 import com.dounine.corgi.remoting.FetchRemoting;
-import com.dounine.corgi.remoting.IResult;
+import com.dounine.corgi.remoting.Result;
 import com.dounine.corgi.remoting.Invocation;
 import com.dounine.corgi.remoting.P2PFetchRemoting;
 import com.dounine.corgi.rpc.listen.RpcContainer;
-import com.dounine.corgi.spring.rpc.Autowired;
+import com.dounine.corgi.spring.rpc.Reference;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -18,16 +18,16 @@ public class RpcInvocation<T> implements Invocation<T> {
 
     private Method method;
     private Object[] args;
-    private Autowired reference;
+    private Reference reference;
     private Balance balance;
 
-    public RpcInvocation(Object[] args,Method method,Autowired reference){
+    public RpcInvocation(Object[] args,Method method,Reference reference){
         this.args = args;
         this.method = method;
         this.reference = reference;
     }
 
-    public RpcInvocation(Autowired reference, Balance balance){
+    public RpcInvocation(Reference reference, Balance balance){
         this.reference = reference;
         this.balance = balance;
     }
@@ -38,7 +38,7 @@ public class RpcInvocation<T> implements Invocation<T> {
     }
 
     @Override
-    public Autowired getReference() {
+    public Reference getReference() {
         return this.reference;
     }
 
@@ -59,12 +59,12 @@ public class RpcInvocation<T> implements Invocation<T> {
     }
 
     @Override
-    public IResult fetch(Object[] args, Method method) {
+    public Result fetch(Object[] args, Method method) {
         this.args = args;
         this.method = method;
 
         FetchRemoting client = new P2PFetchRemoting(this);
         RpcContainer.waitRpcListener();//wait rpc listened
-        return client.fetch();
+        return client.fetch(client.fetchToken());
     }
 }

@@ -8,7 +8,7 @@ import com.dounine.corgi.rpc.RpcApp;
 import com.dounine.corgi.rpc.listen.RpcContainer;
 import com.dounine.corgi.rpc.protocol.CorgiProtocol;
 import com.dounine.corgi.rpc.protocol.IProtocol;
-import com.dounine.corgi.spring.rpc.Autowired;
+import com.dounine.corgi.spring.rpc.Reference;
 import com.dounine.corgi.spring.rpc.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,11 +73,11 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
     public void reflectProxyReference(Object bean){
         Class<?> cls = bean.getClass();
         for (Field field : cls.getDeclaredFields()) {
-            if (field.isAnnotationPresent(Autowired.class)) {
+            if (field.isAnnotationPresent(Reference.class)) {
                 boolean oldAcc = field.isAccessible();
                 field.setAccessible(true);
                 try {
-                    field.set(bean, RpcApp.instance().getProxy(field.getType(),field.getAnnotation(Autowired.class),balance));
+                    field.set(bean, RpcApp.instance().getProxy(field.getType(),field.getAnnotation(Reference.class),balance));
                     field.setAccessible(oldAcc);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();

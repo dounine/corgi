@@ -2,7 +2,7 @@ package com.dounine.corgi.remoting;
 
 
 import com.dounine.corgi.cluster.Balance;
-import com.dounine.corgi.spring.rpc.Autowired;
+import com.dounine.corgi.spring.rpc.Reference;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -14,7 +14,7 @@ public interface Invocation<T> {
 
     Balance getBalance();
 
-    Autowired getReference();
+    Reference getReference();
 
     InetSocketAddress getAddress(Class<T> clazz);
 
@@ -22,5 +22,5 @@ public interface Invocation<T> {
 
     Object[] getArgs();
 
-    IResult fetch(Object[] args, Method method);
+    Result fetch(Object[] args, Method method);
 }

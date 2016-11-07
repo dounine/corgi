@@ -1,6 +1,6 @@
 package corgi.spring.test_collection.code;
 
-import com.dounine.corgi.spring.rpc.Autowired;
+import com.dounine.corgi.spring.rpc.Reference;
 import com.dounine.corgi.spring.rpc.Service;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Map;
 @Service
 public class People {
 
-    @Autowired(version = "1.0.0")
+    @Reference(version = "1.0.0")
     UserApi userApi;
 
     public Map<String,String> getMap(String username){

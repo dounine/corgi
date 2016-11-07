@@ -9,14 +9,11 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by huanghuanlai on 2016/10/15.
  */
 public class RpcContainer implements Runnable {
-    public static final CountDownLatch RPC_LISTENERED = new CountDownLatch(1);
-
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcContainer.class);
     private static boolean isListener = false;
 
@@ -32,11 +29,9 @@ public class RpcContainer implements Runnable {
             ServerSocket serverSocket = new ServerSocket(protocol.getPort());
             LOGGER.info("CORGI rpc provider port [ "+protocol.getPort()+" ] started.");
             LOGGER.info("CORGI rpc connect watching...");
-            RPC_LISTENERED.countDown();
             isListener = true;
             for(;;){
                 socket = serverSocket.accept();
-//                socket.setSoTimeout(RPC_SOCKET_TIMEOUT);
                 LOGGER.info("CORGI [ "+socket.getRemoteSocketAddress()+" ] client connected.");
                 ThreadPools.getExecutor().execute(new P2PPushRemoting(socket));
             }
