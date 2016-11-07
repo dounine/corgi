@@ -92,7 +92,7 @@ public class P2PPushRemoting implements PushRemoting,Runnable {
             }
             String token = UUIDUtils.create();
             EXECUTE_METHOD_TOKENS.put(token,p2PToken);
-            oos.writeObject(new P2PFetchToken(token,p2PToken.getTimeout()));
+            oos.writeObject(new P2PFetchToken(token,p2PToken.getTimeout(),p2PToken.getRetries()));
             LOGGER.info("CORGI [ " + socket.getRemoteSocketAddress() + " ] client >> get token << service finish.");
         } catch (IOException e) {
             exception = e;

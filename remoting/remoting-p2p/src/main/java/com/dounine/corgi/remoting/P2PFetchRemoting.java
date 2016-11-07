@@ -48,28 +48,32 @@ public class P2PFetchRemoting implements FetchRemoting {
             }else{
                 isa = invocation.getAddress(clazz);
             }
-            socket = new Socket(isa.getAddress(), isa.getPort());
-            socket.setSoTimeout(fetchToken.getTimeout());
-            ois = new ObjectInputStream(socket.getInputStream());
-            oos = new ObjectOutputStream(socket.getOutputStream());
-            oos.writeObject(RemotType.RESULT);
-            oos.writeUTF(fetchToken.getToken());
-            oos.writeObject(invocation.getArgs());
-            Object exception = ois.readObject();
-            Result result = null;
-            if (null != exception) {
-                result = new DefaultResult(null, (Throwable) exception);
-            } else {
-                result = new DefaultResult(ois.readObject(), null);
-            }
-            this.result = result;
-        } catch (IOException e) {
-            if (e instanceof ConnectException) {
-                throw new RPCException("服务方连接失败");
-            } else if(e instanceof SocketTimeoutException){
-                throw new RPCException("API接口连接超时");
-            }else{
-                e.printStackTrace();
+            for(int i =0;i<=fetchToken.getRetries();i++){
+                try {
+                    if(i>0){
+                        LOGGER.info("CORGI client >> get result << retrie [ "+ i +" ]");
+                    }
+                    socket = new Socket(isa.getAddress(), isa.getPort());
+                    socket.setSoTimeout(fetchToken.getTimeout());
+                    ois = new ObjectInputStream(socket.getInputStream());
+                    oos = new ObjectOutputStream(socket.getOutputStream());
+                    oos.writeObject(RemotType.RESULT);
+                    oos.writeUTF(fetchToken.getToken());
+                    oos.writeObject(invocation.getArgs());
+                    Object exception = ois.readObject();
+                    Result result = null;
+                    if (null != exception) {
+                        result = new DefaultResult(null, (Throwable) exception);
+                    } else {
+                        result = new DefaultResult(ois.readObject(), null);
+                    }
+                    this.result = result;
+                    break;
+                } catch (IOException e) {
+                    if (e instanceof ConnectException || e instanceof SocketTimeoutException) {
+                        continue;
+                    }
+                }
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

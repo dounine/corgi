@@ -9,4 +9,6 @@ public interface FetchToken {
 
     int getTimeout();
 
+    int getRetries();
+
 }

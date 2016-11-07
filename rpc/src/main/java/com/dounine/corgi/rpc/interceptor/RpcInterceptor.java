@@ -1,6 +1,8 @@
 package com.dounine.corgi.rpc.interceptor;
 
+import com.dounine.corgi.exception.RPCException;
 import com.dounine.corgi.remoting.Invocation;
+import com.dounine.corgi.remoting.Result;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -31,7 +33,11 @@ public class RpcInterceptor implements MethodInterceptor{
         if ("equals".equals(methodName) && parameterTypes.length == 1) {
             return invoker.equals(args[0]);
         }
-        return invoker.fetch(args,method).result();
+        Result result = invoker.fetch(args,method);
+        if(result==null){
+            throw new RPCException("CORGI rpc [ "+methodName+" ] interface call fail.");
+        }
+        return result.result();
     }
 
 }
