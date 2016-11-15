@@ -70,7 +70,7 @@ public class P2PPushRemoting implements PushRemoting,Runnable {
             Class<?>[] paramterTypes = (Class<?>[]) ois.readObject();
             Method method = clazz.getMethod(methodName, paramterTypes);
             Map obs = ApplicationContext.getContext().getBeansOfType(clazz);
-            Optional<Object> oo = obs.values().stream().filter(o -> o.getClass().getAnnotation(Service.class).version().equals(version)).findFirst();
+            Optional<Object> oo = obs.values().stream().filter(o -> null!=o.getClass().getAnnotation(Service.class)&&version.equals(o.getClass().getAnnotation(Service.class).version())).findFirst();
             if (!oo.isPresent() && obs.values().size() == 0) {
                 throw new RPCException("class not found.");
             } else if (!oo.isPresent() && obs.values().size() > 0) {
