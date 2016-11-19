@@ -3,6 +3,7 @@ package com.dounine.corgi.rpc.spring;
 import com.dounine.corgi.cluster.Balance;
 import com.dounine.corgi.cluster.CirculationBalance;
 import com.dounine.corgi.cluster.ClusterPaths;
+import com.dounine.corgi.exception.RPCException;
 import com.dounine.corgi.register.*;
 import com.dounine.corgi.rpc.RpcApp;
 import com.dounine.corgi.rpc.listen.RpcContainer;
@@ -10,9 +11,11 @@ import com.dounine.corgi.rpc.protocol.CorgiProtocol;
 import com.dounine.corgi.rpc.protocol.IProtocol;
 import com.dounine.corgi.spring.rpc.Reference;
 import com.dounine.corgi.spring.rpc.Service;
+import com.dounine.corgi.utils.ProxyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -23,7 +26,9 @@ import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -34,6 +39,7 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringProcessor.class);
     protected static String hostName = null;
     private static final List<String> REGISTER_API_INTERFACES = new ArrayList<>();
+    private static final Set<Class<?>> PROVIDER_CLASS = new HashSet<>();
 
     static {
         try {
@@ -43,13 +49,13 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
         }
     }
 
-    @org.springframework.beans.factory.annotation.Autowired
+    @Autowired
     protected Environment env;
-    @org.springframework.beans.factory.annotation.Autowired
+    @Autowired
     protected Register register;
-    @org.springframework.beans.factory.annotation.Autowired
+    @Autowired
     protected IProtocol protocol;
-    @org.springframework.beans.factory.annotation.Autowired
+    @Autowired
     protected Balance balance;
 
     @Override
@@ -59,15 +65,17 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (checkRpcService(bean)) {
-            registerObject(bean);
+        Class<?> originClass = ProxyUtils.getOriginClass(bean);
+        if (checkRpcService(originClass)) {
+//            registerObject(origin);
+            register.register(originClass,nodeInfo());
         }
         reflectProxyReference(bean);
         return bean;
     }
 
-    public boolean checkRpcService(Object bean) {
-        return bean.getClass().isAnnotationPresent(Service.class);
+    public boolean checkRpcService(Class<?> clazz) {
+        return clazz.isAnnotationPresent(Service.class);
     }
 
     public void reflectProxyReference(Object bean){
@@ -86,12 +94,14 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
         }
     }
 
-    public void registerObject(Object bean) {
-        for (Class interfac : bean.getClass().getInterfaces()) {
-            String apiClass = interfac.getName().replace(".","/");
-            register.register(new DefaultRegNode(nodeInfo(),"/"+apiClass));
-        }
-    }
+//    public void registerObject(Class zz) {
+////        PROVIDER_CLASS.add(zz);
+//        register.register(zz,nodeInfo());
+////        for (Class interfac : zz.getInterfaces()) {
+////            String apiClass = interfac.getName().replace(".","/");
+////            register.register(new DefaultRegNode(nodeInfo(),"/"+apiClass));
+////        }
+//    }
 
     public String nodeInfo() {
         return hostName+":" + protocol.getPort();
@@ -101,9 +111,13 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
     @Bean
     public Register getRegister() {
         String protocol = env.getProperty("corgi.register.protocol","p2p");
-        Register reg = getP2PRegister();
-        if("zookeeper".equals(protocol)){
+        Register reg = null;
+        if("p2p".equals(protocol)){
+            reg = getP2PRegister();
+        }else if("zookeeper".equals(protocol)){
             reg = getZkRegister();
+        }else{
+            throw new RPCException("CORGI rpc protocol not match.");
         }
         return reg;
     }
@@ -147,7 +161,7 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         if(!RpcContainer.isListener()&&exportRpcApp()){
-            RpcApp.init(getProtocol(),env.getProperty("corgi.application.name")).export();
+            RpcApp.init(protocol,register,env.getProperty("corgi.application.name")).export();
         }
     }
 

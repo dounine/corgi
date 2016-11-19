@@ -10,5 +10,5 @@ dependencies {
 	compile group: 'org.slf4j',name: 'slf4j-api',version: "$slf4j_version"
 	compile group: 'org.slf4j',name: 'slf4j-log4j12',version: "$slf4j_version"
 	compile group: 'com.alibaba',name: 'fastjson',version: "$fastjson_version"
-
+    compile group: 'cglib', name: 'cglib', version: "$cglib_version"
 }

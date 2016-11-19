@@ -1,10 +1,14 @@
 package com.dounine.corgi.remoting;
 
+import com.alibaba.fastjson.JSON;
 import com.dounine.corgi.exception.RPCException;
 import com.dounine.corgi.exception.SerException;
+import com.dounine.corgi.filter.ProviderFilter;
+import com.dounine.corgi.register.Register;
 import com.dounine.corgi.spring.ApplicationContext;
 import com.dounine.corgi.spring.rpc.RpcMethod;
 import com.dounine.corgi.spring.rpc.Service;
+import com.dounine.corgi.utils.ClassUtils;
 import com.dounine.corgi.utils.UUIDUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +19,10 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.rmi.registry.Registry;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -29,6 +35,8 @@ public class P2PPushRemoting implements PushRemoting,Runnable {
     private static final int RPC_SOCKET_TIMEOUT = 3000;
 
     private Socket socket;
+    private Register register;
+    private ProviderFilter providerFilter;
     public P2PPushRemoting(Socket socket){
         this.socket = socket;
     }
@@ -69,20 +77,21 @@ public class P2PPushRemoting implements PushRemoting,Runnable {
             Class<?> clazz = (Class<?>) ois.readObject();
             Class<?>[] paramterTypes = (Class<?>[]) ois.readObject();
             Method method = clazz.getMethod(methodName, paramterTypes);
-            Map obs = ApplicationContext.getContext().getBeansOfType(clazz);
-            Optional<Object> oo = obs.values().stream().filter(o -> null!=o.getClass().getAnnotation(Service.class)&&version.equals(o.getClass().getAnnotation(Service.class).version())).findFirst();
-            if (!oo.isPresent() && obs.values().size() == 0) {
-                throw new RPCException("class not found.");
-            } else if (!oo.isPresent() && obs.values().size() > 0) {
-                throw new RPCException("class version [ " + version + " ] not found.");
+//            Map obs = register.getRegisterClass().stream() ApplicationContext.getContext().getBeansOfType(clazz);
+            Set<Class<?>> obs = ClassUtils.queryInterfaceByImpls(register.getRegisterClass(),clazz);
+            Optional<Class<?>> oo = obs.stream().filter(o -> null!=o.getAnnotation(Service.class)&&version.equals(o.getAnnotation(Service.class).version())).findFirst();
+            if (!oo.isPresent() && obs.size() == 0) {
+                throw new RPCException(clazz.getName()+" not found.");
+            } else if (!oo.isPresent() && obs.size() > 0) {
+                throw new RPCException(clazz.getName()+" version [ " + version + " ] not found.");
             }
-            Optional<RpcMethod> rpcMethodOptional =  Optional.ofNullable(oo.get().getClass().getMethod(methodName, paramterTypes).getAnnotation(RpcMethod.class));
+            Optional<RpcMethod> rpcMethodOptional =  Optional.ofNullable(oo.get().getMethod(methodName, paramterTypes).getAnnotation(RpcMethod.class));
             P2PToken p2PToken = new P2PToken();
             p2PToken.setClazz(clazz);
             p2PToken.setVersion(version);
             p2PToken.setParamterTypes(paramterTypes);
             p2PToken.setMethod(method);
-            p2PToken.setInvokeObj(oo.get());
+            p2PToken.setInvokeObj(ApplicationContext.getContext().getBean(oo.get()));
             if(rpcMethodOptional.isPresent()){
                 p2PToken.setTimeout(rpcMethodOptional.get().timeout());
                 p2PToken.setRetries(rpcMethodOptional.get().retries());
@@ -143,7 +152,22 @@ public class P2PPushRemoting implements PushRemoting,Runnable {
             Token token = EXECUTE_METHOD_TOKENS.get(tokenStr);
             Object[] args = (Object[]) ois.readObject();
             Method method = token.getMethod();
-            Object result = method.invoke(token.getInvokeObj(), args);
+            if(null!=providerFilter){//过滤前置
+                providerFilter.invokeBefore(method,token.getInvokeObj(),args);
+            }
+
+            Object result = null;
+            try {
+                result = method.invoke(token.getInvokeObj(), args);
+            }catch (Throwable e){
+                if(null!=providerFilter) {//异常调用
+                    providerFilter.invokeError(e);
+                }
+                throw e;
+            }
+            if(null!=providerFilter){//过滤后置
+                providerFilter.invokeAfter(result);
+            }
             oos.writeObject(null);//write null exception
             oos.writeObject(result);//write metod invoke result
             LOGGER.info("CORGI [ " + socket.getRemoteSocketAddress() + " ] client >> get result << service finish.");
@@ -204,4 +228,21 @@ public class P2PPushRemoting implements PushRemoting,Runnable {
     public void run() {
         push();
     }
+
+    public ProviderFilter getProviderFilter() {
+        return providerFilter;
+    }
+
+    public void setProviderFilter(ProviderFilter providerFilter) {
+        this.providerFilter = providerFilter;
+    }
+
+    public Register getRegister() {
+        return register;
+    }
+
+    public void setRegister(Register register) {
+        this.register = register;
+    }
 }
+

@@ -1,6 +1,8 @@
 package com.dounine.corgi.rpc;
 
 import com.dounine.corgi.cluster.Balance;
+import com.dounine.corgi.filter.ProviderFilter;
+import com.dounine.corgi.register.Register;
 import com.dounine.corgi.remoting.Invocation;
 import com.dounine.corgi.rpc.interceptor.RpcInterceptor;
 import com.dounine.corgi.rpc.invoke.RpcInvocation;
@@ -12,6 +14,8 @@ import net.sf.cglib.proxy.Enhancer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Method;
+
 /**
  * Created by huanghuanlai on 2016/10/18.
  */
@@ -21,12 +25,15 @@ public class RpcApp {
     public static final Enhancer ENHANCER = new Enhancer();
     private IProtocol protocol;
     private String appName;
+    private ProviderFilter providerFilter;
+    private Register register;
     private static final RpcApp APP = new RpcApp();
 
     private RpcApp() {
     }
 
-    public final static RpcApp init(IProtocol protocol,String appName) {
+    public final static RpcApp init(IProtocol protocol, Register register, String appName) {
+        APP.setRegister(register);
         APP.setProtocol(protocol);
         APP.setAppName(appName);
         return APP;
@@ -38,7 +45,7 @@ public class RpcApp {
 
     public void export() {
         LOGGER.info(getAppName() + " exporting...");
-        new Thread(new RpcContainer(getProtocol())).start();
+        new Thread(new RpcContainer(getProtocol(),getRegister(),getProviderFilter())).start();
     }
 
     public <T> T getProxy(Class<T> interfaceClass, Reference reference, Balance balance) {
@@ -63,5 +70,21 @@ public class RpcApp {
 
     public void setAppName(String appName) {
         this.appName = appName;
+    }
+
+    public ProviderFilter getProviderFilter() {
+        return providerFilter;
+    }
+
+    public void setProviderFilter(ProviderFilter providerFilter) {
+        this.providerFilter = providerFilter;
+    }
+
+    public Register getRegister() {
+        return register;
+    }
+
+    public void setRegister(Register register) {
+        this.register = register;
     }
 }

@@ -7,6 +7,7 @@ dependencies {
     compile project(':register:register-api')
     compile project(':register:register-p2p')
     compile project(':register:register-zookeeper')
+
     compile group:'commons-fileupload',name:'commons-fileupload',version:"$commons_fileupload_version"
     compile group:'commons-io',name:'commons-io',version:"$commons_io_version"
     compile group:'org.apache.commons',name:'commons-lang3',version:"$commons_version"

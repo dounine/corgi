@@ -1,5 +1,7 @@
 package com.dounine.corgi.rpc.listen;
 
+import com.dounine.corgi.filter.ProviderFilter;
+import com.dounine.corgi.register.Register;
 import com.dounine.corgi.remoting.P2PPushRemoting;
 import com.dounine.corgi.rpc.protocol.IProtocol;
 import com.dounine.corgi.rpc.utils.ThreadPools;
@@ -18,8 +20,12 @@ public class RpcContainer implements Runnable {
     private static boolean isListener = false;
 
     private IProtocol protocol;
-    public RpcContainer(final IProtocol protocol){
+    private ProviderFilter providerFilter;
+    private Register register;
+    public RpcContainer(final IProtocol protocol, Register register, ProviderFilter providerFilter){
         this.protocol = protocol;
+        this.register = register;
+        this.providerFilter = providerFilter;
     }
 
     @Override
@@ -33,7 +39,10 @@ public class RpcContainer implements Runnable {
             for(;;){
                 socket = serverSocket.accept();
                 LOGGER.info("CORGI [ "+socket.getRemoteSocketAddress()+" ] client connected.");
-                ThreadPools.getExecutor().execute(new P2PPushRemoting(socket));
+                P2PPushRemoting p2PPushRemoting = new P2PPushRemoting(socket);
+                p2PPushRemoting.setProviderFilter(providerFilter);
+                p2PPushRemoting.setRegister(register);
+                ThreadPools.getExecutor().execute(p2PPushRemoting);
             }
         } catch (IOException e) {
             e.printStackTrace();

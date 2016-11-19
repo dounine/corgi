@@ -1,0 +1,17 @@
+apply from: '../config.gradle'
+apply from: 'config.gradle'
+
+dependencies {
+    compile project(":rpc")
+
+    compile group: 'mysql', name: 'mysql-connector-java', version: "$mysql_connector_version"
+    compile group: 'org.springframework', name: 'spring-jdbc', version: "$spring_version"
+    compile group: 'org.springframework', name: 'spring-context', version: "$spring_version"
+    compile group: 'org.springframework', name: 'spring-aop', version: "$spring_version"
+    compile group: 'org.springframework', name: 'spring-test', version: "$spring_version"
+    compile group: 'com.atomikos', name: 'transactions-jta', version: "$atomikos_version"
+    compile group: 'com.atomikos', name: 'transactions-api', version: "$atomikos_version"
+    compile group: 'com.atomikos', name: 'atomikos-util', version: "$atomikos_version"
+    compile group: 'com.atomikos', name: 'transactions-jdbc', version: "$atomikos_version"
+    compile group: 'javax.transaction', name: 'javax.transaction-api', version: '1.2'
+}

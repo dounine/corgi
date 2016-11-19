@@ -2,5 +2,7 @@ apply from: '../../config.gradle'
 
 dependencies {
     compile project(':common')
+    compile project(':filter')
+    compile project(':register:register-api')
     compile project(':cluster')
 }

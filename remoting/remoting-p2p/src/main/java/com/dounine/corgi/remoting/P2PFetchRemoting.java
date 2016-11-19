@@ -35,6 +35,9 @@ public class P2PFetchRemoting implements FetchRemoting {
 
     @Override
     public Result fetch(FetchToken fetchToken) {
+        if(null==fetchToken){
+            throw new RPCException("CORGI RPC fetchToken not empty.");
+        }
         Socket socket = null;
         ObjectOutputStream oos = null;
         ObjectInputStream ois = null;
