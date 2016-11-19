@@ -67,7 +67,6 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         Class<?> originClass = ProxyUtils.getOriginClass(bean);
         if (checkRpcService(originClass)) {
-//            registerObject(origin);
             register.register(originClass,nodeInfo());
         }
         reflectProxyReference(bean);
@@ -93,15 +92,6 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
             }
         }
     }
-
-//    public void registerObject(Class zz) {
-////        PROVIDER_CLASS.add(zz);
-//        register.register(zz,nodeInfo());
-////        for (Class interfac : zz.getInterfaces()) {
-////            String apiClass = interfac.getName().replace(".","/");
-////            register.register(new DefaultRegNode(nodeInfo(),"/"+apiClass));
-////        }
-//    }
 
     public String nodeInfo() {
         return hostName+":" + protocol.getPort();

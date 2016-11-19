@@ -18,14 +18,6 @@ public class P2PRegister implements Register {
     private int timeout;
     private Set<Class<?>> registerClass = new HashSet<>();
 
-//    @Override
-//    public void register(RegNode regNode) {
-//        if(!REGISTER_API_INTERFACES.contains(regNode.getPath())){//filter repeat path
-//            REGISTER_API_INTERFACES.add(regNode.getPath());
-//            LOGGER.info("CORGI provider api { name : '" + regNode.getPath() + "' }");
-//        }
-//    }
-
     @Override
     public void register(Class<?> clazz, String nodeInfo) {
         registerClass.add(clazz);

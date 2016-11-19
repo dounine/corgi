@@ -25,16 +25,6 @@ public class ZkRegister implements Register {
     private int timeout;
     private Set<Class<?>> registerClass = new HashSet<>();
 
-//    @Override
-//    public void register(RegNode regNode) {
-//        if(!REGISTER_API_INTERFACES.contains(regNode.getPath())){//filter repeat path
-//            ZkClient instanceClient = getZkCliInstance();
-//            instanceClient.createPersistent(regNode.getPath());
-//            instanceClient.createEpseq(regNode.getPath()+"/node",regNode.getAddress());
-//            LOGGER.info("CORGI provider api { name : '" + regNode.getPath() + "' }");;
-//        }
-//    }
-
     @Override
     public void register(Class<?> clazz,String nodeInfo) {
         registerClass.add(clazz);
