@@ -9,6 +9,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Reference {
+    public static final Reference DEFAULT = new ReferenceImpl();
+
     String version() default "1.0.0";
     int timeout() default 3000;
     String url() default "";

@@ -20,8 +20,11 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
+import org.springframework.core.PriorityOrdered;
 import org.springframework.core.env.Environment;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -78,7 +81,7 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
     }
 
     public void reflectProxyReference(Object bean){
-        Class<?> cls = bean.getClass();
+        Class<?> cls = ProxyUtils.getOriginClass(bean.getClass());
         for (Field field : cls.getDeclaredFields()) {
             if (field.isAnnotationPresent(Reference.class)) {
                 boolean oldAcc = field.isAccessible();
@@ -158,8 +161,5 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
     public boolean exportRpcApp(){
         return true;
     }
-
-
-
 
 }
