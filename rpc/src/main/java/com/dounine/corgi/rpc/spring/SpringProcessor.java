@@ -63,6 +63,7 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        reflectProxyReference(bean);
         return bean;
     }
 
@@ -72,7 +73,6 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
         if (checkRpcService(originClass)) {
             register.register(originClass,nodeInfo());
         }
-        reflectProxyReference(bean);
         return bean;
     }
 
