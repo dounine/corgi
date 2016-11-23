@@ -1,9 +1,9 @@
 package jta.provider.service;
 
-import com.dounine.corgi.corgi.spring.rpc.Service;
 import jta.provider.dao.IUserDao;
 import jta.provider.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

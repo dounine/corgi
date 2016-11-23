@@ -39,7 +39,7 @@ public class UserSerImpl implements IUserSer {
 
     @Override
     public String hello() {
-        return "yes,I'm sso impl.";
+        return "yes,I'm demo provider.";
     }
 
 }

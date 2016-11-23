@@ -1,6 +1,6 @@
 package jta.consumer;
 
-import com.dounine.corgi.corgi.rpc.spring.SpringProcessor;
+import com.dounine.corgi.rpc.spring.SpringProcessor;
 import org.springframework.stereotype.Component;
 
 /**

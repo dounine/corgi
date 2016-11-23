@@ -9,4 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyProcessor extends SpringProcessor {
 
+    @Override
+    public boolean exportRpcApp() {
+        return false;
+    }
 }

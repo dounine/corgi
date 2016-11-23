@@ -63,16 +63,16 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        Class<?> originClass = bean.getClass();
+        if (checkRpcService(originClass)) {
+            register.register(originClass,nodeInfo());
+        }
         reflectProxyReference(bean);
         return bean;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        Class<?> originClass = ProxyUtils.getOriginClass(bean);
-        if (checkRpcService(originClass)) {
-            register.register(originClass,nodeInfo());
-        }
         return bean;
     }
 
