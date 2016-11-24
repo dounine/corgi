@@ -58,11 +58,36 @@ public class P2PPushRemoting implements PushRemoting,Runnable {
                 case RESULT://执行实现结果
                     execInvocation(ois,oos);
                     break;
+                case TX://事务
+                    execTx(ois,oos);
+                    break;
             }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void execTx(ObjectInputStream ois, ObjectOutputStream oos) {
+        LOGGER.info("CORGI [ " + socket.getRemoteSocketAddress() + " ] client >> TX << service begin...");
+        Throwable exception = null;
+        try {
+            String txId = ois.readUTF();
+            String txType = ois.readUTF();
+            try {
+                LOGGER.info("CORGI [ " + socket.getRemoteSocketAddress() + " ] client >> TX "+txType);
+                providerFilter.callback(txType,txId);
+                oos.writeUTF("success");
+            } catch (Exception e) {
+                exception = e;
+                e.printStackTrace();
+            }
+            LOGGER.info("CORGI [ " + socket.getRemoteSocketAddress() + " ] client >> TX << service finish.");
+        } catch (IOException e) {
+            exception = e;
+        } finally {
+            socksClose(ois, oos, exception);
         }
     }
 
@@ -109,37 +134,7 @@ public class P2PPushRemoting implements PushRemoting,Runnable {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } finally {
-            if (null != exception) {
-                try {
-                    oos.writeObject(exception);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (null != ois) {
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (null != oos) {
-                try {
-                    oos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (null != socket) {
-                if (socket.isConnected()) {
-                    try {
-                        socket.close();
-                        LOGGER.info("CORGI [ " + socket.getRemoteSocketAddress() + " ] client connect closed.\n");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+            socksClose(ois, oos, exception);
         }
     }
 
@@ -149,6 +144,7 @@ public class P2PPushRemoting implements PushRemoting,Runnable {
         try {
             String tokenStr = ois.readUTF();
             Token token = EXECUTE_METHOD_TOKENS.get(tokenStr);
+            String txId = ois.readUTF();
             Object[] args = (Object[]) ois.readObject();
             Method method = token.getMethod();
             if(null!=providerFilter){//过滤前置
@@ -165,7 +161,7 @@ public class P2PPushRemoting implements PushRemoting,Runnable {
                 throw e;
             }
             if(null!=providerFilter){//过滤后置
-                providerFilter.invokeAfter(result);
+                providerFilter.invokeAfter(result,txId);
             }
             oos.writeObject(null);//write null exception
             oos.writeObject(result);//write metod invoke result
@@ -183,35 +179,39 @@ public class P2PPushRemoting implements PushRemoting,Runnable {
         } catch (IllegalAccessException e) {
             exception = e;
         } finally {
-            if (null != exception) {
+            socksClose(ois, oos, exception);
+        }
+    }
+
+    private void socksClose(ObjectInputStream ois, ObjectOutputStream oos, Throwable exception) {
+        if (null != exception) {
+            try {
+                oos.writeObject(exception);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (null != ois) {
+            try {
+                ois.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (null != oos) {
+            try {
+                oos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (null != socket) {
+            if (socket.isConnected()) {
                 try {
-                    oos.writeObject(exception);
+                    socket.close();
+                    LOGGER.info("CORGI [ " + socket.getRemoteSocketAddress() + " ] client connect closed.\n");
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
-            }
-            if (null != ois) {
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (null != oos) {
-                try {
-                    oos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (null != socket) {
-                if (socket.isConnected()) {
-                    try {
-                        socket.close();
-                        LOGGER.info("CORGI [ " + socket.getRemoteSocketAddress() + " ] client connect closed.\n");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         }

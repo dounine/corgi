@@ -9,4 +9,6 @@ public interface FetchRemoting {
 
     FetchToken fetchToken();
 
+    void txCall(FetchToken fetchToken,String txType);
+
 }

@@ -34,6 +34,54 @@ public class P2PFetchRemoting implements FetchRemoting {
     }
 
     @Override
+    public void txCall(FetchToken fetchToken,String txType) {
+        if(null==fetchToken){
+            throw new RPCException("CORGI RPC fetchToken not empty.");
+        }
+        Socket socket = null;
+        ObjectOutputStream oos = null;
+        ObjectInputStream ois = null;
+        try {
+            InetSocketAddress isa = null;
+            String targetUrl = invocation.getReference().url();
+            if(StringUtils.isNotBlank(targetUrl)){
+                isa = new InetSocketAddress(targetUrl.split(":")[0],Integer.parseInt(targetUrl.split(":")[1]));
+                LOGGER.info("CORGI RPC use Reference url [ "+targetUrl+" ]");
+            }
+            Result result = null;
+            for(int i =0;i<=fetchToken.getRetries();i++){
+                try {
+                    if(i>0){
+                        LOGGER.info("CORGI client >> get result << retrie [ "+ i +" ]");
+                    }
+                    socket = new Socket(isa.getAddress(), isa.getPort());
+                    socket.setSoTimeout(fetchToken.getTimeout());
+                    ois = new ObjectInputStream(socket.getInputStream());
+                    oos = new ObjectOutputStream(socket.getOutputStream());
+                    oos.writeObject(RemotType.TX);
+                    oos.writeUTF(fetchToken.getToken());
+                    oos.writeUTF(txType);
+                    Object exception = ois.readObject();
+                    if (null != exception) {
+                        result = new DefaultResult(null, (Throwable) exception);
+                    } else {
+                        result = new DefaultResult(ois.readObject(), null);
+                    }
+                    break;
+                } catch (IOException e) {
+                    if (e instanceof ConnectException || e instanceof SocketTimeoutException) {
+                        continue;
+                    }
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            socksClose(socket, oos, ois);
+        }
+    }
+
+    @Override
     public Result fetch(FetchToken fetchToken) {
         if(null==fetchToken){
             throw new RPCException("CORGI RPC fetchToken not empty.");
@@ -44,10 +92,10 @@ public class P2PFetchRemoting implements FetchRemoting {
         try {
             Class clazz = invocation.getMethod().getDeclaringClass();
             InetSocketAddress isa = null;
-            String autoUrl = invocation.getReference().url();
-            if(StringUtils.isNotBlank(autoUrl)){
-                isa = new InetSocketAddress(autoUrl.split(":")[0],Integer.parseInt(autoUrl.split(":")[1]));
-                LOGGER.info("CORGI RPC use Reference url [ "+autoUrl+" ]");
+            String targetUrl = invocation.getReference().url();
+            if(StringUtils.isNotBlank(targetUrl)){
+                isa = new InetSocketAddress(targetUrl.split(":")[0],Integer.parseInt(targetUrl.split(":")[1]));
+                LOGGER.info("CORGI RPC use Reference url [ "+targetUrl+" ]");
             }else{
                 isa = invocation.getAddress(clazz);
             }
@@ -81,29 +129,7 @@ public class P2PFetchRemoting implements FetchRemoting {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
-            if (null != ois) {
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (null != oos) {
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (null != socket) {
-                try {
-                    if (socket.isConnected()) {
-                        socket.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            socksClose(socket, oos, ois);
         }
         return this.result;
     }
@@ -144,31 +170,37 @@ public class P2PFetchRemoting implements FetchRemoting {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
-            if (null != ois) {
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (null != oos) {
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (null != socket) {
-                try {
-                    if (socket.isConnected()) {
-                        socket.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            socksClose(socket, oos, ois);
         }
         return this.fetchToken;
+    }
+
+
+
+    private void socksClose(Socket socket, ObjectOutputStream oos, ObjectInputStream ois) {
+        if (null != ois) {
+            try {
+                ois.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (null != oos) {
+            try {
+                ois.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (null != socket) {
+            try {
+                if (socket.isConnected()) {
+                    socket.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public boolean validInvocation() {

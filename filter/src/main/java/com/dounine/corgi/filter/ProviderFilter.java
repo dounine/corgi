@@ -9,8 +9,10 @@ public interface ProviderFilter {
 
     void invokeBefore(Method method,Object object, Object[] args);
 
-    void invokeAfter(Object result);
+    void invokeAfter(Object result,String txId);
 
     void invokeError(Throwable throwable);
+
+    void callback(String txType,String txId) throws Exception;
 
 }

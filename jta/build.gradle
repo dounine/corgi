@@ -1,17 +1,35 @@
-apply from: '../config.gradle'
-apply from: 'config.gradle'
+apply plugin: 'java'
+group 'com.dounine'
+version '1.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
 
 dependencies {
-    compile project(":rpc")
+    compile project(":filter")
 
     compile group: 'mysql', name: 'mysql-connector-java', version: "$mysql_connector_version"
     compile group: 'org.springframework', name: 'spring-jdbc', version: "$spring_version"
     compile group: 'org.springframework', name: 'spring-context', version: "$spring_version"
     compile group: 'org.springframework', name: 'spring-aop', version: "$spring_version"
+    compile group: 'org.aspectj',name:'aspectjweaver',version: "$aspectjrt_version"
     compile group: 'org.springframework', name: 'spring-test', version: "$spring_version"
-    compile group: 'com.atomikos', name: 'transactions-jta', version: "$atomikos_version"
-    compile group: 'com.atomikos', name: 'transactions-api', version: "$atomikos_version"
-    compile group: 'com.atomikos', name: 'atomikos-util', version: "$atomikos_version"
-    compile group: 'com.atomikos', name: 'transactions-jdbc', version: "$atomikos_version"
+    compile group: 'com.atomikos', name: 'transactions-jta', version: "4.0.4"
+    compile group: 'com.atomikos', name: 'transactions-api', version: "4.0.4"
+    compile group: 'com.atomikos', name: 'atomikos-util', version: "4.0.4"
+    compile group: 'com.atomikos', name: 'transactions-jdbc', version: "4.0.4"
     compile group: 'javax.transaction', name: 'javax.transaction-api', version: '1.2'
+    compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.10.5.RELEASE'
+
 }
