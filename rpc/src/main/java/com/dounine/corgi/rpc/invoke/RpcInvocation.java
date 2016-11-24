@@ -1,10 +1,9 @@
 package com.dounine.corgi.rpc.invoke;
 
 import com.dounine.corgi.cluster.Balance;
-import com.dounine.corgi.remoting.FetchRemoting;
-import com.dounine.corgi.remoting.Result;
-import com.dounine.corgi.remoting.Invocation;
-import com.dounine.corgi.remoting.P2PFetchRemoting;
+import com.dounine.corgi.filter.ConsumerFilter;
+import com.dounine.corgi.filter.impl.DefaultConsumerFilter;
+import com.dounine.corgi.remoting.*;
 import com.dounine.corgi.rpc.listen.RpcContainer;
 import com.dounine.corgi.spring.rpc.Reference;
 
@@ -20,14 +19,15 @@ public class RpcInvocation<T> implements Invocation<T> {
     private Object[] args;
     private Reference reference;
     private Balance balance;
+    private ConsumerFilter consumerFilter;
 
-    public RpcInvocation(Object[] args,Method method,Reference reference){
+    public RpcInvocation(Object[] args, Method method, Reference reference) {
         this.args = args;
         this.method = method;
         this.reference = reference;
     }
 
-    public RpcInvocation(Reference reference, Balance balance){
+    public RpcInvocation(Reference reference, Balance balance) {
         this.reference = reference;
         this.balance = balance;
     }
@@ -44,8 +44,8 @@ public class RpcInvocation<T> implements Invocation<T> {
 
     @Override
     public InetSocketAddress getAddress(Class<T> clazz) {
-        String balanceUrls[] = balance.getBalance("/"+clazz.getName().replace(".","/")).split(":");
-        return new InetSocketAddress(balanceUrls[0],Integer.parseInt(balanceUrls[1]));
+        String balanceUrls[] = balance.getBalance("/" + clazz.getName().replace(".", "/")).split(":");
+        return new InetSocketAddress(balanceUrls[0], Integer.parseInt(balanceUrls[1]));
     }
 
     @Override
@@ -65,6 +65,27 @@ public class RpcInvocation<T> implements Invocation<T> {
 
         FetchRemoting client = new P2PFetchRemoting(this);
         RpcContainer.waitRpcListener();//wait rpc listened
-        return client.fetch(client.fetchToken());
+        FetchToken token = null;
+        if (null == consumerFilter) {
+            consumerFilter = new DefaultConsumerFilter();
+        }
+        token = consumerFilter.getToken(client);
+        Result result = null;
+        try {
+            result = consumerFilter.getResult(client, token);
+            consumerFilter.execTransaction(client, token, "commit");
+        } catch (Throwable e) {
+            consumerFilter.execTransaction(client, token, "rollback");
+            throw e;
+        }
+        return result;
+    }
+
+    public ConsumerFilter getConsumerFilter() {
+        return consumerFilter;
+    }
+
+    public void setConsumerFilter(ConsumerFilter consumerFilter) {
+        this.consumerFilter = consumerFilter;
     }
 }

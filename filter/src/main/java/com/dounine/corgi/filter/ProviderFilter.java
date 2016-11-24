@@ -7,12 +7,20 @@ import java.lang.reflect.Method;
  */
 public interface ProviderFilter {
 
-    void invokeBefore(Method method,Object object, Object[] args);
+    default void invokeBefore(Method method,Object object, Object[] args){
 
-    void invokeAfter(Object result,String txId);
+    }
 
-    void invokeError(Throwable throwable);
+    default void invokeAfter(Object result,String txId){
 
-    void callback(String txType,String txId) throws Exception;
+    }
+
+    default void invokeError(Throwable throwable){
+
+    }
+
+    default void callback(String txType,String txId) throws Exception{
+
+    }
 
 }
