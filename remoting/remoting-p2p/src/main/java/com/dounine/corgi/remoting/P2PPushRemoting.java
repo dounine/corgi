@@ -137,7 +137,7 @@ public class P2PPushRemoting implements PushRemoting, Runnable {
         } catch (ClassNotFoundException e) {
             exception = e;
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            exception = e;
         } finally {
             socksClose(ois, oos, exception);
         }
@@ -149,7 +149,7 @@ public class P2PPushRemoting implements PushRemoting, Runnable {
         try {
             String tokenStr = ois.readUTF();
             Token token = EXECUTE_METHOD_TOKENS.get(tokenStr);
-            String txId = ois.readUTF();
+            String txId = "aaaa";//TODO 要获取真正生成的事务ID
             Object[] args = (Object[]) ois.readObject();
             Method method = token.getMethod();
             if (null == providerFilter) {
@@ -160,7 +160,8 @@ public class P2PPushRemoting implements PushRemoting, Runnable {
             Object result = null;
             try {
                 result = method.invoke(token.getInvokeObj(), args);
-            } catch (Throwable e) {
+            } catch (Exception e) {
+                exception = e;
                 providerFilter.invokeError(e);//异常调用
                 throw e;
             }
@@ -180,7 +181,9 @@ public class P2PPushRemoting implements PushRemoting, Runnable {
             }
         } catch (IllegalAccessException e) {
             exception = e;
-        } finally {
+        }catch (Exception e){
+            exception = e;
+        }finally {
             socksClose(ois, oos, exception);
         }
     }
