@@ -1,5 +1,5 @@
 apply from: '../config.gradle'
 
 dependencies {
-    compile project(':remoting:remoting-api')
+    compile project(":common")
 }
