@@ -18,6 +18,6 @@ public interface ConsumerFilter {
     }
 
     default void execTransaction(FetchRemoting client,FetchToken fetchToken, String txType){
-        client.txCall(fetchToken,"rollback");
+        //client.txCall(fetchToken,"rollback");
     }
 }
