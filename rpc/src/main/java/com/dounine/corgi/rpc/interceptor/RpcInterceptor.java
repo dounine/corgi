@@ -34,9 +34,6 @@ public class RpcInterceptor implements MethodInterceptor{
             return invoker.equals(args[0]);
         }
         Result result = invoker.fetch(args,method);
-        if(result==null){
-            throw new RPCException("CORGI rpc [ "+methodName+" ] interface call fail.");
-        }
         return result.result();
     }
 
