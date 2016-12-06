@@ -3,7 +3,7 @@ package com.dounine.corgi.validation.aop;
 import com.alibaba.fastjson.JSON;
 import com.dounine.corgi.commons.ResponseText;
 import com.dounine.corgi.jsonp.Callback;
-import com.dounine.corgi.response.ResponseContext;
+import com.dounine.corgi.context.response.ResponseContext;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

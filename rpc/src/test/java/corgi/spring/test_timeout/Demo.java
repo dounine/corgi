@@ -1,6 +1,6 @@
 package corgi.spring.test_timeout;
 
-import com.dounine.corgi.spring.ApplicationContext;
+import com.dounine.corgi.context.ApplicationContext;
 import corgi.spring.test_timeout.code.ApplicationConfiguration;
 import corgi.spring.test_timeout.code.People;
 import org.junit.Assert;

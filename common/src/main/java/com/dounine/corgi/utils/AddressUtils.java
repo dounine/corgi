@@ -1,6 +1,6 @@
 package com.dounine.corgi.utils;
 
-import com.dounine.corgi.request.RequestContext;
+import com.dounine.corgi.context.request.RequestContext;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

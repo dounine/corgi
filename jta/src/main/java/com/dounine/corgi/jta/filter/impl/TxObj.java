@@ -2,6 +2,7 @@ package com.dounine.corgi.jta.filter.impl;
 
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.jta.JtaTransactionManager;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.CountDownLatch;
@@ -11,13 +12,13 @@ import java.util.concurrent.CountDownLatch;
  */
 public class TxObj implements Runnable{
 
-    private JpaTransactionManager jtm;
+    private JtaTransactionManager jtm;
     private TransactionStatus ts;
     private LocalDateTime createTime;
     private CountDownLatch finish = new CountDownLatch(1);
     private TxType type;
 
-    public TxObj(JpaTransactionManager jtm,TransactionStatus ts,LocalDateTime createTime){
+    public TxObj(JtaTransactionManager jtm, TransactionStatus ts, LocalDateTime createTime){
         this.jtm = jtm;
         this.ts = ts;
         this.createTime = createTime;
@@ -47,11 +48,11 @@ public class TxObj implements Runnable{
         this.createTime = createTime;
     }
 
-    public JpaTransactionManager getJtm() {
+    public JtaTransactionManager getJtm() {
         return jtm;
     }
 
-    public void setJtm(JpaTransactionManager jtm) {
+    public void setJtm(JtaTransactionManager jtm) {
         this.jtm = jtm;
     }
 

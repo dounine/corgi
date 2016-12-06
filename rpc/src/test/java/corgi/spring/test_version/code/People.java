@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class People {
 
-    @Reference(version = "1.0.2")
+    @Reference(version = "1.0.0",timeout = 4000)
     UserApi userApi;
 
     public String login(String username){

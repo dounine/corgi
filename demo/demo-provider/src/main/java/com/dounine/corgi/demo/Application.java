@@ -1,7 +1,7 @@
 package com.dounine.corgi.demo;
 
 import com.dounine.corgi.demo.boot.App;
-import com.dounine.corgi.spring.ApplicationContext;
+import com.dounine.corgi.context.ApplicationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

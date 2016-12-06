@@ -1,6 +1,6 @@
 package corgi.spring.test_rpcmethod;
 
-import com.dounine.corgi.spring.ApplicationContext;
+import com.dounine.corgi.context.ApplicationContext;
 import corgi.spring.test_rpcmethod.code.ApplicationConfiguration;
 import corgi.spring.test_rpcmethod.code.People;
 import org.junit.Assert;

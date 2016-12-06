@@ -6,14 +6,17 @@ import java.io.Serializable;
  * Created by huanghuanlai on 2016/11/7.
  */
 public class P2PFetchToken implements FetchToken,Serializable {
+
+    private String address;
     private String token;
     private int timeout;
     private int retries;
 
-    public P2PFetchToken(String token,int timeout,int retries){
+    public P2PFetchToken(String token,int timeout,int retries,String address){
         this.token = token;
         this.timeout = timeout;
         this.retries = retries;
+        this.address = address;
     }
 
     @Override
@@ -41,5 +44,14 @@ public class P2PFetchToken implements FetchToken,Serializable {
 
     public void setRetries(int retries) {
         this.retries = retries;
+    }
+
+    @Override
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

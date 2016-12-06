@@ -9,15 +9,15 @@ import com.dounine.corgi.remoting.Result;
  */
 public interface ConsumerFilter {
 
-    default FetchToken getToken(FetchRemoting client){
-        return client.fetchToken();
+    default FetchToken getToken(FetchRemoting client,String txId){
+        return client.fetchToken(txId);
     }
 
     default Result getResult(FetchRemoting client, FetchToken token){
-        return client.fetch(token);
+        return client.fetchResult(token);
     }
 
     default void execTransaction(FetchRemoting client,FetchToken fetchToken, String txType){
-        //client.txCall(fetchToken,"rollback");
+        client.txCall(fetchToken,txType);
     }
 }

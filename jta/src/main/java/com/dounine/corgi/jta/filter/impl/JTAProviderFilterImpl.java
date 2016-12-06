@@ -1,11 +1,18 @@
 package com.dounine.corgi.jta.filter.impl;
 
+import com.dounine.corgi.context.RpcContext;
+import com.dounine.corgi.context.TokenContext;
 import com.dounine.corgi.filter.ProviderFilter;
+import com.dounine.corgi.jta.component.Components;
 import com.dounine.corgi.jta.filter.ProviderTXContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.jta.JtaTransactionManager;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
@@ -16,27 +23,31 @@ import java.util.Optional;
 /**
  * Created by huanghuanlai on 2016/11/16.
  */
-@Component
 public class JTAProviderFilterImpl implements ProviderFilter {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JTAProviderFilterImpl.class);
     private static final Map<String, TxObj> TX_OBJ_MAP = new HashMap<>();
 
     @Autowired
-    private JpaTransactionManager jtm;
+    protected JtaTransactionManager jtm;
 
     @Override
     public void invokeBefore(Method method, Object object, Object[] args) {
         ProviderTXContext.create(jtm);
+        LOGGER.info("CORGI JTA create method tx.");
     }
 
     @Override
-    public void invokeAfter(Object result, String txId) {
+    public void invokeAfter(Object result) {
+        String txId = TokenContext.get();
         TxObj txObj = new TxObj(jtm, ProviderTXContext.get(), LocalDateTime.now());
         new Thread(txObj);
         TX_OBJ_MAP.put(txId, txObj);
+        LOGGER.info("CORGI JTA waiting tx commit or rollback.");
     }
 
-    public void callback(String txTypeStr, String txId) throws Exception {
+    public void callback(String txTypeStr) throws Exception {
+        String txId = TokenContext.get();
         Optional<String> txObjOpts = TX_OBJ_MAP.keySet().stream().filter(id -> txId.equals(id)).findFirst();
         TxType txType = null;
         if ("commit".equals(txTypeStr)) {
@@ -48,6 +59,7 @@ public class JTAProviderFilterImpl implements ProviderFilter {
         }
         if (txObjOpts.isPresent()) {
             TX_OBJ_MAP.get(txObjOpts.get()).begin(txType);
+            LOGGER.info("CORGI JTA exec [ "+txType+" ] tx.");
         } else {
             throw new Exception("CORGI txId:" + txId + " not found.");
         }

@@ -7,6 +7,8 @@ public interface FetchToken {
 
     String getToken();
 
+    String getAddress();
+
     int getTimeout();
 
     int getRetries();

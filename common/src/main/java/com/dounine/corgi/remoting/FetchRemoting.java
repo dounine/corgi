@@ -5,9 +5,9 @@ package com.dounine.corgi.remoting;
  */
 public interface FetchRemoting {
 
-    Result fetch(FetchToken fetchToken);
+    Result fetchResult(FetchToken fetchToken);
 
-    FetchToken fetchToken();
+    FetchToken fetchToken(String txId);
 
     void txCall(FetchToken fetchToken,String txType);
 

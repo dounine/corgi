@@ -76,4 +76,5 @@ public class P2PToken implements Token {
     public void setRetries(int retries) {
         this.retries = retries;
     }
+
 }

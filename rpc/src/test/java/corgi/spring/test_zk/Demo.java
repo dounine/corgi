@@ -1,6 +1,6 @@
 package corgi.spring.test_zk;
 
-import com.dounine.corgi.spring.ApplicationContext;
+import com.dounine.corgi.context.ApplicationContext;
 import corgi.spring.test_zk.code.ApplicationConfiguration;
 import corgi.spring.test_zk.code.People;
 import org.junit.Assert;

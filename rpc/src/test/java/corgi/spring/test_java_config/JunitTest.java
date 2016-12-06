@@ -1,7 +1,7 @@
 package corgi.spring.test_java_config;
 
 import com.dounine.corgi.exception.SerException;
-import com.dounine.corgi.spring.ApplicationContext;
+import com.dounine.corgi.context.ApplicationContext;
 import com.dounine.corgi.spring.rpc.Reference;
 import corgi.spring.test_java_config.code.ApplicationConfiguration;
 import corgi.spring.test_java_config.code.UserApi;

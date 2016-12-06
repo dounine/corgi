@@ -1,4 +1,4 @@
-package com.dounine.corgi.spring;
+package com.dounine.corgi.context;
 
 /**
  * Created by huanghuanlai on 16/9/3.

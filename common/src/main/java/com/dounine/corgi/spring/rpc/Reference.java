@@ -14,4 +14,5 @@ public @interface Reference {
     String version() default "1.0.0";
     int timeout() default 3000;
     String url() default "";
+    int retries() default 3;
 }

@@ -13,4 +13,5 @@ public @interface Service {
     String value() default "";
     String version() default "1.0.0";
     int timeout() default 4000;
+    int retries() default 3;
 }

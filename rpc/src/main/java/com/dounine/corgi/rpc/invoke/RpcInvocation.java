@@ -1,6 +1,7 @@
 package com.dounine.corgi.rpc.invoke;
 
 import com.dounine.corgi.cluster.Balance;
+import com.dounine.corgi.context.ApiContext;
 import com.dounine.corgi.filter.ConsumerFilter;
 import com.dounine.corgi.filter.impl.DefaultConsumerFilter;
 import com.dounine.corgi.remoting.*;
@@ -21,15 +22,17 @@ public class RpcInvocation<T> implements Invocation<T> {
     private Balance balance;
     private ConsumerFilter consumerFilter;
 
-    public RpcInvocation(Object[] args, Method method, Reference reference) {
+    public RpcInvocation(Object[] args, Method method, Reference reference,ConsumerFilter consumerFilter) {
         this.args = args;
         this.method = method;
         this.reference = reference;
+        this.consumerFilter = consumerFilter;
     }
 
-    public RpcInvocation(Reference reference, Balance balance) {
+    public RpcInvocation(Reference reference, Balance balance,ConsumerFilter consumerFilter) {
         this.reference = reference;
         this.balance = balance;
+        this.consumerFilter = consumerFilter;
     }
 
     @Override
@@ -69,7 +72,7 @@ public class RpcInvocation<T> implements Invocation<T> {
         if (null == consumerFilter) {
             consumerFilter = new DefaultConsumerFilter();
         }
-        token = consumerFilter.getToken(client);
+        token = consumerFilter.getToken(client, ApiContext.getTxID());
         Result result = null;
         try {
             result = consumerFilter.getResult(client, token);

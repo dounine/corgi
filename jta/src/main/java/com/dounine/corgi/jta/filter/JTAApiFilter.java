@@ -1,5 +1,6 @@
 package com.dounine.corgi.jta.filter;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
@@ -7,11 +8,9 @@ import org.aspectj.lang.ProceedingJoinPoint;
  */
 public interface JTAApiFilter {
 
-    void methodInvoke();
+    void methodBefore(ProceedingJoinPoint pjd);
 
-    void methodBefore(ProceedingJoinPoint joinPoint);
+    void methodAfter(ProceedingJoinPoint pjd, Object result);
 
-    void methodAfter(ProceedingJoinPoint joinPoint);
-
-    void methodException(ProceedingJoinPoint joinPoint);
+    void methodException(JoinPoint joinPoint, Throwable ex);
 }

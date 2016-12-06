@@ -1,5 +1,6 @@
 package com.dounine.corgi.rpc.listen;
 
+import com.dounine.corgi.filter.ConsumerFilter;
 import com.dounine.corgi.filter.ProviderFilter;
 import com.dounine.corgi.register.Register;
 import com.dounine.corgi.remoting.P2PPushRemoting;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by huanghuanlai on 2016/10/15.
@@ -21,11 +23,18 @@ public class RpcContainer implements Runnable {
 
     private IProtocol protocol;
     private ProviderFilter providerFilter;
+    private ConsumerFilter consumerFilter;
     private Register register;
-    public RpcContainer(final IProtocol protocol, Register register, ProviderFilter providerFilter){
+    public RpcContainer(final IProtocol protocol, Register register, ProviderFilter providerFilter, ConsumerFilter consumerFilter){
         this.protocol = protocol;
         this.register = register;
         this.providerFilter = providerFilter;
+        this.consumerFilter = consumerFilter;
+    }
+
+    public RpcContainer(final IProtocol protocol, Register register){
+        this.protocol = protocol;
+        this.register = register;
     }
 
     @Override
@@ -41,6 +50,7 @@ public class RpcContainer implements Runnable {
                 LOGGER.info("CORGI [ "+socket.getRemoteSocketAddress()+" ] client connected.");
                 P2PPushRemoting p2PPushRemoting = new P2PPushRemoting(socket);
                 p2PPushRemoting.setProviderFilter(providerFilter);
+                p2PPushRemoting.setConsumerFilter(consumerFilter);
                 p2PPushRemoting.setRegister(register);
                 ThreadPools.getExecutor().execute(p2PPushRemoting);
             }

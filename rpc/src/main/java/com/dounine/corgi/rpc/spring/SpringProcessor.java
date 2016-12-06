@@ -4,6 +4,9 @@ import com.dounine.corgi.cluster.Balance;
 import com.dounine.corgi.cluster.CirculationBalance;
 import com.dounine.corgi.cluster.ClusterPaths;
 import com.dounine.corgi.exception.RPCException;
+import com.dounine.corgi.filter.ConsumerFilter;
+import com.dounine.corgi.filter.ProviderFilter;
+import com.dounine.corgi.filter.impl.DefaultProviderFilter;
 import com.dounine.corgi.register.*;
 import com.dounine.corgi.rpc.RpcApp;
 import com.dounine.corgi.rpc.listen.RpcContainer;
@@ -24,6 +27,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.core.env.Environment;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
@@ -37,7 +41,7 @@ import java.util.Set;
 /**
  * Created by huanghuanlai on 2016/10/18.
  */
-public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IRpc {
+public class SpringProcessor implements BeanPostProcessor,IRpc {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringProcessor.class);
     protected static String hostName = null;
@@ -60,19 +64,23 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
     protected IProtocol protocol;
     @Autowired
     protected Balance balance;
+    @Autowired
+    protected ProviderFilter providerFilter;
+    @Autowired
+    protected ConsumerFilter consumerFilter;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        Class<?> originClass = bean.getClass();
+        if (checkRpcService(originClass)) {
+            register.register(originClass,nodeInfo());
+        }
         reflectProxyReference(bean);
         return bean;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        Class<?> originClass = bean.getClass();
-        if (checkRpcService(originClass)) {
-            register.register(originClass,nodeInfo());
-        }
         return bean;
     }
 
@@ -151,11 +159,15 @@ public class SpringProcessor implements BeanPostProcessor,ApplicationListener,IR
         return corgiProtocol;
     }
 
-    @Override
-    public void onApplicationEvent(ApplicationEvent event) {
+    protected void appStart(){
         if(!RpcContainer.isListener()&&exportRpcApp()){
-            RpcApp.init(protocol,register,env.getProperty("corgi.application.name")).export();
+            RpcApp.init(protocol,register,providerFilter,consumerFilter,env.getProperty("corgi.application.name")).export();
         }
+    }
+
+    @PostConstruct
+    protected void onApplicationStart() {
+        appStart();
     }
 
     public boolean exportRpcApp(){

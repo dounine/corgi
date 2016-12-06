@@ -1,4 +1,4 @@
-package com.dounine.corgi.response;
+package com.dounine.corgi.context.response;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.web.context.request.RequestContextHolder;

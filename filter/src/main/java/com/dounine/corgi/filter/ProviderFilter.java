@@ -11,15 +11,14 @@ public interface ProviderFilter {
 
     }
 
-    default void invokeAfter(Object result,String txId){
-
+    default void invokeAfter(Object result){
     }
 
     default void invokeError(Throwable throwable){
 
     }
 
-    default void callback(String txType,String txId) throws Exception{
+    default void callback(String txType) throws Exception{
 
     }
 

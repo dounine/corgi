@@ -1,6 +1,6 @@
 package corgi.spring.test_thread_pools;
 
-import com.dounine.corgi.spring.ApplicationContext;
+import com.dounine.corgi.context.ApplicationContext;
 import corgi.spring.test_thread_pools.code.ApplicationConfiguration;
 import corgi.spring.test_thread_pools.code.People;
 import org.junit.Assert;

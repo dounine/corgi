@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    compile project(":filter")
+    compile project(":rpc")
 
     compile group: 'mysql', name: 'mysql-connector-java', version: "$mysql_connector_version"
     compile group: 'org.springframework', name: 'spring-jdbc', version: "$spring_version"
