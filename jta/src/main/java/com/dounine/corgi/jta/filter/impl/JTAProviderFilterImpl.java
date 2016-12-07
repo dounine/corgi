@@ -1,20 +1,13 @@
 package com.dounine.corgi.jta.filter.impl;
 
-import com.dounine.corgi.context.RpcContext;
 import com.dounine.corgi.context.TokenContext;
 import com.dounine.corgi.filter.ProviderFilter;
-import com.dounine.corgi.jta.component.Components;
 import com.dounine.corgi.jta.filter.ProviderTXContext;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
-import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.HashMap;
