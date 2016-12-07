@@ -1,8 +1,8 @@
-package com.dounine.corgi.jta.filter.impl;
+package com.dounine.corgi.jta.impl;
 
 import com.dounine.corgi.context.TokenContext;
 import com.dounine.corgi.filter.ProviderFilter;
-import com.dounine.corgi.jta.filter.ProviderTXContext;
+import com.dounine.corgi.jta.ProviderJTATXContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class JTAProviderFilterImpl implements ProviderFilter {
     @Override
     public void invokeBefore(Method method, Object object, Object[] args) {
         if (checkTxTransaction(method)) {
-            ProviderTXContext.create(jtm);
+            ProviderJTATXContext.create(jtm);
             LOGGER.info("CORGI JTA create method tx.");
         }
     }
@@ -37,7 +37,7 @@ public class JTAProviderFilterImpl implements ProviderFilter {
     public void invokeAfter(Method method,Object result) {
         if (checkTxTransaction(method)) {
             String txId = TokenContext.get();
-            TxObj txObj = new TxObj(jtm, ProviderTXContext.get(), LocalDateTime.now());
+            TxObj txObj = new TxObj(jtm, ProviderJTATXContext.get(), LocalDateTime.now());
             new Thread(txObj);
             TX_OBJ_MAP.put(txId, txObj);
             LOGGER.info("CORGI JTA waiting tx commit or rollback.");
@@ -65,6 +65,6 @@ public class JTAProviderFilterImpl implements ProviderFilter {
 
     @Override
     public void invokeError(Throwable throwable) {
-        jtm.rollback(ProviderTXContext.get());
+        jtm.rollback(ProviderJTATXContext.get());
     }
 }

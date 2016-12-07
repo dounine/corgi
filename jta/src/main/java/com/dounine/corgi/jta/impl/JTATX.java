@@ -1,4 +1,4 @@
-package com.dounine.corgi.jta.filter.impl;
+package com.dounine.corgi.jta.impl;
 
 import com.dounine.corgi.remoting.FetchRemoting;
 import com.dounine.corgi.remoting.FetchToken;

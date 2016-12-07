@@ -1,6 +1,5 @@
-package com.dounine.corgi.jta.filter.impl;
+package com.dounine.corgi.jta.impl;
 
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.jta.JtaTransactionManager;
 

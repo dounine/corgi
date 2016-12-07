@@ -1,26 +1,28 @@
-package com.dounine.corgi.jta.filter;
+package com.dounine.corgi.jta.jpa;
 
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 /**
  * Created by huanghuanlai on 2016/11/23.
  */
-public class JTAApiTXContext {
+public class ProviderJPATXContext {
 
     private static final ThreadLocal<TransactionStatus> TRANSACTION_STATUS_THREAD_LOCAL = new ThreadLocal<>();
 
-    public static final void create(JpaTransactionManager jtm){
-        create(jtm,30);
+    public static final TransactionStatus create(JpaTransactionManager jtm){
+        return create(jtm,30);
     }
 
-    public static final void create(JpaTransactionManager jtm, int timeout){
+    public static final TransactionStatus create(JpaTransactionManager jtm, int timeout){
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         def.setTimeout(timeout);
         TRANSACTION_STATUS_THREAD_LOCAL.set(jtm.getTransaction(def));
+        return TRANSACTION_STATUS_THREAD_LOCAL.get();
     }
 
     public static final TransactionStatus get(){

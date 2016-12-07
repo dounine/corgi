@@ -1,14 +1,9 @@
-package com.dounine.corgi.jta.filter.impl;
+package com.dounine.corgi.jta.impl;
 
 import com.dounine.corgi.filter.ConsumerFilter;
-import com.dounine.corgi.jta.filter.ProviderTXContext;
 import com.dounine.corgi.remoting.FetchRemoting;
 import com.dounine.corgi.remoting.FetchToken;
-import com.dounine.corgi.remoting.Result;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaTransactionManager;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 

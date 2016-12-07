@@ -1,22 +1,12 @@
-package com.dounine.corgi.jta.filter.impl;
+package com.dounine.corgi.jta.impl;
 
-import com.dounine.corgi.jta.filter.JTAApiFilter;
-import com.dounine.corgi.jta.filter.ProviderTXContext;
-import org.aspectj.lang.JoinPoint;
+import com.dounine.corgi.jta.JTAApiFilter;
+import com.dounine.corgi.jta.ProviderJTATXContext;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.jta.JtaTransactionManager;
-
-import javax.annotation.PostConstruct;
-import java.lang.reflect.Method;
 
 /**
  * Created by huanghuanlai on 2016/11/23.
@@ -33,7 +23,7 @@ public abstract class JTAApiFilterImpl implements JTAApiFilter {
     public void methodBefore(ProceedingJoinPoint pjp) {
         if(checkTxTransaction(pjp)){
             LOGGER.info("CORGI JTA local api create.");
-            ProviderTXContext.create(jtm);
+            ProviderJTATXContext.create(jtm);
         }
     }
 
@@ -44,19 +34,19 @@ public abstract class JTAApiFilterImpl implements JTAApiFilter {
             for(JTATX jtatx : jtaConsumerFilter.getJtaTxs()){
                 jtatx.getClient().txCall(jtatx.getFetchToken(),"commit");
             }
-            jtm.commit(ProviderTXContext.get());
+            jtm.commit(ProviderJTATXContext.get());
         }
     }
 
     @Override
     public void methodException(ProceedingJoinPoint jp, Throwable ex) {
         if(checkTxTransaction(jp)){
-            if(!ProviderTXContext.get().isCompleted()){
+            if(!ProviderJTATXContext.get().isCompleted()){
                 LOGGER.info("CORGI JTA local api rollback.");
                 for(JTATX jtatx : jtaConsumerFilter.getJtaTxs()){
                     jtatx.getClient().txCall(jtatx.getFetchToken(),"rollback");
                 }
-                jtm.rollback(ProviderTXContext.get());
+                jtm.rollback(ProviderJTATXContext.get());
             }else{
                 LOGGER.info("CORGI JTA local api tx is complted.");
             }

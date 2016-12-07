@@ -1,4 +1,4 @@
-package com.dounine.corgi.jta.filter.impl;
+package com.dounine.corgi.jta.jpa.impl;
 
 /**
  * Created by huanghuanlai on 2016/11/24.
