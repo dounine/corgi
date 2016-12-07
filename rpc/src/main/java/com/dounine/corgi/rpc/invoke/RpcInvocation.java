@@ -26,21 +26,18 @@ public class RpcInvocation<T> implements Invocation<T> {
     private Reference reference;
     private Balance balance;
     private ConsumerFilter consumerFilter;
-    private ProviderTxFilter providerTxFilter;
 
-    public RpcInvocation(Object[] args, Method method, Reference reference, ConsumerFilter consumerFilter, ProviderTxFilter providerTxFilter) {
+    public RpcInvocation(Object[] args, Method method, Reference reference, ConsumerFilter consumerFilter) {
         this.args = args;
         this.method = method;
         this.reference = reference;
         this.consumerFilter = consumerFilter;
-        this.providerTxFilter = providerTxFilter;
     }
 
-    public RpcInvocation(Reference reference, Balance balance, ConsumerFilter consumerFilter, ProviderTxFilter providerTxFilter) {
+    public RpcInvocation(Reference reference, Balance balance, ConsumerFilter consumerFilter) {
         this.reference = reference;
         this.balance = balance;
         this.consumerFilter = consumerFilter;
-        this.providerTxFilter = providerTxFilter;
     }
 
     @Override
@@ -101,11 +98,4 @@ public class RpcInvocation<T> implements Invocation<T> {
         this.consumerFilter = consumerFilter;
     }
 
-    public ProviderTxFilter getProviderTxFilter() {
-        return providerTxFilter;
-    }
-
-    public void setProviderTxFilter(ProviderTxFilter providerTxFilter) {
-        this.providerTxFilter = providerTxFilter;
-    }
 }

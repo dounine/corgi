@@ -9,6 +9,7 @@ public class ReferenceImpl implements Reference {
     private String url = "";
     private String version = "1.0.0";
     private int timeout = 3000;
+    private int retries = 3;
 
     public String getUrl() {
         return url;
@@ -52,5 +53,18 @@ public class ReferenceImpl implements Reference {
     @Override
     public String url() {
         return url;
+    }
+
+    public int getRetries() {
+        return retries;
+    }
+
+    public void setRetries(int retries) {
+        this.retries = retries;
+    }
+
+    @Override
+    public int retries() {
+        return retries;
     }
 }

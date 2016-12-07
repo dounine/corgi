@@ -59,7 +59,7 @@ public class RpcApp {
     }
 
     public <T> T getProxy(Class<T> interfaceClass, Reference reference, Balance balance) {
-        Invocation<T> invocation = new RpcInvocation<T>(reference, balance, consumerFilter,providerTxFilter);
+        Invocation<T> invocation = new RpcInvocation<T>(reference, balance, consumerFilter);
         Callback callback = new RpcInterceptor(invocation);
         ENHANCER.setCallback(callback);
         ENHANCER.setInterfaces(new Class<?>[]{interfaceClass});

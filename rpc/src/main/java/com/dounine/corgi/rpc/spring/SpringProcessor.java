@@ -74,9 +74,11 @@ public class SpringProcessor implements BeanPostProcessor,IRpc {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        Class<?> originClass = bean.getClass();
-        if (checkRpcService(originClass)) {
-            register.register(originClass,nodeInfo());
+        if(exportRpcApp()){
+            Class<?> originClass = bean.getClass();
+            if (checkRpcService(originClass)) {
+                register.register(originClass,nodeInfo());
+            }
         }
         reflectProxyReference(bean);
         return bean;
@@ -163,8 +165,9 @@ public class SpringProcessor implements BeanPostProcessor,IRpc {
     }
 
     protected void appStart(){
+        RpcApp rpcApp = RpcApp.init(protocol,register,providerFilter,consumerFilter,providerTxFilter,env.getProperty("corgi.application.name"));
         if(!RpcContainer.isListener()&&exportRpcApp()){
-            RpcApp.init(protocol,register,providerFilter,consumerFilter,providerTxFilter,env.getProperty("corgi.application.name")).export();
+            rpcApp.export();
         }
     }
 
