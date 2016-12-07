@@ -17,8 +17,6 @@ import java.util.Arrays;
 @Component
 public class MyJTAApiFilter extends JTAApiFilterImpl {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MyJTAApiFilter.class);
-
     @Around("execution(* rpc.test_jta.code..*.*(..))")
     public Object aroundMethod(ProceedingJoinPoint pjd) throws Throwable {
         return super.aroundMethod(pjd);

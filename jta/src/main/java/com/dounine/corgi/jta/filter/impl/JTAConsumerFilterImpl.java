@@ -21,15 +21,16 @@ public class JTAConsumerFilterImpl implements ConsumerFilter {
 
     @Override
     public void execTransaction(FetchRemoting client, FetchToken fetchToken, String txType) {
-        List<JTATX> jtatxes = CURRENT_THREAD_TXS.get();
-        if(null==jtatxes){
-            CURRENT_THREAD_TXS.set(new ArrayList<>());
+        if(fetchToken.checkCommit()){//提供者所提供的接口需要提交事务
+            List<JTATX> jtatxes = CURRENT_THREAD_TXS.get();
+            if(null==jtatxes){
+                CURRENT_THREAD_TXS.set(new ArrayList<>());
+            }
+            CURRENT_THREAD_TXS.get().add(new JTATX(client,fetchToken,txType));
         }
-        CURRENT_THREAD_TXS.get().add(new JTATX(client,fetchToken,txType));
-        //client.txCall(fetchToken,txType);
     }
 
     public List<JTATX> getJtaTxs(){
-        return CURRENT_THREAD_TXS.get();
+        return CURRENT_THREAD_TXS.get()==null?new ArrayList<>(0):CURRENT_THREAD_TXS.get();
     }
 }

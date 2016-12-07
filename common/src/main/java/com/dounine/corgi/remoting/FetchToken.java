@@ -9,6 +9,8 @@ public interface FetchToken {
 
     String getAddress();
 
+    boolean checkCommit();
+
     int getTimeout();
 
     int getRetries();

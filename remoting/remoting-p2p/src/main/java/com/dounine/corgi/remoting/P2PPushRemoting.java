@@ -6,6 +6,7 @@ import com.dounine.corgi.exception.RPCException;
 import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.filter.ConsumerFilter;
 import com.dounine.corgi.filter.ProviderFilter;
+import com.dounine.corgi.filter.ProviderTxFilter;
 import com.dounine.corgi.filter.impl.DefaultProviderFilter;
 import com.dounine.corgi.register.Register;
 import com.dounine.corgi.context.ApplicationContext;
@@ -33,13 +34,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class P2PPushRemoting implements PushRemoting, Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(P2PPushRemoting.class);
-    private static final int RPC_SOCKET_TIMEOUT = 3000;
     private static final Map<String, Token> EXECUTE_METHOD_TOKENS = new ConcurrentHashMap<>();
 
     private Socket socket;
     private Register register;
     private ProviderFilter providerFilter;
     private ConsumerFilter consumerFilter;
+    private ProviderTxFilter providerTxFilter;
 
     public P2PPushRemoting(Socket socket) {
         this.socket = socket;
@@ -98,12 +99,15 @@ public class P2PPushRemoting implements PushRemoting, Runnable {
             } else if (!oo.isPresent() && obs.size() > 0) {
                 throw new RPCException(clazz.getName() + " version [ " + version + " ] not found.");
             }
-            Optional<RpcMethod> rpcMethodOptional = Optional.ofNullable(oo.get().getMethod(methodName, paramterTypes).getAnnotation(RpcMethod.class));
+
+            Method methodImpl = oo.get().getMethod(methodName, paramterTypes);
+
+            Optional<RpcMethod> rpcMethodOptional = Optional.ofNullable(methodImpl.getAnnotation(RpcMethod.class));
             P2PToken p2PToken = new P2PToken();
             p2PToken.setClazz(clazz);
             p2PToken.setVersion(version);
             p2PToken.setParamterTypes(paramterTypes);
-            p2PToken.setMethod(method);
+            p2PToken.setMethod(methodImpl);
             p2PToken.setInvokeObj(ApplicationContext.getContext().getBean(oo.get()));
             if (rpcMethodOptional.isPresent()) {
                 p2PToken.setTimeout(reference.timeout() > rpcMethodOptional.get().timeout() ? reference.timeout() : rpcMethodOptional.get().timeout());
@@ -114,7 +118,7 @@ public class P2PPushRemoting implements PushRemoting, Runnable {
             }
             String token = UUIDUtils.create();
             EXECUTE_METHOD_TOKENS.put(token, p2PToken);
-            oos.writeObject(new P2PFetchToken(token, p2PToken.getTimeout(), p2PToken.getRetries(), socket.getLocalAddress().getHostAddress() + ":" + socket.getLocalPort()));
+            oos.writeObject(new P2PFetchToken(token, p2PToken.getTimeout(), p2PToken.getRetries(), socket.getLocalAddress().getHostAddress() + ":" + socket.getLocalPort(),providerTxFilter.checkTxAnnotation(methodImpl)));
             oos.flush();
             LOGGER.info("CORGI [ " + socket.getRemoteSocketAddress() + " ] client >> get token << service finish.");
         } catch (IOException e) {
@@ -144,15 +148,12 @@ public class P2PPushRemoting implements PushRemoting, Runnable {
             Token token = EXECUTE_METHOD_TOKENS.get(tokenId);
             Object[] args = (Object[]) ois.readObject();
             Method method = token.getMethod();
-//            if (null == providerFilter) {
-//                providerFilter = new DefaultProviderFilter();
-//            }
 
             Object result = null;
             try {
                 providerFilter.invokeBefore(method, token.getInvokeObj(), args);//过滤前置
                 result = method.invoke(token.getInvokeObj(), args);
-                providerFilter.invokeAfter(result);//过滤后置
+                providerFilter.invokeAfter(method,result);//过滤后置
             } catch (Exception e) {
                 exception = e;
                 providerFilter.invokeError(e);//异常调用
@@ -201,9 +202,6 @@ public class P2PPushRemoting implements PushRemoting, Runnable {
             String txType = ois.readUTF();
             try {
                 LOGGER.info("CORGI [ " + socket.getRemoteSocketAddress() + " ] client >> TX " + txType);
-//                if (null == providerFilter) {
-//                    providerFilter = new DefaultProviderFilter();
-//                }
                 providerFilter.callback(txType);
                 oos.writeObject(null);
                 oos.flush();
@@ -309,6 +307,14 @@ public class P2PPushRemoting implements PushRemoting, Runnable {
 
     public void setConsumerFilter(ConsumerFilter consumerFilter) {
         this.consumerFilter = consumerFilter;
+    }
+
+    public ProviderTxFilter getProviderTxFilter() {
+        return providerTxFilter;
+    }
+
+    public void setProviderTxFilter(ProviderTxFilter providerTxFilter) {
+        this.providerTxFilter = providerTxFilter;
     }
 }
 

@@ -3,6 +3,7 @@ package com.dounine.corgi.rpc;
 import com.dounine.corgi.cluster.Balance;
 import com.dounine.corgi.filter.ConsumerFilter;
 import com.dounine.corgi.filter.ProviderFilter;
+import com.dounine.corgi.filter.ProviderTxFilter;
 import com.dounine.corgi.register.Register;
 import com.dounine.corgi.remoting.Invocation;
 import com.dounine.corgi.rpc.interceptor.RpcInterceptor;
@@ -29,6 +30,7 @@ public class RpcApp {
     private String appName;
     private ProviderFilter providerFilter;
     private ConsumerFilter consumerFilter;
+    private ProviderTxFilter providerTxFilter;
     private Register register;
     private static final RpcApp APP = new RpcApp();
     private static final CountDownLatch CONSUMER_FILTER_COUNTDOWNLOAD = new CountDownLatch(1);
@@ -36,11 +38,12 @@ public class RpcApp {
     private RpcApp() {
     }
 
-    public final static RpcApp init(IProtocol protocol, Register register, ProviderFilter providerFilter, ConsumerFilter consumerFilter, String appName) {
+    public final static RpcApp init(IProtocol protocol, Register register, ProviderFilter providerFilter, ConsumerFilter consumerFilter,ProviderTxFilter providerTxFilter, String appName) {
         APP.setRegister(register);
         APP.setProtocol(protocol);
         APP.setProviderFilter(providerFilter);
         APP.setConsumerFilter(consumerFilter);
+        APP.setProviderTxFilter(providerTxFilter);
         APP.setAppName(appName);
         CONSUMER_FILTER_COUNTDOWNLOAD.countDown();
         return APP;
@@ -52,11 +55,11 @@ public class RpcApp {
 
     public void export() {
         LOGGER.info(getAppName() + " exporting...");
-        new Thread(new RpcContainer(getProtocol(), getRegister(), getProviderFilter(), getConsumerFilter())).start();
+        new Thread(new RpcContainer(protocol, register, providerFilter, consumerFilter,providerTxFilter)).start();
     }
 
     public <T> T getProxy(Class<T> interfaceClass, Reference reference, Balance balance) {
-        Invocation<T> invocation = new RpcInvocation<T>(reference, balance, consumerFilter);
+        Invocation<T> invocation = new RpcInvocation<T>(reference, balance, consumerFilter,providerTxFilter);
         Callback callback = new RpcInterceptor(invocation);
         ENHANCER.setCallback(callback);
         ENHANCER.setInterfaces(new Class<?>[]{interfaceClass});
@@ -101,5 +104,13 @@ public class RpcApp {
 
     public void setConsumerFilter(ConsumerFilter consumerFilter) {
         this.consumerFilter = consumerFilter;
+    }
+
+    public ProviderTxFilter getProviderTxFilter() {
+        return providerTxFilter;
+    }
+
+    public void setProviderTxFilter(ProviderTxFilter providerTxFilter) {
+        this.providerTxFilter = providerTxFilter;
     }
 }

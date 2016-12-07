@@ -2,4 +2,6 @@ apply from: '../config.gradle'
 
 dependencies {
     compile project(":common")
+    compile group: 'org.springframework', name: 'spring-tx', version: "$spring_version"
+
 }

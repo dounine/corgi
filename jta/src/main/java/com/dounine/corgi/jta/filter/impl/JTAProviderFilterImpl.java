@@ -5,6 +5,7 @@ import com.dounine.corgi.context.TokenContext;
 import com.dounine.corgi.filter.ProviderFilter;
 import com.dounine.corgi.jta.component.Components;
 import com.dounine.corgi.jta.filter.ProviderTXContext;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +34,21 @@ public class JTAProviderFilterImpl implements ProviderFilter {
 
     @Override
     public void invokeBefore(Method method, Object object, Object[] args) {
-        ProviderTXContext.create(jtm);
-        LOGGER.info("CORGI JTA create method tx.");
+        if (checkTxTransaction(method)) {
+            ProviderTXContext.create(jtm);
+            LOGGER.info("CORGI JTA create method tx.");
+        }
     }
 
     @Override
-    public void invokeAfter(Object result) {
-        String txId = TokenContext.get();
-        TxObj txObj = new TxObj(jtm, ProviderTXContext.get(), LocalDateTime.now());
-        new Thread(txObj);
-        TX_OBJ_MAP.put(txId, txObj);
-        LOGGER.info("CORGI JTA waiting tx commit or rollback.");
+    public void invokeAfter(Method method,Object result) {
+        if (checkTxTransaction(method)) {
+            String txId = TokenContext.get();
+            TxObj txObj = new TxObj(jtm, ProviderTXContext.get(), LocalDateTime.now());
+            new Thread(txObj);
+            TX_OBJ_MAP.put(txId, txObj);
+            LOGGER.info("CORGI JTA waiting tx commit or rollback.");
+        }
     }
 
     public void callback(String txTypeStr) throws Exception {
@@ -59,7 +64,7 @@ public class JTAProviderFilterImpl implements ProviderFilter {
         }
         if (txObjOpts.isPresent()) {
             TX_OBJ_MAP.get(txObjOpts.get()).begin(txType);
-            LOGGER.info("CORGI JTA exec [ "+txType+" ] tx.");
+            LOGGER.info("CORGI JTA exec [ " + txType + " ] tx.");
         } else {
             throw new Exception("CORGI txId:" + txId + " not found.");
         }

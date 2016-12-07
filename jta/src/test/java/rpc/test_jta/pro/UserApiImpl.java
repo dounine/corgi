@@ -3,6 +3,7 @@ package rpc.test_jta.pro;
 
 import com.dounine.corgi.exception.SerException;
 import com.dounine.corgi.spring.rpc.Service;
+import org.springframework.transaction.annotation.Transactional;
 import rpc.test_jta.api.UserApi;
 
 /**
@@ -12,6 +13,7 @@ import rpc.test_jta.api.UserApi;
 public class UserApiImpl implements UserApi {
 
     @Override
+    @Transactional
     public void login(String username) throws SerException {
         if (!"admin".equals(username)) {
             throw new SerException("not found");

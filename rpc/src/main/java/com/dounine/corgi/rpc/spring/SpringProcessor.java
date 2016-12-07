@@ -6,6 +6,7 @@ import com.dounine.corgi.cluster.ClusterPaths;
 import com.dounine.corgi.exception.RPCException;
 import com.dounine.corgi.filter.ConsumerFilter;
 import com.dounine.corgi.filter.ProviderFilter;
+import com.dounine.corgi.filter.ProviderTxFilter;
 import com.dounine.corgi.filter.impl.DefaultProviderFilter;
 import com.dounine.corgi.register.*;
 import com.dounine.corgi.rpc.RpcApp;
@@ -68,6 +69,8 @@ public class SpringProcessor implements BeanPostProcessor,IRpc {
     protected ProviderFilter providerFilter;
     @Autowired
     protected ConsumerFilter consumerFilter;
+    @Autowired
+    protected ProviderTxFilter providerTxFilter;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -161,7 +164,7 @@ public class SpringProcessor implements BeanPostProcessor,IRpc {
 
     protected void appStart(){
         if(!RpcContainer.isListener()&&exportRpcApp()){
-            RpcApp.init(protocol,register,providerFilter,consumerFilter,env.getProperty("corgi.application.name")).export();
+            RpcApp.init(protocol,register,providerFilter,consumerFilter,providerTxFilter,env.getProperty("corgi.application.name")).export();
         }
     }
 

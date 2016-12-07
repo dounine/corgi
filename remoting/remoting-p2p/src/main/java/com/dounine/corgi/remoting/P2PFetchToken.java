@@ -10,13 +10,15 @@ public class P2PFetchToken implements FetchToken,Serializable {
     private String address;
     private String token;
     private int timeout;
+    private boolean txCommit;
     private int retries;
 
-    public P2PFetchToken(String token,int timeout,int retries,String address){
+    public P2PFetchToken(String token,int timeout,int retries,String address,boolean txCommit){
         this.token = token;
         this.timeout = timeout;
         this.retries = retries;
         this.address = address;
+        this.txCommit = txCommit;
     }
 
     @Override
@@ -49,6 +51,11 @@ public class P2PFetchToken implements FetchToken,Serializable {
     @Override
     public String getAddress() {
         return address;
+    }
+
+    @Override
+    public boolean checkCommit() {
+        return txCommit;
     }
 
     public void setAddress(String address) {

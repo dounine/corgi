@@ -2,6 +2,7 @@ package com.dounine.corgi.rpc.listen;
 
 import com.dounine.corgi.filter.ConsumerFilter;
 import com.dounine.corgi.filter.ProviderFilter;
+import com.dounine.corgi.filter.ProviderTxFilter;
 import com.dounine.corgi.register.Register;
 import com.dounine.corgi.remoting.P2PPushRemoting;
 import com.dounine.corgi.rpc.protocol.IProtocol;
@@ -24,12 +25,14 @@ public class RpcContainer implements Runnable {
     private IProtocol protocol;
     private ProviderFilter providerFilter;
     private ConsumerFilter consumerFilter;
+    private ProviderTxFilter providerTxFilter;
     private Register register;
-    public RpcContainer(final IProtocol protocol, Register register, ProviderFilter providerFilter, ConsumerFilter consumerFilter){
+    public RpcContainer(final IProtocol protocol, Register register, ProviderFilter providerFilter, ConsumerFilter consumerFilter,ProviderTxFilter providerTxFilter){
         this.protocol = protocol;
         this.register = register;
         this.providerFilter = providerFilter;
         this.consumerFilter = consumerFilter;
+        this.providerTxFilter = providerTxFilter;
     }
 
     public RpcContainer(final IProtocol protocol, Register register){
@@ -51,6 +54,7 @@ public class RpcContainer implements Runnable {
                 P2PPushRemoting p2PPushRemoting = new P2PPushRemoting(socket);
                 p2PPushRemoting.setProviderFilter(providerFilter);
                 p2PPushRemoting.setConsumerFilter(consumerFilter);
+                p2PPushRemoting.setProviderTxFilter(providerTxFilter);
                 p2PPushRemoting.setRegister(register);
                 ThreadPools.getExecutor().execute(p2PPushRemoting);
             }
