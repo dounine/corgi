@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
+import javax.transaction.*;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -23,12 +24,18 @@ public class JTAProviderFilterImpl implements ProviderFilter {
     private static final Map<String, TxObj> TX_OBJ_MAP = new HashMap<>();
 
     @Autowired
-    protected JtaTransactionManager jtm;
+    protected TransactionManager tm;
 
     @Override
     public void invokeBefore(Method method, Object object, Object[] args) {
         if (checkTxTransaction(method)) {
-            ProviderJTATXContext.create(jtm);
+            try {
+                tm.begin();
+            } catch (SystemException e) {
+                e.printStackTrace();
+            } catch (NotSupportedException e) {
+                e.printStackTrace();
+            }
             LOGGER.info("CORGI JTA create method tx.");
         }
     }
@@ -36,9 +43,14 @@ public class JTAProviderFilterImpl implements ProviderFilter {
     @Override
     public void invokeAfter(Method method,Object result) {
         if (checkTxTransaction(method)) {
+            Transaction transaction = null;
+            try {
+                transaction = tm.suspend();
+            } catch (SystemException e) {
+                e.printStackTrace();
+            }
             String txId = TokenContext.get();
-            TxObj txObj = new TxObj(jtm, ProviderJTATXContext.get(), LocalDateTime.now());
-            new Thread(txObj);
+            TxObj txObj = new TxObj(transaction, LocalDateTime.now());
             TX_OBJ_MAP.put(txId, txObj);
             LOGGER.info("CORGI JTA waiting tx commit or rollback.");
         }
@@ -56,7 +68,15 @@ public class JTAProviderFilterImpl implements ProviderFilter {
             throw new Exception("CORGI txType not empty.");
         }
         if (txObjOpts.isPresent()) {
-            TX_OBJ_MAP.get(txObjOpts.get()).begin(txType);
+            tm.resume(TX_OBJ_MAP.get(txObjOpts.get()).getTs());
+            switch (txType){
+                case COMMIT:
+                    tm.commit();
+                    break;
+                case ROLLBACK:
+                    tm.rollback();
+                    break;
+            }
             LOGGER.info("CORGI JTA exec [ " + txType + " ] tx.");
         } else {
             throw new Exception("CORGI txId:" + txId + " not found.");
@@ -65,6 +85,10 @@ public class JTAProviderFilterImpl implements ProviderFilter {
 
     @Override
     public void invokeError(Throwable throwable) {
-        jtm.rollback(ProviderJTATXContext.get());
+        try {
+            tm.rollback();
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
     }
 }

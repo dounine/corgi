@@ -3,10 +3,13 @@ package com.dounine.corgi.jta.impl;
 import com.dounine.corgi.jta.JTAApiFilter;
 import com.dounine.corgi.jta.ProviderJTATXContext;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.jta.JtaTransactionManager;
+
+import javax.transaction.*;
 
 /**
  * Created by huanghuanlai on 2016/11/23.
@@ -15,7 +18,7 @@ public abstract class JTAApiFilterImpl implements JTAApiFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JTAApiFilterImpl.class);
     @Autowired
-    private JtaTransactionManager jtm;
+    private TransactionManager tm;
     @Autowired
     private JTAConsumerFilterImpl jtaConsumerFilter;
 
@@ -23,7 +26,13 @@ public abstract class JTAApiFilterImpl implements JTAApiFilter {
     public void methodBefore(ProceedingJoinPoint pjp) {
         if(checkTxTransaction(pjp)){
             LOGGER.info("CORGI JTA local api create.");
-            ProviderJTATXContext.create(jtm);
+            try {
+                tm.begin();
+            } catch (SystemException e) {
+                e.printStackTrace();
+            } catch (NotSupportedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -34,19 +43,33 @@ public abstract class JTAApiFilterImpl implements JTAApiFilter {
             for(JTATX jtatx : jtaConsumerFilter.getJtaTxs()){
                 jtatx.getClient().txCall(jtatx.getFetchToken(),"commit");
             }
-            jtm.commit(ProviderJTATXContext.get());
+            try {
+                tm.commit();
+            } catch (RollbackException e) {
+                e.printStackTrace();
+            } catch (HeuristicMixedException e) {
+                e.printStackTrace();
+            } catch (HeuristicRollbackException e) {
+                e.printStackTrace();
+            } catch (SystemException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public void methodException(ProceedingJoinPoint jp, Throwable ex) {
         if(checkTxTransaction(jp)){
-            if(!ProviderJTATXContext.get().isCompleted()){
+            if(null!=ProviderJTATXContext.get()){
                 LOGGER.info("CORGI JTA local api rollback.");
                 for(JTATX jtatx : jtaConsumerFilter.getJtaTxs()){
                     jtatx.getClient().txCall(jtatx.getFetchToken(),"rollback");
                 }
-                jtm.rollback(ProviderJTATXContext.get());
+                try {
+                    tm.rollback();
+                } catch (SystemException e) {
+                    e.printStackTrace();
+                }
             }else{
                 LOGGER.info("CORGI JTA local api tx is complted.");
             }
