@@ -1,5 +1,6 @@
 package com.dounine.corgi.jta.impl;
 
+import com.atomikos.icatch.jta.UserTransactionManager;
 import com.dounine.corgi.jta.JTAApiFilter;
 import com.dounine.corgi.jta.ProviderJTATXContext;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -18,7 +19,7 @@ public abstract class JTAApiFilterImpl implements JTAApiFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JTAApiFilterImpl.class);
     @Autowired
-    private TransactionManager tm;
+    private UserTransactionManager utm;
     @Autowired
     private JTAConsumerFilterImpl jtaConsumerFilter;
 
@@ -27,7 +28,7 @@ public abstract class JTAApiFilterImpl implements JTAApiFilter {
         if(checkTxTransaction(pjp)){
             LOGGER.info("CORGI JTA local api create.");
             try {
-                tm.begin();
+                utm.begin();
             } catch (SystemException e) {
                 e.printStackTrace();
             } catch (NotSupportedException e) {
@@ -44,7 +45,7 @@ public abstract class JTAApiFilterImpl implements JTAApiFilter {
                 jtatx.getClient().txCall(jtatx.getFetchToken(),"commit");
             }
             try {
-                tm.commit();
+                utm.commit();
             } catch (RollbackException e) {
                 e.printStackTrace();
             } catch (HeuristicMixedException e) {
@@ -66,7 +67,7 @@ public abstract class JTAApiFilterImpl implements JTAApiFilter {
                     jtatx.getClient().txCall(jtatx.getFetchToken(),"rollback");
                 }
                 try {
-                    tm.rollback();
+                    utm.rollback();
                 } catch (SystemException e) {
                     e.printStackTrace();
                 }

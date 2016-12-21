@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 import javax.annotation.Resource;
@@ -80,8 +81,8 @@ public class JtaComponents {
         return userTransactionImp;
     }
 
-    @Bean("jtaTransactionManager")
-    public JtaTransactionManager jtaTransactionManager(UserTransactionImp userTransactionImp, UserTransactionManager userTransactionManager){
+    @Bean("transactionManager")
+    public PlatformTransactionManager jtaTransactionManager(UserTransactionImp userTransactionImp, UserTransactionManager userTransactionManager){
         JtaTransactionManager jtaTransactionManager = new JtaTransactionManager();
         jtaTransactionManager.setUserTransaction(userTransactionImp);
         jtaTransactionManager.setTransactionManager(userTransactionManager);

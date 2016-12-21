@@ -1,5 +1,6 @@
 package com.dounine.corgi.jta.impl;
 
+import com.atomikos.icatch.jta.UserTransactionManager;
 import com.dounine.corgi.context.TokenContext;
 import com.dounine.corgi.filter.ProviderFilter;
 import com.dounine.corgi.jta.ProviderJTATXContext;
@@ -24,13 +25,13 @@ public class JTAProviderFilterImpl implements ProviderFilter {
     private static final Map<String, TxObj> TX_OBJ_MAP = new HashMap<>();
 
     @Autowired
-    protected TransactionManager tm;
+    private UserTransactionManager utm;
 
     @Override
     public void invokeBefore(Method method, Object object, Object[] args) {
         if (checkTxTransaction(method)) {
             try {
-                tm.begin();
+                utm.begin();
             } catch (SystemException e) {
                 e.printStackTrace();
             } catch (NotSupportedException e) {
@@ -45,7 +46,7 @@ public class JTAProviderFilterImpl implements ProviderFilter {
         if (checkTxTransaction(method)) {
             Transaction transaction = null;
             try {
-                transaction = tm.suspend();
+                transaction = utm.suspend();
             } catch (SystemException e) {
                 e.printStackTrace();
             }
@@ -68,13 +69,13 @@ public class JTAProviderFilterImpl implements ProviderFilter {
             throw new Exception("CORGI txType not empty.");
         }
         if (txObjOpts.isPresent()) {
-            tm.resume(TX_OBJ_MAP.get(txObjOpts.get()).getTs());
+            utm.resume(TX_OBJ_MAP.get(txObjOpts.get()).getTs());
             switch (txType){
                 case COMMIT:
-                    tm.commit();
+                    utm.commit();
                     break;
                 case ROLLBACK:
-                    tm.rollback();
+                    utm.rollback();
                     break;
             }
             LOGGER.info("CORGI JTA exec [ " + txType + " ] tx.");
@@ -86,7 +87,7 @@ public class JTAProviderFilterImpl implements ProviderFilter {
     @Override
     public void invokeError(Throwable throwable) {
         try {
-            tm.rollback();
+            utm.rollback();
         } catch (SystemException e) {
             e.printStackTrace();
         }
