@@ -38,7 +38,7 @@ public class JTAProviderFilterImpl implements ProviderFilter {
         if (checkTxTransaction(method)) {
             String txId = TokenContext.get();
             TxObj txObj = new TxObj(jtm, ProviderJTATXContext.get(), LocalDateTime.now());
-            new Thread(txObj);
+            new Thread(txObj).start();
             TX_OBJ_MAP.put(txId, txObj);
             LOGGER.info("CORGI JTA waiting tx commit or rollback.");
         }
