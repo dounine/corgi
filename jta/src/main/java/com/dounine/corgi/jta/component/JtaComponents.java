@@ -81,12 +81,12 @@ public class JtaComponents {
         return userTransactionImp;
     }
 
-    @Bean("transactionManager")
-    public PlatformTransactionManager jtaTransactionManager(UserTransactionImp userTransactionImp, UserTransactionManager userTransactionManager){
-        JtaTransactionManager jtaTransactionManager = new JtaTransactionManager();
-        jtaTransactionManager.setUserTransaction(userTransactionImp);
-        jtaTransactionManager.setTransactionManager(userTransactionManager);
-        jtaTransactionManager.setAllowCustomIsolationLevels(true);
-        return jtaTransactionManager;
-    }
+//    @Bean("jtaTransactionManager")
+//    public PlatformTransactionManager jtaTransactionManager(UserTransactionImp userTransactionImp, UserTransactionManager userTransactionManager){
+//        JtaTransactionManager jtaTransactionManager = new JtaTransactionManager();
+//        jtaTransactionManager.setUserTransaction(userTransactionImp);
+//        jtaTransactionManager.setTransactionManager(userTransactionManager);
+//        jtaTransactionManager.setAllowCustomIsolationLevels(true);
+//        return jtaTransactionManager;
+//    }
 }

@@ -19,7 +19,7 @@ public abstract class JTAApiFilterImpl implements JTAApiFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JTAApiFilterImpl.class);
     @Autowired
-    private UserTransactionManager utm;
+    private TransactionManager utm;
     @Autowired
     private JTAConsumerFilterImpl jtaConsumerFilter;
 

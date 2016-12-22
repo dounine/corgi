@@ -3,6 +3,7 @@ package com.dounine.corgi.jta.impl;
 import com.atomikos.icatch.jta.UserTransactionManager;
 import com.dounine.corgi.context.TokenContext;
 import com.dounine.corgi.filter.ProviderFilter;
+import com.dounine.corgi.jta.JTAApiTXContext;
 import com.dounine.corgi.jta.ProviderJTATXContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,13 +26,13 @@ public class JTAProviderFilterImpl implements ProviderFilter {
     private static final Map<String, TxObj> TX_OBJ_MAP = new HashMap<>();
 
     @Autowired
-    private UserTransactionManager utm;
+    private TransactionManager tm;
 
     @Override
     public void invokeBefore(Method method, Object object, Object[] args) {
         if (checkTxTransaction(method)) {
             try {
-                utm.begin();
+                tm.begin();
             } catch (SystemException e) {
                 e.printStackTrace();
             } catch (NotSupportedException e) {
@@ -44,13 +45,24 @@ public class JTAProviderFilterImpl implements ProviderFilter {
     @Override
     public void invokeAfter(Method method,Object result) {
         if (checkTxTransaction(method)) {
+            String txId = TokenContext.get();
             Transaction transaction = null;
+//            try {
+//                tm.commit();
+//            } catch (RollbackException e) {
+//                e.printStackTrace();
+//            } catch (HeuristicMixedException e) {
+//                e.printStackTrace();
+//            } catch (HeuristicRollbackException e) {
+//                e.printStackTrace();
+//            } catch (SystemException e) {
+//                e.printStackTrace();
+//            }
             try {
-                transaction = utm.suspend();
+                transaction = tm.suspend();
             } catch (SystemException e) {
                 e.printStackTrace();
             }
-            String txId = TokenContext.get();
             TxObj txObj = new TxObj(transaction, LocalDateTime.now());
             TX_OBJ_MAP.put(txId, txObj);
             LOGGER.info("CORGI JTA waiting tx commit or rollback.");
@@ -69,13 +81,13 @@ public class JTAProviderFilterImpl implements ProviderFilter {
             throw new Exception("CORGI txType not empty.");
         }
         if (txObjOpts.isPresent()) {
-            utm.resume(TX_OBJ_MAP.get(txObjOpts.get()).getTs());
+            tm.resume(TX_OBJ_MAP.get(txObjOpts.get()).getTs());
             switch (txType){
                 case COMMIT:
-                    utm.commit();
+                    tm.commit();
                     break;
                 case ROLLBACK:
-                    utm.rollback();
+                    tm.rollback();
                     break;
             }
             LOGGER.info("CORGI JTA exec [ " + txType + " ] tx.");
@@ -87,7 +99,7 @@ public class JTAProviderFilterImpl implements ProviderFilter {
     @Override
     public void invokeError(Throwable throwable) {
         try {
-            utm.rollback();
+            tm.rollback();
         } catch (SystemException e) {
             e.printStackTrace();
         }
